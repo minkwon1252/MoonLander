@@ -164,3 +164,23 @@ body.projector .composite { font-size:2.2rem; }
 .crit .mark { width:16px; }
 .crit .met { color:var(--good); } .crit .miss { color:var(--muted); }
 svg.graph { background:rgba(8,12,26,.5); border:1px solid var(--line); border-radius:12px; }
+
+/* host guidance banner */
+.guidance { background:linear-gradient(180deg,#13325a,#102447); border:1px solid var(--accent);
+  border-radius:12px; padding:14px 18px; margin-bottom:16px; }
+.guidance .g-title { font-weight:700; font-size:1.05rem; color:#cfe6ff; }
+.guidance .g-body { color:#dfe8fb; margin-top:4px; font-size:.92rem; }
+.guidance .g-next { margin-top:8px; font-weight:650; color:#ffe08a; }
+.guidance .g-tip { margin-top:4px; font-size:.85rem; color:var(--muted); }
+.guidance.mini { padding:8px 14px; margin:0; }
+.guidance.mini .g-body { display:none; }
+
+/* modal */
+.modal-backdrop { position:fixed; inset:0; background:rgba(4,7,16,.72); z-index:100;
+  display:flex; align-items:flex-start; justify-content:center; overflow:auto; padding:40px 16px; }
+.modal { background:var(--panel); border:1px solid var(--line); border-radius:16px; box-shadow:var(--shadow);
+  max-width:760px; width:100%; padding:24px 28px; }
+.modal h3 { margin-top:16px; color:var(--accent); }
+.modal ul, .modal ol { margin:6px 0 6px 18px; }
+.modal li { margin:3px 0; }
+.modal code { background:var(--bg2); padding:1px 6px; border-radius:5px; border:1px solid var(--line); }

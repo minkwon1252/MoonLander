@@ -84,6 +84,76 @@ function phaseLabel(p) {
     debrief: 'Debrief' })[p] || p;
 }
 
+/* ---- Host guide modal (shared by admin & projector) ---- */
+function hostGuideHtml() {
+  return `
+  <h2>🎙️ Host / Facilitator Guide</h2>
+  <p class="muted">You drive the whole game from the <b>Admin</b> page. The <b>Big Screen</b> (/screen.html) is for
+  the room; teams use <b>/team.html</b> with their PIN. Keep Admin + Big Screen open side by side.</p>
+
+  <h3>0 · Before you begin</h3>
+  <ul>
+    <li>Open <b>/admin.html</b> (PIN <code>STEM_Selene_Admin</code>) and <b>/screen.html</b> on the projector.</li>
+    <li>Give each team its PIN: UTokyo <b>JPN</b>, NUS <b>SGN</b>, HKUST <b>HKG</b>, SNU-1 <b>ROK</b>, SNU-2 <b>NK</b>.</li>
+  </ul>
+
+  <h3>1 · Setup</h3>
+  <ul>
+    <li>Teams open /team.html and pick a technology domain — or you press <b>🎲 Auto-assign Domains</b> (great for solo tests).</li>
+    <li>Set the number of rounds if you want fewer than 10. Press <b>▶ Start Game</b>.</li>
+  </ul>
+
+  <h3>2 · Each round = 4 phases (drive them with “⏭ Advance Phase”)</h3>
+  <ol>
+    <li><b>Domestic</b> — teams privately decide their policy card. Advance when ready.</li>
+    <li><b>International</b> — each team sends ONE action (cooperate / restrict / covert…); targets Accept or Decline.
+    Reps come to the front: use <b>📺</b> next to a card to spotlight it on the Big Screen, and type what they say into <b>Notes</b>.</li>
+    <li><b>Global</b> — press <b>🌐 Trigger Global</b>. <u>The event appears on the BIG SCREEN</u> (and in the panel on your Admin page). Discuss it, then Advance.</li>
+    <li><b>Summary</b> — scores and the cooperation-network graph update on the Big Screen. Let the room read each team’s status.</li>
+  </ol>
+  <p>Then press <b>⏩ Next Round</b>.</p>
+
+  <h3>3 · Tools any time</h3>
+  <ul>
+    <li><b>Phase timer</b> (1/2/3/5 min or custom) — shows on every screen; it’s a visual aid only.</li>
+    <li><b>Edit any stat</b> from a team’s panel; <b>add Notes</b> for the debrief; <b>Export JSON/CSV</b> for your record.</li>
+    <li><b>Pause</b> freezes team input; <b>🏁 End Game</b> jumps straight to the debrief (final ranking + each team’s goal %).</li>
+  </ul>
+
+  <h3>4 · Troubleshooting</h3>
+  <ul>
+    <li><b>“I can’t see the global event.”</b> Global events show on the <b>Big Screen</b> (and the Admin “Current Global Event” panel) — they are not a pop-up on the team screens. Make sure you pressed <b>Trigger Global</b>.</li>
+    <li><b>Decisions don’t move the game.</b> The game advances when <i>you</i> press Advance Phase — undecided teams simply take no action that phase.</li>
+    <li><b>Reset</b> wipes everything (asks first). On free hosting, export your log occasionally as a backup.</li>
+  </ul>`;
+}
+
+function openModal(html) {
+  closeModal();
+  const back = el('div', { class: 'modal-backdrop', onclick: (e) => { if (e.target === back) closeModal(); } });
+  const box = el('div', { class: 'modal' });
+  box.innerHTML = html;
+  const close = el('button', { class: 'btn', style: 'margin-top:16px', onclick: closeModal }, 'Close');
+  box.appendChild(close);
+  back.appendChild(box);
+  document.body.appendChild(back);
+}
+function closeModal() { const m = document.querySelector('.modal-backdrop'); if (m) m.remove(); }
+function wireGuideButton(id) {
+  const b = document.getElementById(id);
+  if (b) b.addEventListener('click', () => openModal(hostGuideHtml()));
+}
+
+/* Render the live "what to do next" guidance into a container. */
+function renderGuidance(node, g) {
+  if (!node || !g) return;
+  clear(node);
+  node.appendChild(el('div', { class: 'g-title' }, g.title));
+  if (g.body) node.appendChild(el('div', { class: 'g-body' }, g.body));
+  if (g.next) node.appendChild(el('div', { class: 'g-next' }, '➡ ' + g.next));
+  if (g.tip) node.appendChild(el('div', { class: 'g-tip' }, '💡 ' + g.tip));
+}
+
 /* ---- Phase timer (shared countdown) ---- */
 const _timerEls = [];
 function registerTimerEl(node) { if (node) _timerEls.push(node); }

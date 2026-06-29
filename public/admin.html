@@ -13,6 +13,7 @@
   <span class="pill"><span class="timer-display idle" id="timerPill">⏱ —</span></span>
   <span class="pill" id="phasePill">—</span>
   <span class="pill">Coop Index <b id="coopIdx">—</b></span>
+  <button class="btn small" id="guideBtn">📖 Host Guide</button>
   <a class="pill" href="/screen.html" target="_blank">📺 Open Projector</a>
 </div>
 
@@ -26,6 +27,12 @@
   </div>
 
   <div id="dash" style="display:none">
+    <!-- Live guidance -->
+    <div class="guidance" id="guidance"></div>
+
+    <!-- Current global event -->
+    <div class="card-panel" id="globalPanel" style="display:none;border:1px solid var(--bad);margin-bottom:18px"></div>
+
     <!-- Flow controls -->
     <div class="card-panel">
       <div class="flex between wrap-flex">

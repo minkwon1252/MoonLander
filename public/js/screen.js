@@ -1,10 +1,12 @@
 /* Projector / public screen. Read-only, controlled by admin reveals. */
 registerTimerEl(document.getElementById('timerPill'));
+wireGuideButton('guideBtn');
 
 onState((s) => {
   document.getElementById('phasePill').innerHTML =
     `Round <b>${s.round}</b> / ${s.maxRounds} · ${phaseLabel(s.phase)}${s.status === 'paused' ? ' · PAUSED' : ''}`;
   document.getElementById('coopIdx').textContent = s.cooperationIndex;
+  renderGuidance(document.getElementById('guidance'), s.guidance);
 
   renderBoard(s);
   renderGraph(s);

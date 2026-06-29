@@ -183,9 +183,9 @@ function advancePhase() {
   const next = PHASES[idx + 1];
   game.phase = next;
   game.timer = null;
-  if (next === 'global') {
-    game.public.globalRevealed = false;
-  }
+  // NOTE: do not reset globalRevealed here. The global event is cleared at the
+  // start of each round (startGame/nextRound); if the host triggered it early,
+  // it must remain visible rather than being hidden when entering this phase.
   if (next === 'summary') {
     const notes = engine.processRoundEnd(game);
     notes.forEach((n) => pushLog('roundend', n));
@@ -475,6 +475,48 @@ function publicTeamView(t) {
   };
 }
 
+function guidanceFor() {
+  const r = game.round, mr = game.maxRounds;
+  if (game.status === 'ended' || game.phase === 'debrief')
+    return { title: 'Game over', body: 'Final rankings and each team’s goal progress are on the Big Screen.',
+      next: 'Press ⟲ Reset to play again.' };
+  if (game.status === 'paused')
+    return { title: 'Paused', body: 'Team input is frozen.', next: 'Press ▶ Resume to continue.' };
+  if (game.status === 'lobby') {
+    const missing = Object.values(game.teams).filter((t) => !t.domain);
+    if (missing.length)
+      return { title: 'Setup — choose technology domains',
+        body: `Each team picks a domain on /team.html. Missing: ${missing.map((t) => t.name).join(', ')}.`,
+        next: 'Quickest: press 🎲 Auto-assign Domains, then ▶ Start Game.' };
+    return { title: 'Ready to start', body: 'All five teams have a domain.', next: 'Press ▶ Start Game.' };
+  }
+  // running
+  if (game.phase === 'domestic')
+    return { title: `Round ${r}/${mr} — Domestic policy`,
+      body: 'Teams privately decide their domestic policy card on their own devices.',
+      next: 'When teams have decided, press ⏭ Advance Phase (→ International).',
+      tip: 'Optional: start a phase timer to keep pace.' };
+  if (game.phase === 'international')
+    return { title: `Round ${r}/${mr} — International relations`,
+      body: 'Each team may send ONE international action; targets Accept or Decline. As reps present, use 📺 to spotlight a card on the Big Screen and record what they say in Notes.',
+      next: 'Press ⏭ Advance Phase (→ Global Event).' };
+  if (game.phase === 'global') {
+    if (!game.globalEvent)
+      return { title: `Round ${r}/${mr} — Global event`,
+        body: 'No event revealed yet.',
+        next: 'Press 🌐 Trigger Global — the event appears on the Big Screen (and in the panel below). Then press ⏭ Advance Phase.' };
+    return { title: `Round ${r}/${mr} — Global event revealed`,
+      body: `“${game.globalEvent.title}” is now showing on the Big Screen. Discuss its impact.`,
+      next: 'Press ⏭ Advance Phase (→ Round Summary).' };
+  }
+  if (game.phase === 'summary')
+    return { title: `Round ${r}/${mr} — Summary`,
+      body: 'Updated scores and the cooperation network are on the Big Screen — let the room read each team’s status.',
+      next: r >= mr ? 'Press ⏩ Next Round to finish → Debrief.'
+                    : 'Press ⏩ Next Round for the next round, or 🏁 End Game to stop here.' };
+  return { title: 'Running', body: '', next: '' };
+}
+
 function baseState() {
   const scores = engine.computeScores(game);
   return {
@@ -483,6 +525,7 @@ function baseState() {
     scores, goals: engine.computeGoals(game, DOMAINS),
     trustGraph: engine.trustGraph(game), timer: game.timer,
     globalEvent: game.globalEvent, public: game.public,
+    guidance: guidanceFor(),
     updatedAt: game.updatedAt
   };
 }

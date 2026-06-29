@@ -2,6 +2,7 @@
 function cmd(payload, ok) { return act('admin:cmd', payload, ok); }
 registerTimerEl(document.getElementById('timerPill'));
 registerTimerEl(document.getElementById('timerPill2'));
+wireGuideButton('guideBtn');
 
 async function doAdminLogin(pin) {
   const res = await emit('auth', { role: 'admin', pin });
@@ -81,12 +82,35 @@ onState((s) => {
   const mr = document.getElementById('maxRounds');
   if (document.activeElement !== mr) mr.value = s.maxRounds;
 
+  renderGuidance(document.getElementById('guidance'), s.guidance);
+  renderAdminGlobal(s);
   fillTeamSelects(s);
   renderTeamsAdmin(s);
   renderProposals(s);
   renderNotes(s);
   renderLog(s);
 });
+
+function renderAdminGlobal(s) {
+  const p = document.getElementById('globalPanel');
+  if (!s.globalEvent || !s.public || !s.public.globalRevealed) { p.style.display = 'none'; return; }
+  p.style.display = 'block'; clear(p);
+  const g = s.globalEvent;
+  p.appendChild(el('div', { class: 'sev' }, el('b', {}, '⚠ CURRENT GLOBAL EVENT'), `  · severity ${g.severity}`));
+  p.appendChild(el('h2', { style: 'margin:6px 0' }, g.title));
+  p.appendChild(el('p', { class: 'muted' }, g.narrative));
+  // per-team impact
+  if (Array.isArray(g.log)) {
+    const grid = el('div', { class: 'stats' });
+    for (const row of g.log) {
+      const fx = Object.keys(row.diff || {}).length ? fxString(row.diff) : '<span class="muted">no change</span>';
+      grid.appendChild(el('div', { class: 'small' }, el('b', {}, row.teamName + ': '),
+        el('span', { html: fx })));
+    }
+    p.appendChild(grid);
+  }
+  p.appendChild(el('div', { class: 'note' }, '👁 This is also displayed on the Big Screen.'));
+}
 
 function fillTeamSelects(s) {
   for (const id of ['noteTeam', 'spotDomesticTeam']) {
@@ -98,7 +122,10 @@ function fillTeamSelects(s) {
 }
 
 function renderTeamsAdmin(s) {
-  const box = document.getElementById('teamsAdmin'); clear(box);
+  const box = document.getElementById('teamsAdmin');
+  // Don't clobber an input/select the host is actively editing.
+  if (box.contains(document.activeElement)) return;
+  clear(box);
   for (const id of Object.keys(s.fullTeams)) {
     const t = s.fullTeams[id];
     const sc = s.scores[id] || {};
