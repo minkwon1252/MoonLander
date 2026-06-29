@@ -1,5 +1,13 @@
 # Tech Race: International Cooperation & Competition
 
+> ### 🌐 Live game: **https://tech-race.onrender.com**
+> - **Teams:** https://tech-race.onrender.com/team.html — PINs: UTokyo `JPN` · NUS `SGN` · HKUST `HKG` · SNU-1 `ROK` · SNU-2 `NK`
+> - **Facilitator / Admin:** https://tech-race.onrender.com/admin.html — PIN `STEM_Selene_Admin`
+> - **Projector / Big screen:** https://tech-race.onrender.com/screen.html
+> - **Rule book:** https://tech-race.onrender.com/gamebook.html
+>
+> _(Free Render instances sleep after ~15 min idle; the first visit may take ~30s to wake up.)_
+
 A serious, Reigns-style **technology-policy & diplomacy simulation** for live conference use.
 Five teams of engineering students each lead a national/regional innovation system through an age of
 technological competition — making domestic policy, negotiating (and sometimes betraying) one another
@@ -82,6 +90,19 @@ ADMIN_PIN=my_secret PORT=8080 MAX_ROUNDS=8 npm start
 | HKUST | Hong Kong | `HKG` |
 | SNU-1 | Korea-1 | `ROK` |
 | SNU-2 | Korea-2 | `NK` |
+
+## Testing alone (no five logins needed)
+
+You do **not** need five people to start a test. On the **admin screen**:
+
+1. Log in with the admin PIN.
+2. Click **🎲 Auto-assign Domains** (gives every team a distinct domain) — or pick each team's domain from the
+   dropdown in its panel.
+3. Click **▶ Start Game**.
+
+From there you can **Advance Phase**, **Trigger Global**, watch scores/goals/the cooperation graph update, and
+**End Game** — all solo. To also test what a *team* sees and clicks, open extra browser tabs at `/team.html` and log
+in with the team PINs (`JPN`, `SGN`, `HKG`, `ROK`, `NK`); one laptop can run all five tabs at once.
 
 ## Running a session (facilitator flow)
 

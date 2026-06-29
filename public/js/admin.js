@@ -35,6 +35,15 @@ document.getElementById('customTimerBtn').addEventListener('click', () => {
   if (v) cmd({ cmd: 'startTimer', seconds: v }, 'Timer started.');
 });
 document.getElementById('clearTimerBtn').addEventListener('click', () => cmd({ cmd: 'clearTimer' }));
+document.getElementById('autoDomainBtn').addEventListener('click', async () => {
+  if (!STATE || !META) return;
+  const domainIds = Object.keys(META.domains);
+  const teamIds = STATE.teams.map((t) => t.id);
+  for (let i = 0; i < teamIds.length; i++) {
+    await emit('admin:cmd', { cmd: 'setDomain', teamId: teamIds[i], domain: domainIds[i % domainIds.length] });
+  }
+  toast('Domains assigned to all teams. You can Start now.');
+});
 document.getElementById('globalBtn').addEventListener('click', () =>
   cmd({ cmd: 'triggerGlobal', eventId: document.getElementById('globalSelect').value || null }, 'Global event triggered.'));
 document.getElementById('maxRounds').addEventListener('change', (e) =>
@@ -94,9 +103,20 @@ function renderTeamsAdmin(s) {
     const t = s.fullTeams[id];
     const sc = s.scores[id] || {};
     const panel = el('div', { class: 'card-panel', style: `border-top:4px solid ${t.color}` });
-    panel.appendChild(el('div', { class: 'flex between' },
-      el('h3', { style: 'margin:0' }, `${t.name} — ${t.country}`),
-      el('span', { class: 'tag' }, t.domain ? META.domains[t.domain].name : 'no domain')));
+    const header = el('div', { class: 'flex between' },
+      el('h3', { style: 'margin:0' }, `${t.name} — ${t.country}`));
+    if (s.status === 'lobby' || s.status === 'paused') {
+      const dsel = el('select', { style: 'width:auto;padding:4px;font-size:.8rem' });
+      dsel.appendChild(el('option', { value: '' }, '— pick domain —'));
+      for (const did of Object.keys(META.domains))
+        dsel.appendChild(el('option', { value: did }, META.domains[did].name));
+      dsel.value = t.domain || '';
+      dsel.addEventListener('change', () => cmd({ cmd: 'setDomain', teamId: id, domain: dsel.value }));
+      header.appendChild(dsel);
+    } else {
+      header.appendChild(el('span', { class: 'tag' }, t.domain ? META.domains[t.domain].name : 'no domain'));
+    }
+    panel.appendChild(header);
     panel.appendChild(el('div', { class: 'small muted' },
       `Composite ${sc.composite ?? '—'} · ${t.record.cooperation} coop · ${t.record.coercion} coerce · ` +
       `${t.record.covertCaught} caught`));
