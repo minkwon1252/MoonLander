@@ -1,0 +1,15 @@
+# One-click deploy config for Render (https://render.com).
+# In Render: New + → Blueprint → connect this GitHub repo → it reads this file.
+services:
+  - type: web
+    name: tech-race
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: ADMIN_PIN
+        value: STEM_Selene_Admin
+      - key: MAX_ROUNDS
+        value: "10"
+      # PORT is provided automatically by Render.

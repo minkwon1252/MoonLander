@@ -1,0 +1,648 @@
+[
+  {
+    "id": "research_pact",
+    "label": "Bilateral Research Pact",
+    "category": "cooperation",
+    "requiresConsent": true,
+    "covert": false,
+    "description": "Propose a joint research program. Both sides gain technology and reputation if accepted.",
+    "discussionPrompt": "What do you each give up by binding your research agendas together?",
+    "educationalNote": "Research pacts pool knowledge but require trust that neither side free-rides.",
+    "effects": {
+      "accept": {
+        "initiator": {
+          "techProgress": 6,
+          "politicalSupport": 4,
+          "talent": 3
+        },
+        "target": {
+          "techProgress": 6,
+          "politicalSupport": 4,
+          "talent": 3
+        },
+        "trust": 12
+      },
+      "reject": {
+        "initiator": {
+          "politicalSupport": -2
+        },
+        "target": {},
+        "trust": -4
+      }
+    }
+  },
+  {
+    "id": "shared_compute",
+    "label": "Shared Compute Infrastructure",
+    "category": "cooperation",
+    "requiresConsent": true,
+    "covert": false,
+    "description": "Offer to pool compute/energy infrastructure. Expensive to set up, strong long-term payoff.",
+    "discussionPrompt": "Does sharing compute create dependence or resilience?",
+    "educationalNote": "Shared infrastructure lowers cost but couples your fates to a partner's reliability.",
+    "effects": {
+      "accept": {
+        "initiator": {
+          "energy": 6,
+          "techProgress": 4,
+          "treasury": -5
+        },
+        "target": {
+          "energy": 6,
+          "techProgress": 4,
+          "treasury": -5
+        },
+        "trust": 10
+      },
+      "reject": {
+        "initiator": {
+          "treasury": -2
+        },
+        "target": {},
+        "trust": -3
+      }
+    }
+  },
+  {
+    "id": "joint_space",
+    "label": "Joint Space Mission",
+    "category": "cooperation",
+    "requiresConsent": true,
+    "covert": false,
+    "description": "Co-fund a flagship space mission. High cost, prestige and capability if it flies.",
+    "discussionPrompt": "Who leads, who follows, and who gets the credit in a joint mission?",
+    "educationalNote": "Big-science collaborations distribute cost and risk but require durable commitment.",
+    "effects": {
+      "accept": {
+        "initiator": {
+          "techProgress": 7,
+          "politicalSupport": 6,
+          "treasury": -7
+        },
+        "target": {
+          "techProgress": 7,
+          "politicalSupport": 6,
+          "treasury": -7
+        },
+        "trust": 11
+      },
+      "reject": {
+        "initiator": {},
+        "target": {},
+        "trust": -3
+      }
+    }
+  },
+  {
+    "id": "talent_exchange",
+    "label": "Talent Exchange Program",
+    "category": "cooperation",
+    "requiresConsent": true,
+    "covert": false,
+    "description": "Swap researchers and students. Boosts tech and reputation but can stir domestic political backlash.",
+    "discussionPrompt": "Does talent exchange enrich both sides equally, or does one absorb the other?",
+    "educationalNote": "Mobility accelerates learning but raises loyalty and security questions at home.",
+    "effects": {
+      "accept": {
+        "initiator": {
+          "talent": 6,
+          "techProgress": 4,
+          "politicalSupport": 0
+        },
+        "target": {
+          "talent": 6,
+          "techProgress": 4,
+          "politicalSupport": 0
+        },
+        "trust": 9
+      },
+      "reject": {
+        "initiator": {},
+        "target": {},
+        "trust": -2
+      }
+    }
+  },
+  {
+    "id": "safety_standard",
+    "label": "Cross-Border Safety Standard",
+    "category": "cooperation",
+    "requiresConsent": true,
+    "covert": false,
+    "description": "Agree on a shared safety/ethics standard for your domain. Builds trust and reputation, slightly slows raw progress.",
+    "discussionPrompt": "Who sets the standard, and does it lock in the leader's advantage?",
+    "educationalNote": "Shared standards reduce a race-to-the-bottom but constrain unilateral speed.",
+    "effects": {
+      "accept": {
+        "initiator": {
+          "politicalSupport": 6,
+          "publicUtility": 4,
+          "techProgress": -2
+        },
+        "target": {
+          "politicalSupport": 6,
+          "publicUtility": 4,
+          "techProgress": -2
+        },
+        "trust": 10
+      },
+      "reject": {
+        "initiator": {
+          "politicalSupport": -2
+        },
+        "target": {},
+        "trust": -3
+      }
+    }
+  },
+  {
+    "id": "data_sharing",
+    "label": "Data-Sharing Agreement",
+    "category": "cooperation",
+    "requiresConsent": true,
+    "covert": false,
+    "description": "Share datasets to accelerate research. Strong tech boost but raises security exposure for both.",
+    "discussionPrompt": "What is the security cost of the data you are about to share?",
+    "educationalNote": "Data sharing compounds research value but widens the attack and leakage surface.",
+    "effects": {
+      "accept": {
+        "initiator": {
+          "techProgress": 6,
+          "talent": 4,
+          "supplyChain": -4
+        },
+        "target": {
+          "techProgress": 6,
+          "talent": 4,
+          "supplyChain": -4
+        },
+        "trust": 8
+      },
+      "reject": {
+        "initiator": {},
+        "target": {},
+        "trust": -2
+      }
+    }
+  },
+  {
+    "id": "energy_grid",
+    "label": "Energy-Grid Cooperation",
+    "category": "cooperation",
+    "requiresConsent": true,
+    "covert": false,
+    "description": "Interconnect grids to share power. Improves energy stability but couples energy security.",
+    "discussionPrompt": "Is shared energy a bond of trust or a future point of leverage?",
+    "educationalNote": "Grid interconnection improves efficiency yet creates mutual dependence.",
+    "effects": {
+      "accept": {
+        "initiator": {
+          "energy": 7,
+          "environment": 2,
+          "supplyChain": -3
+        },
+        "target": {
+          "energy": 7,
+          "environment": 2,
+          "supplyChain": -3
+        },
+        "trust": 9
+      },
+      "reject": {
+        "initiator": {},
+        "target": {},
+        "trust": -2
+      }
+    }
+  },
+  {
+    "id": "supply_backup",
+    "label": "Supply-Chain Backup Agreement",
+    "category": "cooperation",
+    "requiresConsent": true,
+    "covert": false,
+    "description": "Guarantee each other backup supply during shocks. Costs reserves now, buys resilience later.",
+    "discussionPrompt": "Will the guarantee hold when a real shortage tests it?",
+    "educationalNote": "Mutual-aid supply pacts are only as strong as the political will during a crisis.",
+    "effects": {
+      "accept": {
+        "initiator": {
+          "supplyChain": 7,
+          "treasury": -3
+        },
+        "target": {
+          "supplyChain": 7,
+          "treasury": -3
+        },
+        "trust": 9
+      },
+      "reject": {
+        "initiator": {},
+        "target": {},
+        "trust": -2
+      }
+    }
+  },
+  {
+    "id": "tech_alliance",
+    "label": "Strategic Technology Alliance",
+    "category": "cooperation",
+    "requiresConsent": true,
+    "covert": false,
+    "description": "Form a deep strategic alliance in your domain. Powerful combined gains but binds your foreign policy.",
+    "discussionPrompt": "What independence are you trading for the strength of an alliance?",
+    "educationalNote": "Alliances multiply capability while reducing each member's freedom of action.",
+    "effects": {
+      "accept": {
+        "initiator": {
+          "techProgress": 5,
+          "politicalSupport": 5,
+          "supplyChain": 4,
+          "talent": -2
+        },
+        "target": {
+          "techProgress": 5,
+          "politicalSupport": 5,
+          "supplyChain": 4,
+          "talent": -2
+        },
+        "trust": 14
+      },
+      "reject": {
+        "initiator": {
+          "politicalSupport": -2
+        },
+        "target": {},
+        "trust": -5
+      }
+    }
+  },
+  {
+    "id": "crisis_treaty",
+    "label": "Crisis-Response Treaty",
+    "category": "cooperation",
+    "requiresConsent": true,
+    "covert": false,
+    "description": "Pre-commit to coordinate during global crises. Cheap now, builds collective resilience for global events.",
+    "discussionPrompt": "Will you honor the treaty when honoring it is costly?",
+    "educationalNote": "Pre-arranged cooperation dramatically improves outcomes when global shocks hit.",
+    "effects": {
+      "accept": {
+        "initiator": {
+          "politicalSupport": 4,
+          "supplyChain": 5
+        },
+        "target": {
+          "politicalSupport": 4,
+          "supplyChain": 5
+        },
+        "trust": 10
+      },
+      "reject": {
+        "initiator": {},
+        "target": {},
+        "trust": -2
+      }
+    }
+  },
+  {
+    "id": "export_exemption",
+    "label": "Mutual Export-Control Exemption",
+    "category": "cooperation",
+    "requiresConsent": true,
+    "covert": false,
+    "description": "Exempt each other from your export controls. Boosts trade and tech but lowers security screening.",
+    "discussionPrompt": "Does trusting a partner with sensitive exports invite leakage to third parties?",
+    "educationalNote": "Trusted-partner exemptions ease friction but can become a backdoor for diversion.",
+    "effects": {
+      "accept": {
+        "initiator": {
+          "treasury": 5,
+          "techProgress": 3,
+          "supplyChain": 0
+        },
+        "target": {
+          "treasury": 5,
+          "techProgress": 3,
+          "supplyChain": 0
+        },
+        "trust": 8
+      },
+      "reject": {
+        "initiator": {},
+        "target": {},
+        "trust": -3
+      }
+    }
+  },
+  {
+    "id": "tech_transfer",
+    "label": "Technology Transfer Request",
+    "category": "cooperation",
+    "requiresConsent": true,
+    "covert": false,
+    "description": "Ask a partner to transfer key technology to you. The giver gains reputation and trust but loses some edge.",
+    "discussionPrompt": "Why would a leader voluntarily narrow its own lead?",
+    "educationalNote": "Tech transfer can buy lasting goodwill or hollow out a hard-won advantage.",
+    "effects": {
+      "accept": {
+        "initiator": {
+          "techProgress": 8,
+          "politicalSupport": 2
+        },
+        "target": {
+          "techProgress": -3,
+          "politicalSupport": 6,
+          "treasury": 4
+        },
+        "trust": 9
+      },
+      "reject": {
+        "initiator": {
+          "politicalSupport": -2
+        },
+        "target": {
+          "politicalSupport": -2
+        },
+        "trust": -4
+      }
+    }
+  },
+  {
+    "id": "joint_standard",
+    "label": "Joint Technical Standard",
+    "category": "cooperation",
+    "requiresConsent": true,
+    "covert": false,
+    "description": "Co-author an interoperability standard for your domain. Locks in influence and supply-chain ties.",
+    "discussionPrompt": "Whoever writes the standard shapes the market — is this partnership or capture?",
+    "educationalNote": "Standard-setting is a quiet but decisive form of technological power.",
+    "effects": {
+      "accept": {
+        "initiator": {
+          "techProgress": 4,
+          "supplyChain": 4,
+          "politicalSupport": 4
+        },
+        "target": {
+          "techProgress": 4,
+          "supplyChain": 4,
+          "politicalSupport": 4
+        },
+        "trust": 9
+      },
+      "reject": {
+        "initiator": {},
+        "target": {},
+        "trust": -2
+      }
+    }
+  },
+  {
+    "id": "export_restriction",
+    "label": "Targeted Export Restriction",
+    "category": "coercion",
+    "requiresConsent": false,
+    "covert": false,
+    "description": "Unilaterally restrict critical exports to the target. Hurts them now but damages your reputation and invites retaliation.",
+    "discussionPrompt": "Does denial slow a rival or just accelerate their self-sufficiency?",
+    "educationalNote": "Export controls are powerful but erode trust and spur rivals to de-risk.",
+    "effects": {
+      "unilateral": {
+        "initiator": {
+          "politicalSupport": -6,
+          "supplyChain": 3
+        },
+        "target": {
+          "techProgress": -6,
+          "supplyChain": -5
+        },
+        "trust": -12
+      },
+      "retaliate": {
+        "initiator": {
+          "supplyChain": -4,
+          "treasury": -4
+        },
+        "target": {
+          "treasury": -3
+        },
+        "trust": -4
+      }
+    }
+  },
+  {
+    "id": "protection_law",
+    "label": "Technology Protection Law",
+    "category": "coercion",
+    "requiresConsent": false,
+    "covert": false,
+    "description": "Pass a sweeping law shielding your domain from foreign acquisition. Protects you, signals distrust to all.",
+    "discussionPrompt": "Where is the line between prudent protection and economic isolationism?",
+    "educationalNote": "Defensive screening guards crown jewels but can chill the investment you need.",
+    "effects": {
+      "unilateral": {
+        "initiator": {
+          "supplyChain": 9,
+          "talent": -5,
+          "politicalSupport": -3
+        },
+        "target": {
+          "politicalSupport": 0
+        },
+        "trust": -4
+      }
+    }
+  },
+  {
+    "id": "accusation",
+    "label": "Accusation / Diplomatic Protest",
+    "category": "coercion",
+    "requiresConsent": false,
+    "covert": false,
+    "description": "Publicly accuse the target of unfair behavior. May be justified, but raises tension and can backfire.",
+    "discussionPrompt": "Is public accusation accountability or grandstanding?",
+    "educationalNote": "Naming-and-shaming can enforce norms or escalate a spiral of grievance.",
+    "effects": {
+      "unilateral": {
+        "initiator": {
+          "politicalSupport": 2
+        },
+        "target": {
+          "politicalSupport": -5,
+          "publicUtility": -3
+        },
+        "trust": -8
+      },
+      "retaliate": {
+        "initiator": {
+          "politicalSupport": -3
+        },
+        "target": {
+          "politicalSupport": 3
+        },
+        "trust": -4
+      }
+    }
+  },
+  {
+    "id": "break_agreement",
+    "label": "Break an Agreement",
+    "category": "coercion",
+    "requiresConsent": false,
+    "covert": false,
+    "description": "Unilaterally withdraw from a prior pact for short-term advantage. Big trust and reputation cost.",
+    "discussionPrompt": "What is your word worth once you have broken it for gain?",
+    "educationalNote": "Defection pays once; the reputational cost is paid in every future negotiation.",
+    "effects": {
+      "unilateral": {
+        "initiator": {
+          "treasury": 5,
+          "techProgress": 3,
+          "politicalSupport": -8
+        },
+        "target": {
+          "techProgress": -4,
+          "politicalSupport": 2
+        },
+        "trust": -16
+      }
+    }
+  },
+  {
+    "id": "covert_acquisition",
+    "label": "Covert Technology Acquisition",
+    "category": "covert",
+    "requiresConsent": false,
+    "covert": true,
+    "description": "Secretly attempt to acquire the target's technology. May leap your progress forward — or be exposed at great cost.",
+    "discussionPrompt": "What does a society lose when its engineers normalize theft as strategy?",
+    "educationalNote": "Industrial espionage can shortcut R&D but, if exposed, devastates trust and reputation.",
+    "successChance": 0.55,
+    "discoveryChance": 0.5,
+    "effects": {
+      "covertSuccess": {
+        "initiator": {
+          "techProgress": 9,
+          "supplyChain": 2
+        },
+        "target": {
+          "techProgress": -3
+        },
+        "trust": 0
+      },
+      "covertCaught": {
+        "initiator": {
+          "politicalSupport": -12,
+          "publicUtility": -4
+        },
+        "target": {
+          "politicalSupport": 3,
+          "supplyChain": 2
+        },
+        "trust": -18
+      }
+    }
+  },
+  {
+    "id": "talent_poach",
+    "label": "Aggressive Talent Poaching",
+    "category": "covert",
+    "requiresConsent": false,
+    "covert": true,
+    "description": "Covertly lure away the target's key researchers with extraordinary offers. Effective but seen as predatory if exposed.",
+    "discussionPrompt": "Is recruiting talent fair competition or strategic sabotage?",
+    "educationalNote": "Talent raids can transfer tacit capability faster than any tech transfer.",
+    "successChance": 0.65,
+    "discoveryChance": 0.45,
+    "effects": {
+      "covertSuccess": {
+        "initiator": {
+          "talent": 8,
+          "techProgress": 4,
+          "treasury": -4
+        },
+        "target": {
+          "talent": -6,
+          "techProgress": -2
+        },
+        "trust": -3
+      },
+      "covertCaught": {
+        "initiator": {
+          "politicalSupport": -8,
+          "treasury": -4
+        },
+        "target": {
+          "talent": -4,
+          "politicalSupport": 3
+        },
+        "trust": -12
+      }
+    }
+  },
+  {
+    "id": "cyber_probe",
+    "label": "Covert Cyber Intrusion",
+    "category": "covert",
+    "requiresConsent": false,
+    "covert": true,
+    "description": "Secretly penetrate the target's networks to map or exfiltrate. High risk of detection and escalation.",
+    "discussionPrompt": "Where is the threshold between espionage and an act of aggression in cyberspace?",
+    "educationalNote": "Cyber operations are deniable until they aren't; attribution turns them into crises.",
+    "successChance": 0.5,
+    "discoveryChance": 0.55,
+    "effects": {
+      "covertSuccess": {
+        "initiator": {
+          "techProgress": 5,
+          "supplyChain": 4
+        },
+        "target": {
+          "supplyChain": -5
+        },
+        "trust": -2
+      },
+      "covertCaught": {
+        "initiator": {
+          "politicalSupport": -10,
+          "supplyChain": -3
+        },
+        "target": {
+          "supplyChain": -3,
+          "politicalSupport": 5
+        },
+        "trust": -16
+      }
+    }
+  },
+  {
+    "id": "multilateral_treaty",
+    "label": "Multilateral Treaty Proposal",
+    "category": "cooperation",
+    "requiresConsent": true,
+    "covert": false,
+    "multilateral": true,
+    "description": "Propose a treaty binding all teams who accept (e.g. shared safety, non-aggression, or crisis pooling). Each team chooses in.",
+    "discussionPrompt": "Can a treaty hold without the participation of every major player?",
+    "educationalNote": "Multilateral regimes are stronger but harder to form; holdouts can undermine them.",
+    "effects": {
+      "accept": {
+        "initiator": {
+          "politicalSupport": 5,
+          "supplyChain": 5
+        },
+        "target": {
+          "politicalSupport": 5,
+          "supplyChain": 5
+        },
+        "trust": 8
+      },
+      "reject": {
+        "initiator": {},
+        "target": {},
+        "trust": -1
+      }
+    }
+  }
+]

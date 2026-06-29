@@ -1,0 +1,609 @@
+[
+  {
+    "id": "financial_crisis",
+    "type": "global",
+    "title": "Global Financial Crisis",
+    "severity": 3,
+    "narrative": "Credit markets seize up worldwide. Capital flees risky tech bets and treasuries strain.",
+    "tags": [
+      "economy"
+    ],
+    "discussionPrompt": "Who is most exposed when global capital suddenly retreats?",
+    "educationalNote": "Financial shocks hit highly leveraged, trade-dependent innovation systems hardest.",
+    "base": {
+      "treasury": -8,
+      "techProgress": -2
+    },
+    "modifiers": [
+      {
+        "when": "statBelow",
+        "stat": "supplyChain",
+        "value": 40,
+        "effects": {
+          "treasury": -4
+        }
+      },
+      {
+        "when": "statAbove",
+        "stat": "politicalSupport",
+        "value": 60,
+        "effects": {
+          "treasury": 4
+        }
+      }
+    ]
+  },
+  {
+    "id": "ai_breakthrough",
+    "type": "global",
+    "title": "Sudden AI Breakthrough",
+    "severity": 2,
+    "narrative": "A leap in model efficiency resets expectations overnight. The race intensifies for everyone.",
+    "tags": [
+      "ai",
+      "technology"
+    ],
+    "discussionPrompt": "Does a breakthrough lift all boats or widen the gap to the leader?",
+    "educationalNote": "General-purpose breakthroughs reshape every adjacent domain, not just their own.",
+    "base": {
+      "techProgress": 2
+    },
+    "domainEffects": {
+      "ai": {
+        "techProgress": 8,
+        "energy": -4
+      },
+      "robotics": {
+        "techProgress": 4
+      },
+      "cyber": {
+        "techProgress": 3
+      }
+    },
+    "modifiers": [
+      {
+        "when": "statBelow",
+        "stat": "energy",
+        "value": 25,
+        "effects": {
+          "techProgress": -4
+        }
+      }
+    ]
+  },
+  {
+    "id": "military_escalation",
+    "type": "global",
+    "title": "Regional Military Escalation",
+    "severity": 3,
+    "narrative": "A flashpoint erupts into open military confrontation, rattling markets and alliances.",
+    "tags": [
+      "security"
+    ],
+    "discussionPrompt": "Does crisis pull nations toward cooperation or toward armed self-reliance?",
+    "educationalNote": "Security shocks reward prior alliance-building and punish isolation.",
+    "base": {
+      "supplyChain": -4,
+      "treasury": -3,
+      "publicUtility": -3
+    },
+    "modifiers": [
+      {
+        "when": "statAbove",
+        "stat": "supplyChain",
+        "value": 65,
+        "effects": {
+          "supplyChain": 3,
+          "politicalSupport": 3
+        }
+      },
+      {
+        "when": "statBelow",
+        "stat": "politicalSupport",
+        "value": 30,
+        "effects": {
+          "supplyChain": -4
+        }
+      }
+    ]
+  },
+  {
+    "id": "regime_change",
+    "type": "global",
+    "title": "Regime Change in a Major Power",
+    "severity": 2,
+    "narrative": "Leadership upheaval in a major power scrambles existing technology agreements and norms.",
+    "tags": [
+      "politics"
+    ],
+    "discussionPrompt": "How fragile are technology agreements that depend on specific leaders?",
+    "educationalNote": "Tech policy continuity is hostage to political cycles in partner states.",
+    "base": {
+      "politicalSupport": -5
+    },
+    "modifiers": [
+      {
+        "when": "statAbove",
+        "stat": "politicalSupport",
+        "value": 60,
+        "effects": {
+          "politicalSupport": 4
+        }
+      },
+      {
+        "when": "statBelow",
+        "stat": "publicUtility",
+        "value": 30,
+        "effects": {
+          "politicalSupport": -4
+        }
+      }
+    ]
+  },
+  {
+    "id": "energy_shock",
+    "type": "global",
+    "title": "Global Energy Price Shock",
+    "severity": 3,
+    "narrative": "Energy prices spike sharply. Importers scramble while energy-secure states gain leverage.",
+    "tags": [
+      "energy"
+    ],
+    "discussionPrompt": "How does energy dependence translate into strategic vulnerability?",
+    "educationalNote": "Energy shocks reprice every energy-intensive technology overnight.",
+    "base": {
+      "energy": -5,
+      "treasury": -4
+    },
+    "domainEffects": {
+      "energy": {
+        "treasury": 6,
+        "politicalSupport": 4
+      }
+    },
+    "modifiers": [
+      {
+        "when": "statBelow",
+        "stat": "energy",
+        "value": 30,
+        "effects": {
+          "techProgress": -5,
+          "publicUtility": -4
+        }
+      },
+      {
+        "when": "statAbove",
+        "stat": "energy",
+        "value": 65,
+        "effects": {
+          "treasury": 5
+        }
+      }
+    ]
+  },
+  {
+    "id": "climate_disaster",
+    "type": "global",
+    "title": "Major Climate Disaster",
+    "severity": 3,
+    "narrative": "An extreme climate event devastates infrastructure and forces emergency spending across regions.",
+    "tags": [
+      "climate"
+    ],
+    "discussionPrompt": "Did environmental neglect in earlier rounds raise the bill now?",
+    "educationalNote": "Environmental shocks expose the delayed cost of prior environmental tradeoffs.",
+    "base": {
+      "publicUtility": -5,
+      "treasury": -4,
+      "environment": -2
+    },
+    "domainEffects": {
+      "climate": {
+        "politicalSupport": 6,
+        "techProgress": 4
+      }
+    },
+    "modifiers": [
+      {
+        "when": "statBelow",
+        "stat": "environment",
+        "value": 35,
+        "effects": {
+          "publicUtility": -5,
+          "politicalSupport": -4
+        }
+      },
+      {
+        "when": "statAbove",
+        "stat": "environment",
+        "value": 65,
+        "effects": {
+          "politicalSupport": 4
+        }
+      }
+    ]
+  },
+  {
+    "id": "semi_collapse",
+    "type": "global",
+    "title": "Semiconductor Supply-Chain Collapse",
+    "severity": 3,
+    "narrative": "A chokepoint failure halts advanced-chip supply, freezing production lines worldwide.",
+    "tags": [
+      "semiconductors",
+      "supply"
+    ],
+    "discussionPrompt": "How concentrated did the world let this chokepoint become?",
+    "educationalNote": "Extreme supply concentration turns one failure into a systemic crisis.",
+    "base": {
+      "supplyChain": -6,
+      "techProgress": -3
+    },
+    "domainEffects": {
+      "semiconductors": {
+        "treasury": 6,
+        "politicalSupport": 5,
+        "supplyChain": 4
+      },
+      "materials": {
+        "supplyChain": 3
+      }
+    },
+    "modifiers": [
+      {
+        "when": "statBelow",
+        "stat": "supplyChain",
+        "value": 35,
+        "effects": {
+          "techProgress": -4,
+          "treasury": -3
+        }
+      }
+    ]
+  },
+  {
+    "id": "fusion_breakthrough",
+    "type": "global",
+    "title": "Fusion / Storage Breakthrough",
+    "severity": 1,
+    "narrative": "A breakthrough in fusion or grid-scale storage promises abundant clean power within a decade.",
+    "tags": [
+      "energy",
+      "technology"
+    ],
+    "discussionPrompt": "Who captures the gains of a breakthrough — the inventor or the fast adopter?",
+    "educationalNote": "Energy abundance would loosen the binding constraint on AI, space and industry.",
+    "base": {
+      "energy": 4,
+      "environment": 2
+    },
+    "domainEffects": {
+      "energy": {
+        "techProgress": 8,
+        "politicalSupport": 6,
+        "treasury": 5
+      },
+      "ai": {
+        "energy": 4
+      },
+      "climate": {
+        "environment": 5
+      }
+    }
+  },
+  {
+    "id": "cyberattack",
+    "type": "global",
+    "title": "Massive Cyberattack Wave",
+    "severity": 3,
+    "narrative": "A coordinated cyberattack cascades across critical infrastructure globally.",
+    "tags": [
+      "cyber",
+      "security"
+    ],
+    "discussionPrompt": "Did prior openness or neglect leave you exposed today?",
+    "educationalNote": "Cyber resilience is invisible until the moment it fails publicly.",
+    "base": {
+      "supplyChain": -5,
+      "publicUtility": -3,
+      "treasury": -2
+    },
+    "domainEffects": {
+      "cyber": {
+        "politicalSupport": 6,
+        "treasury": 4,
+        "techProgress": 3
+      }
+    },
+    "modifiers": [
+      {
+        "when": "statBelow",
+        "stat": "supplyChain",
+        "value": 35,
+        "effects": {
+          "supplyChain": -5,
+          "publicUtility": -4,
+          "treasury": -4
+        }
+      },
+      {
+        "when": "statAbove",
+        "stat": "supplyChain",
+        "value": 65,
+        "effects": {
+          "politicalSupport": 4
+        }
+      }
+    ]
+  },
+  {
+    "id": "debris_cascade",
+    "type": "global",
+    "title": "Space Debris Cascade",
+    "severity": 2,
+    "narrative": "A collision triggers a debris cascade, threatening satellites and orbital access for all.",
+    "tags": [
+      "space"
+    ],
+    "discussionPrompt": "Who pays to clean an orbit everyone polluted?",
+    "educationalNote": "The Kessler cascade is the canonical commons failure of the space age.",
+    "base": {
+      "techProgress": -2,
+      "supplyChain": -2
+    },
+    "domainEffects": {
+      "space": {
+        "techProgress": -6,
+        "treasury": -4,
+        "politicalSupport": 4
+      }
+    },
+    "modifiers": [
+      {
+        "when": "statAbove",
+        "stat": "environment",
+        "value": 60,
+        "effects": {
+          "politicalSupport": 3
+        }
+      }
+    ]
+  },
+  {
+    "id": "new_treaty",
+    "type": "global",
+    "title": "New International Technology Treaty",
+    "severity": 1,
+    "narrative": "A landmark treaty offers rule-of-the-road governance for frontier technology. Open systems benefit; closed ones feel pressure.",
+    "tags": [
+      "governance"
+    ],
+    "discussionPrompt": "Do shared rules constrain the strong or empower the rule-followers?",
+    "educationalNote": "International regimes reward states already aligned with openness and reputation.",
+    "base": {
+      "politicalSupport": 2
+    },
+    "modifiers": [
+      {
+        "when": "statAbove",
+        "stat": "talent",
+        "value": 55,
+        "effects": {
+          "politicalSupport": 5,
+          "techProgress": 3
+        }
+      },
+      {
+        "when": "statBelow",
+        "stat": "talent",
+        "value": 30,
+        "effects": {
+          "politicalSupport": -5,
+          "treasury": -3
+        }
+      }
+    ]
+  },
+  {
+    "id": "tech_backlash",
+    "type": "global",
+    "title": "Public Backlash Against Dangerous Tech",
+    "severity": 2,
+    "narrative": "A high-profile incident triggers global public fear of frontier technology and its builders.",
+    "tags": [
+      "society"
+    ],
+    "discussionPrompt": "Did the race for progress outrun public consent?",
+    "educationalNote": "When technical progress outpaces public understanding, legitimacy collapses fast.",
+    "base": {
+      "publicUtility": -4
+    },
+    "modifiers": [
+      {
+        "when": "statAbove",
+        "stat": "techProgress",
+        "value": 70,
+        "effects": {
+          "publicUtility": -5,
+          "politicalSupport": -4
+        }
+      },
+      {
+        "when": "statAbove",
+        "stat": "publicUtility",
+        "value": 60,
+        "effects": {
+          "publicUtility": 3
+        }
+      }
+    ]
+  },
+  {
+    "id": "talent_wave",
+    "type": "global",
+    "title": "Global Talent Migration Wave",
+    "severity": 1,
+    "narrative": "A wave of skilled researchers seeks new homes. Open, attractive systems gain; closed ones bleed.",
+    "tags": [
+      "talent"
+    ],
+    "discussionPrompt": "What makes a place where the world's best want to work?",
+    "educationalNote": "Talent flows toward openness, opportunity and trust — and away from coercion.",
+    "base": {},
+    "modifiers": [
+      {
+        "when": "statAbove",
+        "stat": "talent",
+        "value": 55,
+        "effects": {
+          "talent": 6,
+          "techProgress": 3
+        }
+      },
+      {
+        "when": "statBelow",
+        "stat": "talent",
+        "value": 30,
+        "effects": {
+          "talent": -6
+        }
+      },
+      {
+        "when": "statBelow",
+        "stat": "publicUtility",
+        "value": 30,
+        "effects": {
+          "talent": -3
+        }
+      }
+    ]
+  },
+  {
+    "id": "pandemic",
+    "type": "global",
+    "title": "Global Health Emergency",
+    "severity": 3,
+    "narrative": "A fast-spreading pathogen strains health systems and economies everywhere.",
+    "tags": [
+      "biotech",
+      "society"
+    ],
+    "discussionPrompt": "Does crisis reward those who invested in resilience and trust beforehand?",
+    "educationalNote": "Health emergencies test public trust, biotech capacity and welfare investment at once.",
+    "base": {
+      "publicUtility": -5,
+      "treasury": -4
+    },
+    "domainEffects": {
+      "biotech": {
+        "politicalSupport": 6,
+        "techProgress": 5,
+        "treasury": 4
+      }
+    },
+    "modifiers": [
+      {
+        "when": "statBelow",
+        "stat": "publicUtility",
+        "value": 30,
+        "effects": {
+          "publicUtility": -4,
+          "politicalSupport": -4
+        }
+      },
+      {
+        "when": "statAbove",
+        "stat": "publicUtility",
+        "value": 60,
+        "effects": {
+          "politicalSupport": 3
+        }
+      }
+    ]
+  },
+  {
+    "id": "resource_nationalism",
+    "type": "global",
+    "title": "Critical-Materials Resource War",
+    "severity": 2,
+    "narrative": "Major suppliers weaponize critical minerals, fracturing global materials markets.",
+    "tags": [
+      "materials",
+      "supply"
+    ],
+    "discussionPrompt": "How quickly can dependence be unwound once it is weaponized?",
+    "educationalNote": "Resource nationalism rewards stockpiles and diversified, resilient supply chains.",
+    "base": {
+      "supplyChain": -5,
+      "treasury": -3
+    },
+    "domainEffects": {
+      "materials": {
+        "treasury": 6,
+        "politicalSupport": 4,
+        "supplyChain": 3
+      }
+    },
+    "modifiers": [
+      {
+        "when": "statAbove",
+        "stat": "supplyChain",
+        "value": 65,
+        "effects": {
+          "treasury": 5,
+          "politicalSupport": 3
+        }
+      },
+      {
+        "when": "statBelow",
+        "stat": "supplyChain",
+        "value": 30,
+        "effects": {
+          "techProgress": -4
+        }
+      }
+    ]
+  },
+  {
+    "id": "quantum_break",
+    "type": "global",
+    "title": "Quantum Cryptography Break",
+    "severity": 3,
+    "narrative": "A quantum advance renders legacy encryption breakable. Secrets everywhere are suddenly at risk.",
+    "tags": [
+      "quantum",
+      "cyber"
+    ],
+    "discussionPrompt": "Who prepared for the day the math stopped protecting them?",
+    "educationalNote": "Cryptographic transitions punish the unprepared and reward early migrators.",
+    "base": {
+      "supplyChain": -5
+    },
+    "domainEffects": {
+      "quantum": {
+        "techProgress": 8,
+        "politicalSupport": 5,
+        "supplyChain": 4
+      }
+    },
+    "modifiers": [
+      {
+        "when": "statBelow",
+        "stat": "supplyChain",
+        "value": 35,
+        "effects": {
+          "supplyChain": -5,
+          "treasury": -4
+        }
+      },
+      {
+        "when": "statAbove",
+        "stat": "supplyChain",
+        "value": 65,
+        "effects": {
+          "politicalSupport": 3
+        }
+      }
+    ]
+  }
+]

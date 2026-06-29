@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tech Race — Projector</title>
+<link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body class="projector">
+<div class="topbar">
+  <div class="brand">TECH&nbsp;RACE</div>
+  <div class="spacer"></div>
+  <span class="pill"><span class="timer-display idle" id="timerPill">⏱ —</span></span>
+  <span class="pill" id="phasePill">—</span>
+  <span class="pill">Global Cooperation <b id="coopIdx">—</b></span>
+</div>
+
+<div class="wrap">
+  <div id="globalBox"></div>
+  <div id="spotBox"></div>
+
+  <div class="card-panel" id="summaryBox" style="display:none;margin-bottom:18px"></div>
+
+  <div class="card-panel">
+    <h2 id="boardTitle">Innovation Systems</h2>
+    <div class="teamgrid" id="board"></div>
+  </div>
+
+  <div class="card-panel" id="graphPanel" style="margin-top:18px">
+    <h2>Cooperation Network <span class="muted small">— mutual trust between systems</span></h2>
+    <div class="grid" style="grid-template-columns:1.4fr 1fr;align-items:center">
+      <div style="display:flex;justify-content:center">
+        <svg class="graph" id="trustGraph" style="max-width:440px"></svg>
+      </div>
+      <div class="muted small">
+        Each line is the mutual trust between two teams (0–100).
+        <span style="color:#36c98a">Green</span> links are strong alliances;
+        <span style="color:#ef5b6b">red</span> links are fractured relationships heading toward conflict.
+        Cooperation, treaties and kept promises raise trust; coercion, broken deals and exposed espionage destroy it.
+      </div>
+    </div>
+  </div>
+
+  <div id="debriefBox"></div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/common.js"></script>
+<script src="/js/screen.js"></script>
+</body>
+</html>

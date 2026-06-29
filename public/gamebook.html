@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Game Book — Tech Race</title>
+<link rel="stylesheet" href="/css/styles.css" />
+<style>
+  .book { max-width: 900px; margin: 0 auto; }
+  .book h2 { margin-top: 8px; color: var(--accent); }
+  .book h3 { margin-top: 18px; }
+  .book section { margin-bottom: 6px; }
+  .book table { width:100%; border-collapse:collapse; font-size:.9rem; margin:10px 0; }
+  .book td, .book th { border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top; }
+  .book th { background:var(--panel2); color:var(--muted); }
+  .toc a { display:inline-block; margin:3px 10px 3px 0; }
+  ul { margin: 6px 0 6px 0; }
+  .ex { background:linear-gradient(180deg,#1e2950,#161f3c); border:1px solid var(--line); border-radius:12px; padding:16px; margin:12px 0; }
+  @media print { .topbar { display:none; } body { background:#fff; color:#000; } .card-panel{box-shadow:none;} }
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="brand">TECH&nbsp;RACE <small>· Game Book</small></div>
+  <div class="spacer"></div>
+  <a class="pill" href="/">← Home</a>
+  <button class="btn small" onclick="window.print()">🖨 Print</button>
+</div>
+
+<div class="wrap book">
+  <div class="card-panel">
+    <h1>Tech Race: International Cooperation &amp; Competition</h1>
+    <p class="muted">A serious decision-card simulation of technology policy, diplomacy and global competition,
+    designed for facilitated conference play with five teams over roughly two hours.</p>
+    <div class="toc">
+      <b>Contents:</b>
+      <a href="#purpose">Purpose</a><a href="#story">Story</a><a href="#teams">Teams</a>
+      <a href="#domains">Domains</a><a href="#vars">State Variables</a><a href="#loop">The Round</a>
+      <a href="#intl">International System</a><a href="#global">Global Events</a>
+      <a href="#scoring">Scoring</a><a href="#schedule">2-Hour Schedule</a>
+      <a href="#examples">Example Cards</a><a href="#debrief">Debrief</a>
+    </div>
+  </div>
+
+  <div class="card-panel" id="purpose">
+    <h2>1 · Purpose</h2>
+    <p>Tech Race exists to make future engineers wrestle with the questions their careers will actually pose:</p>
+    <ul>
+      <li>How should engineers act when technology becomes a geopolitical instrument?</li>
+      <li>How do we balance innovation, openness, national security, public welfare, energy and the environment?</li>
+      <li>When should nations cooperate, compete, protect, share, or restrict?</li>
+      <li>What happens when technical progress outruns laws, institutions and public understanding?</li>
+    </ul>
+    <p>It is not a quiz with right answers. It is a structured argument generator: every card forces a tradeoff,
+    and the debrief is where the real learning happens.</p>
+  </div>
+
+  <div class="card-panel" id="story">
+    <h2>2 · Story</h2>
+    <p>The world has entered an age of accelerating technological competition. Five innovation systems — each a
+    university team representing a national or regional model — must steer themselves through it. They make
+    domestic policy, negotiate (and sometimes betray) one another internationally, and weather global shocks
+    that arrive without warning. No one can win by tech alone: a system that races ahead while gutting its
+    welfare, poisoning its environment, or burning every alliance will collapse under its own success.</p>
+  </div>
+
+  <div class="card-panel" id="teams">
+    <h2>3 · The Five Systems</h2>
+    <p>Teams are described in neutral policy language, not as caricatures of real states.</p>
+    <table>
+      <tr><th>Team</th><th>Model</th><th>Edge</th><th>Constraint</th></tr>
+      <tr><td><b>UTokyo</b> · Japan</td><td>Advanced manufacturing democracy</td><td>Deep talent, supply chains, reputation</td><td>Energy importer; cautious politics</td></tr>
+      <tr><td><b>NUS</b> · Singapore</td><td>Highly open research ecosystem</td><td>Openness, capital, trust</td><td>Small: thin energy &amp; supply depth</td></tr>
+      <tr><td><b>HKUST</b> · Hong Kong</td><td>Export-sensitive gateway economy</td><td>Capital, logistics agility</td><td>Caught between blocs; volatile security</td></tr>
+      <tr><td><b>SNU-1</b> · Korea-1</td><td>Manufacturing-oriented tech state</td><td>Tech progress, energy, supply chains</td><td>Export dependence; environmental load</td></tr>
+      <tr><td><b>SNU-2</b> · Korea-2</td><td>Security-first closed system</td><td>Security, central control, energy autonomy</td><td>Low reputation, openness, treasury</td></tr>
+    </table>
+    <p class="muted small">SNU-2 represents a closed, security-first governance model in the abstract. It is deliberately
+    <b>not</b> a portrayal of any specific real country.</p>
+  </div>
+
+  <div class="card-panel" id="domains">
+    <h2>4 · Technology Domains</h2>
+    <p>Before play, each team picks one domain to lead. The choice shapes its cards, opportunities and scoring all game.</p>
+    <p>Available: <b>Artificial Intelligence, Space, Semiconductors, Energy Systems, Climate Tech, Quantum,
+    Biotechnology, Robotics, Advanced Materials, Cybersecurity.</b></p>
+    <p>Each domain carries its own dilemmas — AI faces compute, data and surveillance; Space faces launch cost,
+    lunar law and debris; Semiconductors face export controls and chokepoints; Energy faces the grid, nuclear and
+    public acceptance, and so on. Global events also hit your domain specially: an energy team thrives in a fusion
+    breakthrough; a semiconductor team is exposed to a supply-chain collapse.</p>
+  </div>
+
+  <div class="card-panel" id="vars">
+    <h2>5 · State Variables</h2>
+    <p>Each system tracks <b>eight</b> variables (0–100, except Treasury which can go negative into debt):</p>
+    <table>
+      <tr><th>Variable</th><th>Meaning &amp; danger behaviour</th></tr>
+      <tr><td>Treasury</td><td>Money. Below 0 → debt interest each round (−treasury, −political support).</td></tr>
+      <tr><td>Energy / Compute</td><td>Powers AI/space/semis. Below 15 → research stalls (−tech progress).</td></tr>
+      <tr><td>Political Support</td><td>Capacity for bold policy. Below 20 → instability.</td></tr>
+      <tr><td>Public Welfare</td><td>Below 20 → protests (−political support each round).</td></tr>
+      <tr><td>Tech Progress</td><td>Domain leadership. Counts only if welfare/ethics hold up.</td></tr>
+      <tr><td>Sustainability</td><td>Below 25 → delayed welfare crises (−public welfare).</td></tr>
+      <tr><td>Talent Pool</td><td>Drives research. Below 20 → progress slows.</td></tr>
+      <tr><td>Supply Chain</td><td>Resilience to shocks. Below 20 → progress slows.</td></tr>
+    </table>
+    <p>Separately, a hidden <b>trust matrix</b> tracks how much each pair of teams trusts one another (starts at 50).
+    Cooperation, treaties and kept promises raise it; coercion, broken deals and exposed espionage destroy it. Trust
+    powers the diplomacy score and the live <b>cooperation-network graph</b> shown on the projector.</p>
+  </div>
+
+  <div class="card-panel" id="loop">
+    <h2>6 · The Round</h2>
+    <ol>
+      <li><b>Domestic phase.</b> Each team privately receives one policy card and chooses option A or B, recording
+      a short rationale. Effects apply immediately.</li>
+      <li><b>International phase.</b> Each team may make <i>one</i> move toward another team (or all). Targets either
+      <b>accept</b> or <b>decline</b> a proposal; a unilateral hit can be absorbed or <b>retaliated</b> against.</li>
+      <li><b>Global phase.</b> The facilitator reveals a world event that hits everyone — <i>after</i> choices are
+      locked, so teams carry real uncertainty.</li>
+      <li><b>Summary.</b> Threshold penalties resolve, stats settle, and scores plus the cooperation-network graph
+      update on the projector so the room can read each team's status before the next round.</li>
+    </ol>
+    <p>Representatives come to the front during the international phase to explain their choices on the big screen;
+    the facilitator records what they say. The facilitator can run a visible <b>countdown timer</b> for any phase and
+    may <b>end the game at any time</b> — the projector then shows final results and how close each team came to its goal.</p>
+  </div>
+
+  <div class="card-panel" id="intl">
+    <h2>7 · International System</h2>
+    <p>Actions fall into three families:</p>
+    <ul>
+      <li><b>Cooperation</b> (requires consent): research pacts, shared compute, joint missions, talent exchange,
+      safety/standards, data sharing, grid &amp; supply cooperation, alliances, treaties, tech transfer. Both sides
+      gain if accepted; trust rises.</li>
+      <li><b>Coercion</b> (unilateral): export restrictions, protection laws, accusations, breaking agreements.
+      They hurt a rival now but cost you reputation and trust — and invite retaliation.</li>
+      <li><b>Covert</b> (secret, risky): covert acquisition, aggressive poaching, cyber intrusion. They resolve
+      immediately and secretly. They may leap your progress forward — or be exposed, devastating your reputation
+      and trust.</li>
+    </ul>
+    <p>A <b>multilateral treaty</b> is offered to every team at once; each decides individually. Treaties and
+    alliances pay off most when a global crisis later strikes.</p>
+  </div>
+
+  <div class="card-panel" id="global">
+    <h2>8 · Global Events</h2>
+    <p>Sixteen plausible shocks — financial crises, AI and fusion breakthroughs, energy and supply shocks, climate
+    and health disasters, cyberattacks, debris cascades, talent migrations, new treaties, public backlash, a
+    quantum crypto break. Each hits all teams, hits your chosen domain specially, and applies <b>conditional</b>
+    modifiers: the unprepared (low security, low environment, low supply chain, closed systems) suffer more; the
+    resilient and cooperative gain. Earlier neglect comes due here.</p>
+  </div>
+
+  <div class="card-panel" id="scoring">
+    <h2>9 · Scoring</h2>
+    <p>Five sub-scores combine into a composite. The design deliberately punishes "win the tech number, lose
+    everything else."</p>
+    <table>
+      <tr><th>Score</th><th>Built from</th><th>Weight</th></tr>
+      <tr><td>Tech Leadership</td><td>Tech progress + domain-leader bonus</td><td>25%</td></tr>
+      <tr><td>Social Stability</td><td>Public welfare &amp; political support</td><td>20%</td></tr>
+      <tr><td>Diplomacy</td><td>Average trust, cooperation minus coercion &amp; exposed espionage</td><td>20%</td></tr>
+      <tr><td>Ethical Engineering</td><td>Welfare &amp; sustainability, minus coercion &amp; exposed espionage, minus "hollow" tech</td><td>20%</td></tr>
+      <tr><td>Resilience</td><td>Supply chain, talent, energy</td><td>15%</td></tr>
+    </table>
+    <p>A collective <b>Global Cooperation Index</b> (average pairwise trust) measures whether the whole room handled
+    the race constructively or destructively. A high individual score in a low-cooperation world is a warning, not
+    just a victory.</p>
+    <p>Each team also has a <b>goal</b>: become the world leader in its domain while keeping society stable,
+    sustainable, well-resourced and trusted. The debrief shows a per-team checklist and a 0–100% measure of how close
+    each team got.</p>
+  </div>
+
+  <div class="card-panel" id="schedule">
+    <h2>10 · Suggested 2-Hour Schedule</h2>
+    <p>The game defaults to <b>10 rounds</b>; the facilitator sets the count live (1–15) and can <b>end the game at any
+    time</b>. Use the built-in phase timers to keep pace. With 10 rounds, run shorter rounds (~8 min); for richer
+    front-of-room debate, set 5–6 rounds (~12–15 min each).</p>
+    <table>
+      <tr><th>Time</th><th>Activity</th></tr>
+      <tr><td>0:00–0:10</td><td>Introduction &amp; rules</td></tr>
+      <tr><td>0:10–0:20</td><td>Team setup &amp; domain selection</td></tr>
+      <tr><td>0:20–1:40</td><td>Rounds (≈8 min each for 10 rounds, or ~13 min each for 6): decide → present → reveal global → score</td></tr>
+      <tr><td>1:40–1:50</td><td>Final round / final global event</td></tr>
+      <tr><td>1:50–2:00</td><td>Results &amp; reflection (debrief)</td></tr>
+    </table>
+    <p class="muted small">Keep each round moving — the discussion at the front is the point, not optimizing the numbers.</p>
+  </div>
+
+  <div class="card-panel" id="examples">
+    <h2>11 · Example Cards</h2>
+    <div class="ex">
+      <b>Domestic — "Data Centers vs the Grid" (AI)</b>
+      <p class="muted small">AI data centers now consume a tenth of national electricity. Utilities warn of brownouts;
+      households face rising bills. <i>Prioritize compute, or household electricity stability?</i></p>
+      <p class="small">A: Prioritize AI compute → +Tech, −Energy, −Welfare. B: Cap data-center load → −Tech, +Energy, +Welfare.</p>
+    </div>
+    <div class="ex">
+      <b>International — "Covert Technology Acquisition"</b>
+      <p class="muted small">Secretly attempt to acquire a rival's technology. Resolves immediately and secretly.
+      ~55% to succeed (+9 Tech); ~50% to be discovered (heavy political-support loss and a collapse of trust).</p>
+    </div>
+    <div class="ex">
+      <b>Global — "Semiconductor Supply-Chain Collapse"</b>
+      <p class="muted small">A chokepoint failure freezes advanced-chip supply worldwide. All teams: −supply chain, −tech.
+      Semiconductor teams gain leverage; teams with already-weak supply chains suffer extra.</p>
+    </div>
+  </div>
+
+  <div class="card-panel" id="debrief">
+    <h2>12 · Debrief Questions</h2>
+    <ul>
+      <li>Which policies created fast innovation but hidden social, environmental or trust costs?</li>
+      <li>Which teams benefited from cooperation — and who paid for isolation?</li>
+      <li>Did any team buy leadership by sacrificing welfare, energy stability or the planet?</li>
+      <li>Did secrecy protect innovation, or did it isolate and weaken the system?</li>
+      <li>Were you neutral engineers, national strategists, or political actors? When did those roles collide?</li>
+      <li>What should future engineers carry from this simulation into real careers?</li>
+    </ul>
+    <p class="muted">Interpreting results: read the composite alongside the Global Cooperation Index. A polished
+    individual score in a collapsing, low-trust world is exactly the failure mode the game is built to expose.</p>
+  </div>
+</div>
+</body>
+</html>

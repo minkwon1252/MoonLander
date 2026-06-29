@@ -1,0 +1,82 @@
+{
+  "ai": {
+    "id": "ai",
+    "name": "Artificial Intelligence",
+    "blurb": "Compute, data, foundation models, safety, labor displacement, surveillance, and regulation.",
+    "leadStat": "techProgress",
+    "stressStat": "energy",
+    "themes": ["compute", "data", "safety", "labor", "openness", "surveillance", "regulation"]
+  },
+  "space": {
+    "id": "space",
+    "name": "Space Technology",
+    "blurb": "Launch cost, lunar law, satellite infrastructure, military dual-use, debris, and resource extraction.",
+    "leadStat": "techProgress",
+    "stressStat": "treasury",
+    "themes": ["launch", "lunar-law", "satellites", "dual-use", "debris", "resources"]
+  },
+  "semiconductors": {
+    "id": "semiconductors",
+    "name": "Semiconductors",
+    "blurb": "Export controls, fab cost, talent shortage, supply-chain chokepoints, and industrial espionage.",
+    "leadStat": "techProgress",
+    "stressStat": "supplyChain",
+    "themes": ["export-control", "fabs", "talent", "chokepoints", "espionage"]
+  },
+  "energy": {
+    "id": "energy",
+    "name": "Energy Systems",
+    "blurb": "Grid stability, electricity demand, climate policy, nuclear debate, supply chains, public acceptance.",
+    "leadStat": "energy",
+    "stressStat": "environment",
+    "themes": ["grid", "demand", "nuclear", "renewables", "acceptance"]
+  },
+  "climate": {
+    "id": "climate",
+    "name": "Climate Technology",
+    "blurb": "Carbon removal, adaptation, green industry, just transition, and global burden-sharing.",
+    "leadStat": "environment",
+    "stressStat": "treasury",
+    "themes": ["carbon-removal", "adaptation", "transition", "burden-sharing"]
+  },
+  "quantum": {
+    "id": "quantum",
+    "name": "Quantum Technology",
+    "blurb": "Cryptography, sensing, talent scarcity, dual-use risk, and standards races.",
+    "leadStat": "techProgress",
+    "stressStat": "talent",
+    "themes": ["crypto", "sensing", "talent", "dual-use", "standards"]
+  },
+  "biotech": {
+    "id": "biotech",
+    "name": "Biotechnology",
+    "blurb": "Genomic data, biosecurity, drug access, agricultural tech, and bioethics.",
+    "leadStat": "techProgress",
+    "stressStat": "publicTrust",
+    "themes": ["genomics", "biosecurity", "drug-access", "agri", "ethics"]
+  },
+  "robotics": {
+    "id": "robotics",
+    "name": "Robotics & Automation",
+    "blurb": "Industrial automation, labor markets, autonomous weapons, care robots, and safety standards.",
+    "leadStat": "techProgress",
+    "stressStat": "publicUtility",
+    "themes": ["automation", "labor", "autonomous-weapons", "care", "safety"]
+  },
+  "materials": {
+    "id": "materials",
+    "name": "Advanced Materials",
+    "blurb": "Rare earths, battery chemistry, manufacturing scale-up, and supply-chain security.",
+    "leadStat": "supplyChain",
+    "stressStat": "environment",
+    "themes": ["rare-earths", "batteries", "scale-up", "supply-security"]
+  },
+  "cyber": {
+    "id": "cyber",
+    "name": "Cybersecurity",
+    "blurb": "Critical infrastructure defense, offensive capability, disclosure norms, and digital sovereignty.",
+    "leadStat": "security",
+    "stressStat": "researchOpenness",
+    "themes": ["infrastructure", "offense", "disclosure", "sovereignty"]
+  }
+}
