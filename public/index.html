@@ -3,60 +3,64 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Tech Race — International Cooperation & Competition</title>
-<link rel="stylesheet" href="/css/styles.css" />
+<title>Tech Race — International Cooperation &amp; Competition</title>
+<link rel="stylesheet" href="css/game.css" />
 </head>
 <body>
-<div class="topbar">
-  <div class="brand">TECH&nbsp;RACE <small>· Cooperation &amp; Competition</small></div>
-  <div class="spacer"></div>
-  <a class="pill" href="/gamebook.html">📒 Game Book</a>
+<div id="app">
+
+  <header id="topbar">
+    <div class="topbar-brand">
+      <span class="brand-title">TECH RACE</span>
+      <span class="brand-sub">International Cooperation &amp; Competition</span>
+    </div>
+    <div class="topbar-mid">
+      <div class="topbar-stat">
+        <span class="tb-label">Round</span>
+        <span class="tb-value" id="roundNum">—</span>
+        <span class="tb-of">/ <span id="maxRoundNum">6</span></span>
+      </div>
+      <div class="topbar-stat">
+        <span class="tb-label">Phase</span>
+        <span class="tb-value tb-phase" id="phaseLabel">Setup</span>
+      </div>
+      <div class="topbar-stat trust-stat">
+        <span class="tb-label">Global Trust</span>
+        <div class="trust-meter"><div class="trust-fill" id="trustFill" style="width:60%"></div></div>
+        <span class="tb-value" id="trustNum">60</span>
+      </div>
+    </div>
+    <div class="topbar-actions">
+      <a class="tb-btn" href="gamebook.html" target="_blank" rel="noopener">📒 Game Book</a>
+      <button class="tb-btn" id="facilitatorToggle">☰ Facilitator</button>
+    </div>
+  </header>
+
+  <div id="situationBanner" class="situation-banner hidden"></div>
+
+  <main id="teamGrid" class="team-grid"></main>
+
+  <footer id="controlBar" class="control-bar"></footer>
+
+  <div id="guideOverlay" class="overlay"></div>
+  <div id="setupOverlay" class="overlay hidden"></div>
+  <div id="crisisOverlay" class="overlay hidden"></div>
+  <div id="summaryOverlay" class="overlay hidden"></div>
+  <div id="debriefOverlay" class="overlay hidden"></div>
+
+  <aside id="facilitatorPanel" class="facilitator-panel hidden"></aside>
+  <div id="toast" class="toast hidden"></div>
 </div>
 
-<div class="hero">
-  <h1>Tech Race</h1>
-  <p class="sub">A serious, Reigns-style simulation of technology policy, diplomacy and global competition.
-  Five innovation systems balance progress, openness, security, welfare and the planet — and decide when to
-  cooperate and when to compete. Built for live conference facilitation.</p>
-</div>
-
-<div class="wrap">
-  <div class="roles">
-    <a class="role" href="/team.html">
-      <div class="ic">🛰️</div>
-      <h3>Team Console</h3>
-      <p class="muted small">Lead your innovation system. Make domestic policy, send international proposals,
-      record your reasoning. Requires your team PIN.</p>
-    </a>
-    <a class="role" href="/admin.html">
-      <div class="ic">🎛️</div>
-      <h3>Facilitator / Admin</h3>
-      <p class="muted small">Run the session: start, advance phases &amp; rounds, trigger global events,
-      edit stats, record rationales, export logs. Requires admin PIN.</p>
-    </a>
-    <a class="role" href="/screen.html">
-      <div class="ic">📺</div>
-      <h3>Projector Screen</h3>
-      <p class="muted small">The big shared display for the room. Shows all teams, spotlighted decisions,
-      global-event reveals and round summaries.</p>
-    </a>
-    <a class="role" href="/gamebook.html">
-      <div class="ic">📒</div>
-      <h3>Game Book</h3>
-      <p class="muted small">Full rules, state variables, scoring, the 2-hour schedule, example cards and
-      debrief questions. Read before you play.</p>
-    </a>
-  </div>
-
-  <div class="card-panel" style="margin-top:22px">
-    <h2>How a round works</h2>
-    <p class="muted">Each round has three layers. <b>Domestic</b>: every team privately decides one policy card.
-    <b>International</b>: each team may make one move toward another (cooperate, restrict, covertly acquire…).
-    <b>Global</b>: a world event hits everyone <i>after</i> choices are locked in. Then stats update and the
-    round is scored. The winner is not whoever has the highest tech number — it is whoever builds durable,
-    legitimate, well-defended technological leadership.</p>
-  </div>
-</div>
-<script src="/socket.io/socket.io.js"></script>
+<script src="js/data/teams.js"></script>
+<script src="js/data/domains.js"></script>
+<script src="js/data/cards.js"></script>
+<script src="js/data/events.js"></script>
+<script src="js/data/resources.js"></script>
+<script src="js/engine.js"></script>
+<script src="js/roadmap.js"></script>
+<script src="js/export.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/main.js"></script>
 </body>
 </html>

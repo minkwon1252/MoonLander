@@ -3,231 +3,297 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Game Book — Tech Race</title>
-<link rel="stylesheet" href="/css/styles.css" />
+<title>Game Book — Tech Race: International Cooperation &amp; Competition</title>
 <style>
-  .book { max-width: 900px; margin: 0 auto; }
-  .book h2 { margin-top: 8px; color: var(--accent); }
-  .book h3 { margin-top: 18px; }
-  .book section { margin-bottom: 6px; }
-  .book table { width:100%; border-collapse:collapse; font-size:.9rem; margin:10px 0; }
-  .book td, .book th { border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top; }
-  .book th { background:var(--panel2); color:var(--muted); }
-  .toc a { display:inline-block; margin:3px 10px 3px 0; }
-  ul { margin: 6px 0 6px 0; }
-  .ex { background:linear-gradient(180deg,#1e2950,#161f3c); border:1px solid var(--line); border-radius:12px; padding:16px; margin:12px 0; }
-  @media print { .topbar { display:none; } body { background:#fff; color:#000; } .card-panel{box-shadow:none;} }
+  :root { --bg:#0d0f16; --panel:#14162a; --panel2:#1c2033; --line:#262a44; --text:#eef1f8; --muted:#9aa1bd; --accent:#ffd166; --accent2:#6ee7ff; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font-family:'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif; line-height:1.55; }
+  .topbar { position:sticky; top:0; z-index:10; display:flex; align-items:center; gap:14px; padding:12px 22px;
+    background:#0d0f16ee; border-bottom:2px solid var(--line); backdrop-filter: blur(6px); }
+  .topbar .brand { font-weight:800; letter-spacing:.05em; color:var(--accent); }
+  .topbar a, .topbar button { color:var(--text); background:var(--panel2); border:1px solid var(--line); border-radius:8px;
+    padding:6px 12px; text-decoration:none; font-size:.82rem; cursor:pointer; }
+  .wrap { max-width: 920px; margin: 0 auto; padding: 28px 22px 80px; }
+  h1 { font-size:2rem; color:#fff; margin-bottom:4px; }
+  h2 { color: var(--accent); border-bottom:1px solid var(--line); padding-bottom:6px; margin-top:38px; }
+  h3 { color: var(--accent2); margin-top:22px; }
+  .lede { color: var(--muted); font-size:1.05rem; }
+  .callout { background:linear-gradient(160deg,#1e2950,#161f3c); border:1px solid var(--line); border-radius:12px; padding:16px 18px; margin:16px 0; }
+  table { width:100%; border-collapse:collapse; font-size:.9rem; margin:12px 0; }
+  td, th { border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top; }
+  th { background:var(--panel2); color:var(--muted); }
+  ul, ol { margin:8px 0; padding-left:22px; }
+  li { margin-bottom:4px; }
+  .toc { display:flex; flex-wrap:wrap; gap:4px 16px; }
+  .toc a { color: var(--accent2); text-decoration:none; font-size:.9rem; }
+  .card-example { background:var(--panel); border:2px solid var(--line); border-radius:14px; padding:16px 18px; margin:12px 0; }
+  .card-example .ce-title { font-weight:800; color:var(--accent); font-size:1.05rem; }
+  .card-example .ce-opts { display:flex; gap:10px; margin-top:10px; }
+  .card-example .ce-opt { flex:1; background:var(--panel2); border:1px solid var(--line); border-radius:8px; padding:8px 10px; font-size:.85rem; }
+  .pill { display:inline-block; background:var(--panel2); border:1px solid var(--line); border-radius:999px; padding:2px 10px; font-size:.72rem; color:var(--muted); margin-right:6px; }
+  .stat-tag { display:inline-block; padding:2px 8px; border-radius:6px; font-size:.78rem; font-weight:700; margin:2px 4px 2px 0; background:#232848; color:#cfe3ff; }
+  @media print { .topbar { display:none; } body { background:#fff; color:#000; } .callout, .card-example { background:#f5f5f5; color:#000; } th { background:#eee; color:#333; } }
 </style>
 </head>
 <body>
+
 <div class="topbar">
-  <div class="brand">TECH&nbsp;RACE <small>· Game Book</small></div>
-  <div class="spacer"></div>
-  <a class="pill" href="/">← Home</a>
-  <button class="btn small" onclick="window.print()">🖨 Print</button>
+  <span class="brand">TECH RACE</span>
+  <span style="color:var(--muted); font-size:.85rem;">Game Book / Rulebook</span>
+  <span style="flex:1"></span>
+  <a href="index.html">← Back to Game</a>
+  <button onclick="window.print()">🖨 Print</button>
 </div>
 
-<div class="wrap book">
-  <div class="card-panel">
-    <h1>Tech Race: International Cooperation &amp; Competition</h1>
-    <div class="banner info" style="font-size:1rem">
-      🌐 <b>Play online:</b> <a href="https://tech-race.onrender.com">tech-race.onrender.com</a> &nbsp;·&nbsp;
-      Teams → <a href="https://tech-race.onrender.com/team.html">/team.html</a> &nbsp;·&nbsp;
-      Admin → <a href="https://tech-race.onrender.com/admin.html">/admin.html</a> &nbsp;·&nbsp;
-      Big screen → <a href="https://tech-race.onrender.com/screen.html">/screen.html</a><br>
-      <span class="small">Team PINs: UTokyo <b>JPN</b> · NUS <b>SGN</b> · HKUST <b>HKG</b> · SNU-1 <b>ROK</b> · SNU-2 <b>NK</b></span>
+<div class="wrap">
+  <h1>Tech Race: International Cooperation &amp; Competition</h1>
+  <p class="lede">A one-screen, facilitator-run simulation of technology policy, diplomacy and global competition
+  for engineering students. Built for the Selene Program.</p>
+
+  <div class="callout">
+    <b>Format:</b> One laptop, one projector, one shared screen. No logins, no apps to install, no Wi-Fi required.
+    Four teams stand in front of their section of the big screen, argue their case, and the facilitator clicks
+    the decision. <b>~2 hours, 5–6 rounds.</b>
+  </div>
+
+  <div class="toc">
+    <a href="#purpose">Educational purpose</a>
+    <a href="#setup">Setup</a>
+    <a href="#teams">Teams</a>
+    <a href="#goal">Choosing a technology direction</a>
+    <a href="#stats">State variables &amp; thresholds</a>
+    <a href="#balance">Balance, blocking &amp; regression</a>
+    <a href="#roadmap">Roadmaps</a>
+    <a href="#cards">Policy cards</a>
+    <a href="#situations">International &amp; global events</a>
+    <a href="#crisis">Resource conflicts &amp; RPS</a>
+    <a href="#round">Round structure</a>
+    <a href="#winning">How to "win"</a>
+    <a href="#facilitator">Running it as facilitator</a>
+    <a href="#schedule">2-hour schedule</a>
+    <a href="#examples">Example cards</a>
+    <a href="#debrief">Final reflection questions</a>
+  </div>
+
+  <h2 id="purpose">Educational purpose</h2>
+  <p>This is not a game about countries winning a race. It is a game about the responsibility of engineers in
+  an age of technological competition. Every card forces a real tradeoff: more progress often costs money,
+  energy, welfare, or trust. Every decision a team makes on stage is simultaneously a <b>political</b>,
+  <b>economic</b>, <b>diplomatic</b>, <b>ethical</b>, and <b>social</b> decision — and the class should feel that
+  weight, argue about it, and sometimes change their minds mid-round.</p>
+  <p>The facilitated debrief at the end is where the real learning happens: which tradeoffs were unavoidable,
+  which decisions the room disagreed about, and what a "successful" technology strategy actually means.</p>
+
+  <h2 id="setup">Setup</h2>
+  <ol>
+    <li>Connect your laptop to the room's projector or large screen.</li>
+    <li>Open <code>public/index.html</code> in a browser (double-click the file, or serve the <code>public/</code>
+      folder locally, or open the GitHub Pages URL — see the README). No internet connection is required once the
+      page is open.</li>
+    <li>The game opens on a <b>guide screen</b> first — a scrollable walkthrough of the rules for everyone in the
+      room to read while the game is set up. Click <b>Continue to Team Setup</b> when ready.</li>
+    <li>The <b>setup screen</b> follows: four team boxes, each with nine technology-direction buttons.</li>
+    <li>Call each team's representative to the front. They pick their nation's technology direction live, in
+      front of the room, and explain in one sentence why.</li>
+    <li>Once all four teams have a direction, click <b>Start Game</b>.</li>
+  </ol>
+  <p class="lede" style="font-size:.9rem;">Flow: <b>Guide screen → Goal selection → Main game (rounds) → Final debrief.</b></p>
+
+  <h2 id="teams">Teams</h2>
+  <p>Four teams, each representing a real national or regional innovation system. Identities are drawn from
+  real structural features (energy dependence, financial depth, manufacturing base, openness) rather than
+  stereotypes.</p>
+  <table>
+    <tr><th>Team</th><th>Country / Region</th><th>Character</th></tr>
+    <tr><td><b>UTokyo</b></td><td>Japan</td><td>Advanced manufacturing democracy — deep talent and supply chains, energy-import dependent.</td></tr>
+    <tr><td><b>NUS</b></td><td>Singapore</td><td>Highly open research hub — strong finance and reputation, small and energy-constrained.</td></tr>
+    <tr><td><b>HKUST</b></td><td>Hong Kong</td><td>Export-sensitive gateway economy — capital-rich, politically exposed.</td></tr>
+    <tr><td><b>SNU</b></td><td>Korea</td><td>Manufacturing-rooted technology state — strong tech progress and energy security, export-dependent.</td></tr>
+  </table>
+
+  <h2 id="goal">Choosing a technology direction</h2>
+  <p>Each team picks one of nine directions before the game starts: <b>Artificial Intelligence, Space Technology,
+  Biotechnology, Semiconductors, Energy Systems, Climate Technology, Quantum Technology, Robotics, Advanced
+  Materials.</b> The choice shapes which policy cards a team receives, which roadmap it builds, and how global
+  situations affect it — so it should feel like choosing a real national strategy, not a cosmetic skin.</p>
+
+  <h2 id="stats">State variables &amp; danger thresholds</h2>
+  <p>Every team tracks eight stats, each 0–100. Almost every card trades one off against another.</p>
+  <table>
+    <tr><th>Stat</th><th>What it represents</th><th>Danger threshold</th></tr>
+    <tr><td>💰 Treasury</td><td>Public funds available to spend</td><td>Below 15 → fiscal pressure</td></tr>
+    <tr><td>⚡ Energy</td><td>Power / compute capacity available</td><td>Below 15 → tech progress limited</td></tr>
+    <tr><td>🏛️ Political Support</td><td>Domestic political capital</td><td>Below 20 → instability risk</td></tr>
+    <tr><td>❤️ Public Welfare</td><td>Citizens' material wellbeing &amp; trust</td><td>Below 20 → social unrest</td></tr>
+    <tr><td>📈 Technology Progress</td><td>Advancement toward the chosen goal</td><td>—</td></tr>
+    <tr><td>🌐 International Reputation</td><td>Standing with other nations</td><td>Below 20 → cooperation becomes ineffective</td></tr>
+    <tr><td>🛡️ Security / Sovereignty</td><td>Resilience to espionage, coercion, dependency</td><td>Below 20 → espionage / cyber risk</td></tr>
+    <tr><td>🌱 Sustainability</td><td>Environmental health of the growth path</td><td>Below 20 → environmental backlash</td></tr>
+  </table>
+  <p><b>General pattern:</b> openness tends to raise reputation and tech progress but lowers security; protection
+  raises security but costs reputation; industrial policy raises tech progress but costs treasury; environmental
+  protection costs short-term growth but protects welfare and sustainability. There is no move that only helps.</p>
+
+  <h2 id="balance">Balance, blocking &amp; regression</h2>
+  <p>Technology Progress does <b>not</b> just climb forever. At the end of every round, the game checks how many
+  of the other seven stats are below their danger threshold for each team, and gates that team's progress
+  accordingly:</p>
+  <table>
+    <tr><th>Danger stats</th><th>Status</th><th>Effect on Technology Progress</th></tr>
+    <tr><td>0</td><td>🟢 Stable</td><td>Grows normally.</td></tr>
+    <tr><td>1</td><td>🟡 Strained</td><td>Any progress gained this round is halved.</td></tr>
+    <tr><td>2</td><td>🟠 Blocked</td><td>All progress gained this round is cancelled — the roadmap freezes.</td></tr>
+    <tr><td>3+</td><td>🔴 Regressing</td><td>Technology Progress actively falls, worse the more stats have collapsed.</td></tr>
+  </table>
+  <p>On top of that, a team with an <b>extremely wide spread</b> between its best and worst stat pays an
+  additional penalty even if Technology Progress itself is high — racing ahead while the rest of the system falls
+  apart is never free. A team must recover its weak stats back above threshold before the roadmap can move
+  forward again. Each team's live status (Stable / Strained / Blocked / Regressing) is shown as a small badge on
+  its panel, and a round's summary explains exactly which stats blocked or reversed progress.</p>
+
+  <h2 id="roadmap">Technology roadmaps</h2>
+  <p>Each direction has a five-stage visual roadmap that fills in as a team's (balance-gated) Technology Progress
+  stat rises (every 20 points completes a stage). The board renders it live — a growing neural network for AI, a
+  rocket assembling piece by piece for Space, a filling DNA strand for Biotech, a chip blueprint wiring up for
+  Semiconductors, and so on — so progress (and regression) is something the room can literally watch happen.</p>
+
+  <h2 id="cards">Policy cards</h2>
+  <p>Each round, every team receives one policy card matched to their chosen direction (most rounds) or a
+  general cross-cutting card (occasionally) — 98 cards in total across all directions. A card presents a
+  situation, a question, and two options — left and right, Reigns-style. Each option quietly affects 2–4 stats,
+  but the card only <b>previews the 1–2 most influential effects</b> so the board stays readable (e.g. "Treasury
+  −8, Tech +5" on the left, "Welfare +6" on the right) — the full effect applies once the choice is confirmed.
+  There is no "correct" side: both cost something.</p>
+  <p>The team's representative argues their case in front of the room; the facilitator can jot a one-line
+  rationale, then clicks the chosen side. Effects apply immediately and animate on the board, and each affected
+  stat bar shows a small "(+3)" / "(−5)" beside it — that indicator stays visible until the next decision changes
+  that team's stats again, so the room can see exactly what the last choice did.</p>
+
+  <h2 id="situations">International &amp; global events</h2>
+  <p>The facilitator never chooses what happens next — at the start of every round, one click ("🌐 Reveal Round
+  Event") randomly draws <b>exactly one</b> shared event from a single pool of 27 international/global events
+  plus 12 resource conflicts. The event's own type decides what the round looks like:</p>
+  <table>
+    <tr><th>Type</th><th>What it means</th></tr>
+    <tr><td>⚠️ Global shock</td><td>Bad news for everyone — a crisis, an attack, a collapse.</td></tr>
+    <tr><td>✨ Global boost</td><td>A shared opportunity — a breakthrough, a new consortium.</td></tr>
+    <tr><td>🔀 Mixed event</td><td>Some strategies get stronger, others get riskier, depending on each team's
+      chosen direction and current stats.</td></tr>
+    <tr><td>⚖️ Strategic condition change</td><td>Shifts a stat or a threshold in a way that changes how safe or
+      risky future choices are — the meaning of "stable" just moved.</td></tr>
+    <tr><td>⚔️ Resource conflict</td><td>See below — a different, non-card round type.</td></tr>
+  </table>
+  <p>For the first four types, the event applies automatically to all four teams (often unevenly, depending on
+  their chosen direction and current stats) <i>before</i> that round's cards are dealt, so every team's card
+  decision is a response to the same shared backdrop.</p>
+  <p><b>Simplified interaction effects</b> replace free-form negotiation. After all four teams choose their card
+  option for the round, the board checks the pattern of choices:</p>
+  <ul>
+    <li>If two or more teams chose a <b>cooperative / open</b> option, all of them gain reputation and a little
+      shared technology progress — unless a team's reputation is already below 20, in which case cooperation
+      quietly fails for them.</li>
+    <li>If one team chose <b>protection</b> while two or more others cooperated, the protectionist team gains
+      security but loses reputation.</li>
+    <li>If three or more teams chose <b>competition</b>, global trust drops, weakening cooperation bonuses in
+      future rounds.</li>
+    <li>If one team chose <b>secrecy</b> while another chose <b>openness</b> in the same round, the secretive
+      team gets a short-term tech boost but raises diplomatic tension; the open team is rewarded with a little
+      extra reputation.</li>
+  </ul>
+
+  <h2 id="crisis">Resource conflicts &amp; Rock-Paper-Scissors</h2>
+  <p>When the revealed event is a <b>resource conflict</b> — oil, electricity, semiconductor fab capacity, rare
+  earths, lithium, cobalt, high-end GPUs, launch windows, satellite spectrum, clean water, research talent, or
+  advanced lithography equipment — that round has no cards. Instead, all four teams choose one stance:</p>
+  <table>
+    <tr><th>Stance</th><th>Effect</th></tr>
+    <tr><td>⚔️ Compete aggressively</td><td>Big potential payoff, but if two or more teams compete for the same
+      resource, it is resolved live with <b>Rock-Paper-Scissors on stage</b>. The facilitator enters the winner;
+      the winner gets the full bonus, the losers take a penalty.</td></tr>
+    <tr><td>🤝 Cooperate</td><td>Smaller, safer gains — shared access instead of an exclusive claim.</td></tr>
+    <tr><td>🌱 Conserve</td><td>Protects welfare and sustainability at the cost of a smaller technology gain.</td></tr>
+    <tr><td>🔀 Diversify</td><td>Moderate gain by investing around the bottleneck instead of fighting over it.</td></tr>
+  </table>
+  <p>If only one team competes, they get the aggressive payoff automatically — no RPS needed. This keeps the
+  simulation realistic (nations really do fight over chokepoint resources) while staying fast and physical for a
+  live room.</p>
+
+  <h2 id="round">Round structure</h2>
+  <ol>
+    <li>Facilitator clicks <b>🌐 Reveal Round Event</b> — the game randomly picks one event and its type.</li>
+    <li><i>(Shock / boost / mixed / condition-change round)</i> The event is announced and applied to all teams;
+      each team is dealt a card.</li>
+    <li>Each team's representative comes to the front, explains their reasoning, and the facilitator clicks their
+      choice (or presses the arrow keys with that team focused).</li>
+    <li>Once all four teams have decided, the facilitator applies round effects — interaction bonuses/penalties
+      and the balance check (see above) resolve automatically.</li>
+    <li><i>(Resource-conflict round)</i> All four teams pick a stance; competing teams settle disputes with
+      Rock-Paper-Scissors; the facilitator enters the winner.</li>
+    <li>A round summary appears: what each team chose, why, what changed, and whether anyone's roadmap was
+      slowed, blocked, or pushed into regression.</li>
+    <li>Repeat for 5–6 rounds, then the game moves to the final debrief automatically.</li>
+  </ol>
+
+  <h2 id="winning">How to "win"</h2>
+  <p>The final ranking is a <b>balanced score</b> — the average of all eight stats, not just Technology Progress.
+  A team that races ahead on tech while gutting welfare, security, or the environment will not top the board.
+  The debrief also highlights the most cooperative, most aggressive, and most resilient teams, and surfaces the
+  single biggest tradeoff and the most ethically difficult decision of the session — these are usually more
+  interesting to discuss than the numeric ranking itself.</p>
+
+  <h2 id="facilitator">Running it as facilitator</h2>
+  <ul>
+    <li>Press <b>F</b> (or click "☰ Facilitator") to open the side panel: manual stat adjustment, save/load,
+      round-length settings, and log export.</li>
+    <li>Press <b>1–4</b> to focus a team, then <b>←/→</b> to resolve their card without touching the mouse.</li>
+    <li>The rationale box under each pending card is optional but recommended — it feeds the exported log and
+      the debrief.</li>
+    <li>Everything lives in memory in the browser tab; use <b>Save</b> in the facilitator panel to checkpoint to
+      this browser, and <b>Export JSON/CSV</b> at any time (not just at the end) to keep a permanent record.</li>
+  </ul>
+
+  <h2 id="schedule">Recommended 2-hour schedule</h2>
+  <table>
+    <tr><th>Time</th><th>Activity</th></tr>
+    <tr><td>0:00–0:15</td><td>Welcome, rules overview, teams formed, laptops/notes ready.</td></tr>
+    <tr><td>0:15–0:25</td><td>Setup phase: representatives choose technology directions on stage.</td></tr>
+    <tr><td>0:25–1:35</td><td>5–6 rounds (~12 min each): situations, cards, crises, RPS, summaries.</td></tr>
+    <tr><td>1:35–1:50</td><td>Final debrief screen: ranking, awards, biggest tradeoff, discussion questions.</td></tr>
+    <tr><td>1:50–2:00</td><td>Open discussion: what would you do differently as an engineer in this seat?</td></tr>
+  </table>
+
+  <h2 id="examples">Example policy cards</h2>
+  <div class="card-example">
+    <div class="ce-title">Open the Weights?</div>
+    <p><span class="pill">AI</span><span class="pill">openness · safety</span></p>
+    <p>Your flagship lab wants to release a frontier model's weights openly to win developers and goodwill.
+    Security agencies fear misuse. <i>Release the model weights openly?</i></p>
+    <div class="ce-opts">
+      <div class="ce-opt"><b>◀ Release openly</b><br><span class="stat-tag">Reputation +10</span><span class="stat-tag">Tech +4</span><span class="stat-tag">Security −9</span></div>
+      <div class="ce-opt"><b>Keep closed / API-only ▶</b><br><span class="stat-tag">Security +6</span><span class="stat-tag">Reputation −6</span></div>
     </div>
-    <p class="muted">A serious decision-card simulation of technology policy, diplomacy and global competition,
-    designed for facilitated conference play with five teams over roughly two hours.</p>
-    <div class="toc">
-      <b>Contents:</b>
-      <a href="#purpose">Purpose</a><a href="#story">Story</a><a href="#teams">Teams</a>
-      <a href="#domains">Domains</a><a href="#vars">State Variables</a><a href="#loop">The Round</a>
-      <a href="#intl">International System</a><a href="#global">Global Events</a>
-      <a href="#scoring">Scoring</a><a href="#schedule">2-Hour Schedule</a>
-      <a href="#examples">Example Cards</a><a href="#debrief">Debrief</a>
+  </div>
+  <div class="card-example">
+    <div class="ce-title">Data Centers vs the Grid</div>
+    <p><span class="pill">AI</span><span class="pill">energy · compute</span></p>
+    <p>AI data centers now consume a tenth of national electricity. Utilities warn of brownouts; households face
+    rising bills. <i>Prioritize compute expansion or household electricity stability?</i></p>
+    <div class="ce-opts">
+      <div class="ce-opt"><b>◀ Prioritize AI compute</b><br><span class="stat-tag">Tech +8</span><span class="stat-tag">Energy −10</span><span class="stat-tag">Welfare −7</span></div>
+      <div class="ce-opt"><b>Cap data-center load ▶</b><br><span class="stat-tag">Tech −6</span><span class="stat-tag">Energy +6</span><span class="stat-tag">Welfare +5</span></div>
     </div>
   </div>
 
-  <div class="card-panel" id="purpose">
-    <h2>1 · Purpose</h2>
-    <p>Tech Race exists to make future engineers wrestle with the questions their careers will actually pose:</p>
-    <ul>
-      <li>How should engineers act when technology becomes a geopolitical instrument?</li>
-      <li>How do we balance innovation, openness, national security, public welfare, energy and the environment?</li>
-      <li>When should nations cooperate, compete, protect, share, or restrict?</li>
-      <li>What happens when technical progress outruns laws, institutions and public understanding?</li>
-    </ul>
-    <p>It is not a quiz with right answers. It is a structured argument generator: every card forces a tradeoff,
-    and the debrief is where the real learning happens.</p>
-  </div>
+  <h2 id="debrief">Final reflection questions</h2>
+  <ul>
+    <li>Which decision are you least comfortable with, looking back? Would you choose differently now?</li>
+    <li>Did racing ahead on technology progress ever come at a cost you didn't notice until later?</li>
+    <li>When did cooperation pay off, and when did it leave a team exposed?</li>
+    <li>Who "won," and does the highest score actually reflect the best national strategy?</li>
+    <li>As an engineer — not a policymaker — where in this game did you have the most real influence?</li>
+  </ul>
 
-  <div class="card-panel" id="story">
-    <h2>2 · Story</h2>
-    <p>The world has entered an age of accelerating technological competition. Five innovation systems — each a
-    university team representing a national or regional model — must steer themselves through it. They make
-    domestic policy, negotiate (and sometimes betray) one another internationally, and weather global shocks
-    that arrive without warning. No one can win by tech alone: a system that races ahead while gutting its
-    welfare, poisoning its environment, or burning every alliance will collapse under its own success.</p>
-  </div>
-
-  <div class="card-panel" id="teams">
-    <h2>3 · The Five Systems</h2>
-    <p>Teams are described in neutral policy language, not as caricatures of real states.</p>
-    <table>
-      <tr><th>Team</th><th>Model</th><th>Edge</th><th>Constraint</th></tr>
-      <tr><td><b>UTokyo</b> · Japan</td><td>Advanced manufacturing democracy</td><td>Deep talent, supply chains, reputation</td><td>Energy importer; cautious politics</td></tr>
-      <tr><td><b>NUS</b> · Singapore</td><td>Highly open research ecosystem</td><td>Openness, capital, trust</td><td>Small: thin energy &amp; supply depth</td></tr>
-      <tr><td><b>HKUST</b> · Hong Kong</td><td>Export-sensitive gateway economy</td><td>Capital, logistics agility</td><td>Caught between blocs; volatile security</td></tr>
-      <tr><td><b>SNU-1</b> · Korea-1</td><td>Manufacturing-oriented tech state</td><td>Tech progress, energy, supply chains</td><td>Export dependence; environmental load</td></tr>
-      <tr><td><b>SNU-2</b> · Korea-2</td><td>Security-first closed system</td><td>Security, central control, energy autonomy</td><td>Low reputation, openness, treasury</td></tr>
-    </table>
-    <p class="muted small">SNU-2 represents a closed, security-first governance model in the abstract. It is deliberately
-    <b>not</b> a portrayal of any specific real country.</p>
-  </div>
-
-  <div class="card-panel" id="domains">
-    <h2>4 · Technology Domains</h2>
-    <p>Before play, each team picks one domain to lead. The choice shapes its cards, opportunities and scoring all game.</p>
-    <p>Available: <b>Artificial Intelligence, Space, Semiconductors, Energy Systems, Climate Tech, Quantum,
-    Biotechnology, Robotics, Advanced Materials, Cybersecurity.</b></p>
-    <p>Each domain carries its own dilemmas — AI faces compute, data and surveillance; Space faces launch cost,
-    lunar law and debris; Semiconductors face export controls and chokepoints; Energy faces the grid, nuclear and
-    public acceptance, and so on. Global events also hit your domain specially: an energy team thrives in a fusion
-    breakthrough; a semiconductor team is exposed to a supply-chain collapse.</p>
-  </div>
-
-  <div class="card-panel" id="vars">
-    <h2>5 · State Variables</h2>
-    <p>Each system tracks <b>eight</b> variables (0–100, except Treasury which can go negative into debt):</p>
-    <table>
-      <tr><th>Variable</th><th>Meaning &amp; danger behaviour</th></tr>
-      <tr><td>Treasury</td><td>Money. Below 0 → debt interest each round (−treasury, −political support).</td></tr>
-      <tr><td>Energy / Compute</td><td>Powers AI/space/semis. Below 15 → research stalls (−tech progress).</td></tr>
-      <tr><td>Political Support</td><td>Capacity for bold policy. Below 20 → instability.</td></tr>
-      <tr><td>Public Welfare</td><td>Below 20 → protests (−political support each round).</td></tr>
-      <tr><td>Tech Progress</td><td>Domain leadership. Counts only if welfare/ethics hold up.</td></tr>
-      <tr><td>Sustainability</td><td>Below 25 → delayed welfare crises (−public welfare).</td></tr>
-      <tr><td>Talent Pool</td><td>Drives research. Below 20 → progress slows.</td></tr>
-      <tr><td>Supply Chain</td><td>Resilience to shocks. Below 20 → progress slows.</td></tr>
-    </table>
-    <p>Separately, a hidden <b>trust matrix</b> tracks how much each pair of teams trusts one another (starts at 50).
-    Cooperation, treaties and kept promises raise it; coercion, broken deals and exposed espionage destroy it. Trust
-    powers the diplomacy score and the live <b>cooperation-network graph</b> shown on the projector.</p>
-  </div>
-
-  <div class="card-panel" id="loop">
-    <h2>6 · The Round</h2>
-    <ol>
-      <li><b>Domestic phase.</b> Each team privately receives one policy card and chooses option A or B, recording
-      a short rationale. Effects apply immediately.</li>
-      <li><b>International phase.</b> Each team may make <i>one</i> move toward another team (or all). Targets either
-      <b>accept</b> or <b>decline</b> a proposal; a unilateral hit can be absorbed or <b>retaliated</b> against.</li>
-      <li><b>Global phase.</b> The facilitator reveals a world event that hits everyone — <i>after</i> choices are
-      locked, so teams carry real uncertainty.</li>
-      <li><b>Summary.</b> Threshold penalties resolve, stats settle, and scores plus the cooperation-network graph
-      update on the projector so the room can read each team's status before the next round.</li>
-    </ol>
-    <p>Representatives come to the front during the international phase to explain their choices on the big screen;
-    the facilitator records what they say. The facilitator can run a visible <b>countdown timer</b> for any phase and
-    may <b>end the game at any time</b> — the projector then shows final results and how close each team came to its goal.</p>
-  </div>
-
-  <div class="card-panel" id="intl">
-    <h2>7 · International System</h2>
-    <p>Actions fall into three families:</p>
-    <ul>
-      <li><b>Cooperation</b> (requires consent): research pacts, shared compute, joint missions, talent exchange,
-      safety/standards, data sharing, grid &amp; supply cooperation, alliances, treaties, tech transfer. Both sides
-      gain if accepted; trust rises.</li>
-      <li><b>Coercion</b> (unilateral): export restrictions, protection laws, accusations, breaking agreements.
-      They hurt a rival now but cost you reputation and trust — and invite retaliation.</li>
-      <li><b>Covert</b> (secret, risky): covert acquisition, aggressive poaching, cyber intrusion. They resolve
-      immediately and secretly. They may leap your progress forward — or be exposed, devastating your reputation
-      and trust.</li>
-    </ul>
-    <p>A <b>multilateral treaty</b> is offered to every team at once; each decides individually. Treaties and
-    alliances pay off most when a global crisis later strikes.</p>
-  </div>
-
-  <div class="card-panel" id="global">
-    <h2>8 · Global Events</h2>
-    <p>Sixteen plausible shocks — financial crises, AI and fusion breakthroughs, energy and supply shocks, climate
-    and health disasters, cyberattacks, debris cascades, talent migrations, new treaties, public backlash, a
-    quantum crypto break. Each hits all teams, hits your chosen domain specially, and applies <b>conditional</b>
-    modifiers: the unprepared (low security, low environment, low supply chain, closed systems) suffer more; the
-    resilient and cooperative gain. Earlier neglect comes due here.</p>
-  </div>
-
-  <div class="card-panel" id="scoring">
-    <h2>9 · Scoring</h2>
-    <p>Five sub-scores combine into a composite. The design deliberately punishes "win the tech number, lose
-    everything else."</p>
-    <table>
-      <tr><th>Score</th><th>Built from</th><th>Weight</th></tr>
-      <tr><td>Tech Leadership</td><td>Tech progress + domain-leader bonus</td><td>25%</td></tr>
-      <tr><td>Social Stability</td><td>Public welfare &amp; political support</td><td>20%</td></tr>
-      <tr><td>Diplomacy</td><td>Average trust, cooperation minus coercion &amp; exposed espionage</td><td>20%</td></tr>
-      <tr><td>Ethical Engineering</td><td>Welfare &amp; sustainability, minus coercion &amp; exposed espionage, minus "hollow" tech</td><td>20%</td></tr>
-      <tr><td>Resilience</td><td>Supply chain, talent, energy</td><td>15%</td></tr>
-    </table>
-    <p>A collective <b>Global Cooperation Index</b> (average pairwise trust) measures whether the whole room handled
-    the race constructively or destructively. A high individual score in a low-cooperation world is a warning, not
-    just a victory.</p>
-    <p>Each team also has a <b>goal</b>: become the world leader in its domain while keeping society stable,
-    sustainable, well-resourced and trusted. The debrief shows a per-team checklist and a 0–100% measure of how close
-    each team got.</p>
-  </div>
-
-  <div class="card-panel" id="schedule">
-    <h2>10 · Suggested 2-Hour Schedule</h2>
-    <p>The game defaults to <b>10 rounds</b>; the facilitator sets the count live (1–15) and can <b>end the game at any
-    time</b>. Use the built-in phase timers to keep pace. With 10 rounds, run shorter rounds (~8 min); for richer
-    front-of-room debate, set 5–6 rounds (~12–15 min each).</p>
-    <table>
-      <tr><th>Time</th><th>Activity</th></tr>
-      <tr><td>0:00–0:10</td><td>Introduction &amp; rules</td></tr>
-      <tr><td>0:10–0:20</td><td>Team setup &amp; domain selection</td></tr>
-      <tr><td>0:20–1:40</td><td>Rounds (≈8 min each for 10 rounds, or ~13 min each for 6): decide → present → reveal global → score</td></tr>
-      <tr><td>1:40–1:50</td><td>Final round / final global event</td></tr>
-      <tr><td>1:50–2:00</td><td>Results &amp; reflection (debrief)</td></tr>
-    </table>
-    <p class="muted small">Keep each round moving — the discussion at the front is the point, not optimizing the numbers.</p>
-  </div>
-
-  <div class="card-panel" id="examples">
-    <h2>11 · Example Cards</h2>
-    <div class="ex">
-      <b>Domestic — "Data Centers vs the Grid" (AI)</b>
-      <p class="muted small">AI data centers now consume a tenth of national electricity. Utilities warn of brownouts;
-      households face rising bills. <i>Prioritize compute, or household electricity stability?</i></p>
-      <p class="small">A: Prioritize AI compute → +Tech, −Energy, −Welfare. B: Cap data-center load → −Tech, +Energy, +Welfare.</p>
-    </div>
-    <div class="ex">
-      <b>International — "Covert Technology Acquisition"</b>
-      <p class="muted small">Secretly attempt to acquire a rival's technology. Resolves immediately and secretly.
-      ~55% to succeed (+9 Tech); ~50% to be discovered (heavy political-support loss and a collapse of trust).</p>
-    </div>
-    <div class="ex">
-      <b>Global — "Semiconductor Supply-Chain Collapse"</b>
-      <p class="muted small">A chokepoint failure freezes advanced-chip supply worldwide. All teams: −supply chain, −tech.
-      Semiconductor teams gain leverage; teams with already-weak supply chains suffer extra.</p>
-    </div>
-  </div>
-
-  <div class="card-panel" id="debrief">
-    <h2>12 · Debrief Questions</h2>
-    <ul>
-      <li>Which policies created fast innovation but hidden social, environmental or trust costs?</li>
-      <li>Which teams benefited from cooperation — and who paid for isolation?</li>
-      <li>Did any team buy leadership by sacrificing welfare, energy stability or the planet?</li>
-      <li>Did secrecy protect innovation, or did it isolate and weaken the system?</li>
-      <li>Were you neutral engineers, national strategists, or political actors? When did those roles collide?</li>
-      <li>What should future engineers carry from this simulation into real careers?</li>
-    </ul>
-    <p class="muted">Interpreting results: read the composite alongside the Global Cooperation Index. A polished
-    individual score in a collapsing, low-trust world is exactly the failure mode the game is built to expose.</p>
-  </div>
+  <p style="color:var(--muted); margin-top:40px; font-size:.85rem;">Tech Race: International Cooperation &amp; Competition — built for the Selene Program.</p>
 </div>
 </body>
 </html>

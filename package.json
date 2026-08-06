@@ -1,19 +1,15 @@
 {
   "name": "tech-race",
-  "version": "1.0.0",
-  "description": "Tech Race: International Cooperation & Competition — a Reigns-style technology-policy & diplomacy simulation for conference use.",
+  "version": "2.0.0",
+  "description": "Tech Race: International Cooperation & Competition — a single-screen, local Reigns-style technology-policy simulation for conference use.",
   "type": "commonjs",
-  "main": "server/index.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node server/index.js",
-    "dev": "node server/index.js"
+    "start": "node server.js"
   },
   "engines": {
     "node": ">=18"
   },
-  "dependencies": {
-    "express": "^4.19.2",
-    "socket.io": "^4.7.5"
-  },
+  "dependencies": {},
   "license": "MIT"
 }

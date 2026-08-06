@@ -1,234 +1,198 @@
 # Tech Race: International Cooperation & Competition
 
-> ### 🌐 Live game: **https://tech-race.onrender.com**
-> - **Teams:** https://tech-race.onrender.com/team.html — PINs: UTokyo `JPN` · NUS `SGN` · HKUST `HKG` · SNU-1 `ROK` · SNU-2 `NK`
-> - **Facilitator / Admin:** https://tech-race.onrender.com/admin.html — PIN `STEM_Selene_Admin`
-> - **Projector / Big screen:** https://tech-race.onrender.com/screen.html
-> - **Rule book:** https://tech-race.onrender.com/gamebook.html
->
-> _(Free Render instances sleep after ~15 min idle; the first visit may take ~30s to wake up.)_
+A **single-screen, local** technology-policy & diplomacy simulation for live conference use, built for the
+Selene Program. Four teams of engineering students each lead a national/regional innovation system, making
+policy decisions in front of a shared projected screen — no logins, no networking, no cloud.
 
-A serious, Reigns-style **technology-policy & diplomacy simulation** for live conference use.
-Five teams of engineering students each lead a national/regional innovation system through an age of
-technological competition — making domestic policy, negotiating (and sometimes betraying) one another
-internationally, and weathering global shocks. It is a **decision tool and debate generator**, not just a game:
-every card forces a real tradeoff, and the facilitated debrief is where the learning happens.
+> The winner is **not** whoever has the highest tech number. Technology Progress is balance-gated: if a team lets
+> other stats collapse, its roadmap slows, blocks, or actively regresses — see [Balance & difficulty](#balance--difficulty-technology-progress-is-not-automatic)
+> below. The final ranking is a balanced score across all eight national stats. See the in-app
+> [**Game Book**](public/gamebook.html) for full rules, the 2-hour schedule, and debrief questions.
 
-> The winner is **not** whoever has the highest tech number. A system that races ahead while gutting public
-> welfare, poisoning its environment, or burning every alliance collapses under its own success.
+**Flow:** Guide screen → Team goal selection → Main game (5–6 rounds) → Final debrief.
 
----
+## Project purpose
 
-## Educational purpose
+This is not a game about countries winning a race — it's a game about the responsibility of engineers in an
+age of technological competition. Every policy card forces a real tradeoff between progress, openness, security,
+public welfare, and the environment. Every decision is simultaneously political, economic, diplomatic, ethical,
+and social. The facilitated debrief is where the learning happens.
 
-The game pushes future engineers to confront questions their careers will actually pose: how to balance
-innovation, openness, national security, public welfare, energy and the environment; when to cooperate vs.
-compete, protect vs. share; and what happens when technical progress outruns laws and public understanding.
-See the in-app **Game Book** (`/gamebook.html`) for the full pedagogical framing, scoring rationale, schedule
-and debrief questions.
+## What changed from the original design
+
+The original version required **seven connected devices** (five team screens, one admin screen, one projector
+screen) over a real-time backend. That added setup risk for a one-off conference session. This version runs
+entirely on **one laptop connected to one big screen** — the projected screen *is* the game board. Team
+representatives stand in front of their section, argue their case, and the facilitator clicks the decision.
 
 ## Tech stack
 
-- **Backend:** Node.js + Express + Socket.IO — one authoritative game server, real-time sync to all screens.
-- **Frontend:** plain HTML/CSS/vanilla JS. **No build step, no framework, no CDN** (the Socket.IO client is served
-  locally), so it runs reliably offline on a single laptop during a session.
-- **Persistence:** the full game state auto-saves to `data/save/game.json` on every change and reloads on restart.
-  Plus downloadable JSON/CSV exports.
-- **Data-driven content:** all cards/events live in editable JSON under `server/data/`.
+- **Plain HTML / CSS / vanilla JavaScript.** No build step, no framework, no CDN, no bundler.
+- **All game data lives in the browser tab** (in-memory JS state). Nothing is sent over a network.
+- **Optional `localStorage` checkpoint** and **JSON/CSV export** for the decision log.
+- Content (teams, domains, 98 policy cards, 27 international/global events, 12 resource conflicts) is data-driven
+  in `public/js/data/*.js` — plain JS files, easy to read and edit without any tooling.
+- Fully static — works from `file://`, a local server, or **GitHub Pages** (see below).
 
-## Requirements
+## Balance & difficulty: Technology Progress is not automatic
 
-- Node.js **18+** (tested on Node 24).
+Every round, each team's Technology Progress is checked against the other seven stats:
 
-## Install & run locally
+| Stats in danger | Status | Effect |
+|---|---|---|
+| 0 | 🟢 Stable | Grows normally |
+| 1 | 🟡 Strained | This round's gain is halved |
+| 2 | 🟠 Blocked | This round's gain is cancelled entirely |
+| 3+ | 🔴 Regressing | Technology Progress actively falls |
+
+An extremely wide spread between a team's best and worst stat costs a further penalty even when Technology
+Progress is high. A team's live status shows as a small badge on its panel, and every round summary explains
+which stats blocked or reversed anyone's progress. This is what makes "grow fast but stay balanced" the actual
+objective instead of just flavor text.
+
+## One random event per round
+
+The facilitator never picks what happens — clicking **🌐 Reveal Round Event** draws one random entry from a
+single pool of 27 global events + 12 resource conflicts. Its type decides the round:
+
+- **⚠️ Shock** — bad news for everyone · **✨ Boost** — a shared opportunity
+- **🔀 Mixed** — helps some strategies, hurts others · **⚖️ Condition change** — shifts what's safe going forward
+- **⚔️ Resource conflict** — no cards this round; all 4 teams pick compete/cooperate/conserve/diversify, and 2+
+  "compete" picks resolve with **Rock-Paper-Scissors on stage** (facilitator enters the winner)
+
+For the first four types, the event applies to all teams, then each team gets one policy card. The card previews
+only its **1–2 most influential stat effects** (not all 2–4) to keep the board readable; the full effect applies
+once the choice is confirmed. After a decision, each affected stat bar shows a small `(+3)`/`(−5)` beside it
+until that team's next decision.
+
+## How to run it locally
+
+You do not need Node, npm, or a server. Pick whichever is easiest:
+
+**Option A — just open the file (simplest):**
 
 ```bash
-npm install
-npm start
+open public/index.html        # macOS
+xdg-open public/index.html    # Linux
 ```
+Or just double-click `public/index.html` in your file browser. Everything (data, engine, UI) is loaded via
+plain `<script>` tags, so it works straight from disk.
 
-You'll see output like:
-
-```
-  Tech Race server running:  http://localhost:3000
-  Admin PIN: admin   (set ADMIN_PIN env var to change)
-  LAN access for other devices: http://192.168.x.x:3000
-```
-
-Open the printed **LAN URL** on phones/laptops so every team can join the same session over Wi-Fi.
-
-### Environment variables (all optional)
-
-| Variable | Default | Purpose |
-|----------|---------|---------|
-| `PORT` | `3000` | HTTP/WebSocket port |
-| `ADMIN_PIN` | `STEM_Selene_Admin` | Facilitator login PIN |
-| `MAX_ROUNDS` | `10` | Default number of rounds (adjustable live, 1–15) |
+**Option B — tiny local server (zero dependencies):**
 
 ```bash
-ADMIN_PIN=my_secret PORT=8080 MAX_ROUNDS=8 npm start
+node server.js
 ```
+Then open the printed `http://localhost:5173` URL. This is only useful if your browser restricts something when
+opening pages via `file://`; functionally it's identical to Option A. `npm start` runs the same script.
 
-## Screens & access
+**Option C — GitHub Pages (already wired up):** this repo includes a GitHub Actions workflow
+(`.github/workflows/deploy-pages.yml`) that publishes the `public/` folder to GitHub Pages automatically on every
+push to `main`. No backend, database, or build step — it just uploads the static files as-is.
 
-| Screen | URL | Login |
-|--------|-----|-------|
-| **Landing / role chooser** | `/` | — |
-| **Team console** | `/team.html` | team + team PIN |
-| **Facilitator / Admin** | `/admin.html` | admin PIN |
-| **Projector / public screen** | `/screen.html` | — (open on the big display) |
-| **Game Book (rules)** | `/gamebook.html` | — |
+One-time setup (only needed once per repo):
+1. On GitHub, go to **Settings → Pages**.
+2. Under **Build and deployment → Source**, choose **GitHub Actions** (not "Deploy from a branch").
+3. Push to `main` (or re-run the workflow from the **Actions** tab). The first run creates the `github-pages`
+   environment and deploys the site.
+4. Your game will be live at `https://<your-username>.github.io/<repo-name>/`. GitHub shows the exact URL in
+   **Settings → Pages** and in the workflow run summary under **Actions**.
 
-**Admin PIN:** `STEM_Selene_Admin` (override with the `ADMIN_PIN` env var).
+After that, every push to `main` redeploys automatically — no manual steps. Share the `github.io` URL, or just
+open it on the laptop connected to the projector.
 
-**Team PINs** are the `pin` field in `server/data/teams.json`:
+## How to use projector mode
 
-| Team | Country | PIN |
-|------|---------|-----|
-| UTokyo | Japan | `JPN` |
-| NUS | Singapore | `SGN` |
-| HKUST | Hong Kong | `HKG` |
-| SNU-1 | Korea-1 | `ROK` |
-| SNU-2 | Korea-2 | `NK` |
+1. Connect your laptop to the room's projector/big screen (mirror or extend — mirror is simplest).
+2. Open `public/index.html` full-screen on that display (`F11` in most browsers).
+3. That's it — there is no separate "screen" mode to open elsewhere. The one page is simultaneously the game
+   board, the facilitator console, and the projected display.
 
-## Testing alone (no five logins needed)
+## How to control the game as facilitator
 
-You do **not** need five people to start a test. On the **admin screen**:
+- The **guide screen** opens first — let the room read it (or narrate it) before setup.
+- The **setup screen** lets each team's representative pick a technology direction by clicking it live.
+- Each round, click **🌐 Reveal Round Event** — the game randomly picks the event and its type; you do not choose.
+- During a card round, click a team's **left/right card option** directly on their panel to resolve their decision
+  (the representative should explain their reasoning to the room first).
+- **Keyboard shortcuts:** press `1`–`4` to focus a team, then `←`/`→` to resolve their pending card. `Enter`
+  advances the flow (reveal event → apply effects → next round) when the current step is ready. `F` toggles
+  the facilitator side panel. `Escape` closes it.
+- The **facilitator panel** (`☰ Facilitator` button, top-right, or press `F`) holds everything that shouldn't
+  clutter the projected board: manual stat adjustment per team, round-count settings, save/load, and log export.
+- **Resource conflicts** (one possible outcome of "Reveal Round Event"): if two or more teams choose to compete
+  for the same resource, the board displays **"Rock-Paper-Scissors Required"** — play it live on stage, then
+  click the winner in the overlay.
 
-1. Log in with the admin PIN.
-2. Click **🎲 Auto-assign Domains** (gives every team a distinct domain) — or pick each team's domain from the
-   dropdown in its panel.
-3. Click **▶ Start Game**.
+## How to edit cards / events / crises
 
-From there you can **Advance Phase**, **Trigger Global**, watch scores/goals/the cooperation graph update, and
-**End Game** — all solo. To also test what a *team* sees and clicks, open extra browser tabs at `/team.html` and log
-in with the team PINs (`JPN`, `SGN`, `HKG`, `ROK`, `NK`); one laptop can run all five tabs at once.
+Everything lives in `public/js/data/`, as plain arrays of JS objects (no build step — edit and reload):
 
-## Running a session (facilitator flow)
+| File | Contents |
+|---|---|
+| `teams.js` | The 4 teams: identity, flavor text, starting stat modifiers. |
+| `domains.js` | The 9 technology directions and their 5-stage roadmap labels. |
+| `cards.js` | 98 policy cards (56 domain-specific + 42 general). Each has `title`, `situation`, `question`, `left`/`right` options (`label`, `effects`, optional `stance`), `tags`, `severity`, `discussionPrompt`, `educationalNote`. |
+| `events.js` | 27 international/global events, each tagged `type`: `shock`, `boost`, `mixed`, or `condition_change` (`base` effects for all teams, optional `domainEffects` and stat-threshold `modifiers`). |
+| `resources.js` | 12 resource conflicts (`type: 'resource_conflict'`) with `compete`/`cooperate`/`conserve`/`diversify` choices. |
 
-1. Open `/admin.html`, log in, and open `/screen.html` on the projector.
-2. Click **Open Domain Selection**. Each team logs into `/team.html` and picks a technology domain.
-3. Click **Start Game**. Each round:
-   - **Domestic** — teams privately decide their policy card (with a written rationale).
-   - **Advance Phase → International** — each team makes one move toward another; targets respond. Use the
-     📺 buttons to **spotlight** a card on the projector while a representative explains it; record what they say
-     in the **Notes** box.
-   - **Advance Phase → Global** — click **Trigger Global** (random or pick one) to reveal a world event dramatically.
-   - **Advance Phase → Summary** — threshold penalties resolve and scores update.
-   - **Next Round** to continue; after the last round the projector shows the **debrief**.
-4. **Phase timers:** start a 1/2/3/5-minute (or custom) countdown for the current phase; it shows on every screen and
-   flashes when it hits zero (it's a visual aid — it never force-advances the game).
-5. After each round's **Summary**, the projector shows every team's status plus the **cooperation-network graph**
-   (mutual trust between teams). Default is **10 rounds**; you can change it live (1–15).
-6. **End Game** ends the session immediately and jumps to the debrief — the projector then shows final rankings and
-   **how close each team got to its goal** (a per-team checklist with a completion %).
-7. **Export JSON / CSV** at any time. **Pause/Resume** and **Reset** are available (Reset/End ask for confirmation).
-   You can also **manually edit any team's stats** from the admin team panels.
+`events.js` and `resources.js` are combined into a single pool at runtime — `Engine.revealEvent()` picks one
+random, unused entry from both files together each round, so resource conflicts are just one possible event type
+rather than a separately triggered system.
 
-## Configuring teams
+To add a card, copy an existing object in `cards.js` and give it a unique `id`. Stat keys you can use in
+`effects`: `treasury`, `energy`, `politicalSupport`, `publicWelfare`, `techProgress`, `reputation`, `security`,
+`sustainability`. The optional `stance` field (`cooperate` / `open` / `protect` / `secrecy` / `compete`) drives
+the simplified international-interaction system described in the Game Book. Aim for 2–4 affected stats per
+option — the UI automatically previews only the 1–2 most influential ones on the card itself.
 
-Edit `server/data/teams.json`: each team has a `name`, `country`, `identity`, `model`, `color`, `pin`, advantage/
-constraint text, and `startMods` (starting stat offsets from a base of ~50). The five team IDs
-(`utokyo, nus, hkust, snu1, snu2`) are referenced by team-specific cards — keep the IDs if you edit in place.
+## How to edit teams
 
-## Modifying / adding cards
+Edit `public/js/data/teams.js`. Each team has `id`, `name`, `country`, `identity`, `model`, `color` (used for
+that team's panel accent and roadmap color), `advantages`, `constraints`, and `startMods` (stat deltas applied
+on top of the default baseline of 50 for every stat).
 
-All content is JSON in `server/data/`:
+## How to export logs
 
-- `cards_domestic.json` — domestic policy cards. `domains: ["all"]` applies to every team; `domains: ["ai"]`
-  is AI-only; an optional `teams: ["utokyo"]` makes it team-specific. Each option has `effects` mapping any of the
-  12 stat keys to deltas.
-- `actions_international.json` — international action templates (cooperation / coercion / covert), with consent and
-  covert flags, effect blocks, and success/discovery chances.
-- `events_global.json` — global events with `base` effects for all, per-`domainEffects`, and conditional
-  `modifiers` (`statBelow` / `statAbove`).
-- `domains.json` — the ten technology domains.
+Click **⬇ Export JSON** or **⬇ Export CSV** — available any time from the facilitator panel, and again on the
+final debrief screen. Exports include every decision (round, team, card, choice, rationale, stat effects,
+resulting stats), every international situation, and every resource-crisis resolution, as a downloaded file
+(nothing leaves your machine).
 
-The **eight** valid stat keys: `treasury, energy, politicalSupport, publicUtility, techProgress, environment,
-talent, supplyChain`. (Treasury can go negative into debt; the others clamp 0–100.) After editing, restart the
-server. Between teams the engine also tracks a hidden **trust matrix** that powers the diplomacy score and the
-cooperation-network graph.
+## File structure
 
-**Content provided out of the box:** 87 domestic cards (domain-specific + 12 generic + 5 per team), 21 international
-action templates, 16 global events, 10 domains.
-
-## Exporting logs
-
-- **In-app:** Admin → *Export JSON* / *Export CSV* (also `GET /api/export/json` and `/api/export/csv`).
-- The CSV is a flat decision log (timestamp, round, phase, type, team, message, choice, rationale, effects).
-- The JSON is the complete game state including every decision, rationale, stat change, proposal, global event and
-  admin note. The same state auto-persists to `data/save/game.json`.
-
-## Deploy as a public website (recommended for remote teams)
-
-So that teams, the projector and the admin can all join **without being on the same Wi-Fi**, host the app once and
-share its public URL. Everyone then just opens the site and logs in with their PIN. The Socket.IO server and client
-are same-origin, so no extra WebSocket config is needed.
-
-### Render (free, one-click — easiest)
-
-1. Push this repo to GitHub (see below).
-2. Go to [render.com](https://render.com) → **New +** → **Blueprint** → connect the repo. Render reads the included
-   `render.yaml`, runs `npm install`, and starts the app.
-3. When it's live you get a URL like `https://tech-race.onrender.com`. Share it:
-   - Teams → `…/team.html`, Admin → `…/admin.html`, Projector → `…/screen.html`.
-4. Set/confirm `ADMIN_PIN` in the Render dashboard (Environment tab). It defaults to `STEM_Selene_Admin`.
-
-> Render free instances **spin down after ~15 min idle** (the first hit then takes ~30s to wake) and have an
-> **ephemeral disk** (the `data/save/game.json` auto-save is wiped on redeploy/restart). For a live 2-hour session
-> this is fine — traffic keeps it awake, and you can **Export JSON/CSV** at any time as your durable record. For a
-> guaranteed-on instance with a persistent disk, use a paid plan or a small VPS.
-
-### Other hosts
-
-Railway, Fly.io, a VPS, etc. all work the same way: `npm install && npm start`, expose `PORT` (the app already reads
-`process.env.PORT`), set `ADMIN_PIN`. A `Procfile` is included for Heroku-style platforms.
-
-### Local-network mode (still supported)
-
-If everyone *is* in one room on one Wi-Fi, you don't need to deploy at all — just `npm start` and share the printed
-LAN URL.
+```
+public/
+  index.html          # the single game screen (guide → setup → rounds → debrief)
+  gamebook.html        # printable rulebook
+  .nojekyll             # tells GitHub Pages not to run Jekyll over these files
+  css/game.css          # projector-friendly styling
+  js/
+    data/
+      teams.js domains.js cards.js events.js resources.js
+    engine.js           # game state machine, round algorithm, interaction effects
+    roadmap.js           # SVG roadmap visuals per technology domain
+    ui.js                 # DOM rendering + interaction
+    export.js              # JSON/CSV export, localStorage save/load
+    main.js                  # bootstrap + keyboard shortcuts
+server.js              # optional zero-dependency static file server (npm start)
+.github/workflows/
+  deploy-pages.yml     # auto-deploys public/ to GitHub Pages on every push to main
+```
 
 ## Known limitations
 
-- Auth is lightweight PIN-based (appropriate for a trusted room, **not** hardened for the public internet).
-- Single in-memory game session per server process (auto-saved to disk). Run multiple ports for parallel sessions.
-- Proposal responses are **Accept / Decline** (no multi-round counter-offer workflow).
-- Phase timers are a visual aid; they do not auto-advance the game (deliberate, to keep the facilitator in control).
-- On free hosting the auto-save disk is ephemeral — use Export JSON/CSV for a durable record.
-- The trust matrix drives the diplomacy score and the network graph but does not yet hard-block low-trust treaties.
+- Designed for **exactly 4 teams** on **one screen**; it is not a multiplayer or remote-participation tool.
+- Game state lives only in the browser tab — closing the tab without saving loses progress (use **Save** in the
+  facilitator panel, or export the log, before closing).
+- Resource-crisis Rock-Paper-Scissors is played physically in the room; the app only records the winner you
+  enter, it does not adjudicate RPS itself.
+- Stance tagging on card options (used for the cooperation/competition interaction system) is authored per
+  card, not universal — some cards are intentionally domestic-only and don't trigger interaction effects.
 
-## Suggested next improvements
+## Future improvements
 
-- Counter-offer / renegotiation threads for proposals.
-- Hard trust thresholds that can cause treaties to fail.
-- Per-domain victory badges and an end-game "cooperation network" graph on the debrief.
-- Optional timers per phase to keep live pacing tight.
-- Multi-session lobby so one server can host several parallel games.
-
-## Project layout
-
-```
-server/
-  index.js                  Express + Socket.IO, flow control, persistence, exports
-  engine.js                 state variables, effects, thresholds, scoring (pure logic)
-  data/
-    domains.json            10 technology domains
-    teams.json              5 teams + starting modifiers + PINs
-    cards_domestic.json     87 domestic policy cards
-    actions_international.json  21 international action templates
-    events_global.json      16 global events
-public/
-  index.html                landing / role chooser
-  team.html  + js/team.js   team console
-  admin.html + js/admin.js  facilitator control room
-  screen.html+ js/screen.js projector / public screen
-  gamebook.html             full printable rule book
-  css/styles.css            shared dashboard styling
-  js/common.js              shared socket + render helpers
-data/save/game.json         auto-saved game state (git-ignored)
-```
-
-## License
-
-MIT.
+- A simple in-browser card/event editor (currently requires editing the JS data files directly).
+- Optional projector-only "clean view" that hides the facilitator's rationale-entry affordances.
+- Per-team printable summary sheets for post-game reflection.
+- Localization of card text for non-English cohorts.
