@@ -1,4 +1,4 @@
-// 27 international/global events (shock, boost, mixed, condition-change).
+// 38 international/global events (shock, boost, mixed, condition-change).
 window.GAME_DATA = window.GAME_DATA || {};
 window.GAME_DATA.events = [
   {
@@ -34,7 +34,8 @@ window.GAME_DATA.events = [
         }
       }
     ],
-    "type": "shock"
+    "type": "shock",
+    "effectGuide": "Money gets tight everywhere. Expensive strategies are riskier, and low-treasury teams suffer most."
   },
   {
     "id": "ai_breakthrough",
@@ -69,7 +70,8 @@ window.GAME_DATA.events = [
         }
       }
     ],
-    "type": "mixed"
+    "type": "mixed",
+    "effectGuide": "A shared leap forward. AI-adjacent programmes gain most; energy-poor teams struggle to keep up."
   },
   {
     "id": "military_escalation",
@@ -106,7 +108,8 @@ window.GAME_DATA.events = [
         }
       }
     ],
-    "type": "shock"
+    "type": "shock",
+    "effectGuide": "Security becomes the dominant concern. Weakly defended, isolated teams are most exposed."
   },
   {
     "id": "regime_change",
@@ -140,7 +143,8 @@ window.GAME_DATA.events = [
         }
       }
     ],
-    "type": "condition_change"
+    "type": "condition_change",
+    "effectGuide": "Political ground shifts under existing agreements. Politically unstable teams are hit hardest."
   },
   {
     "id": "energy_shock",
@@ -181,7 +185,8 @@ window.GAME_DATA.events = [
         }
       }
     ],
-    "type": "shock"
+    "type": "shock",
+    "effectGuide": "Energy-heavy strategies become riskier this round. Energy-secure teams gain relative advantage."
   },
   {
     "id": "climate_disaster",
@@ -223,7 +228,8 @@ window.GAME_DATA.events = [
         }
       }
     ],
-    "type": "shock"
+    "type": "shock",
+    "effectGuide": "Everyone pays for the damage. Teams that neglected the environment pay considerably more."
   },
   {
     "id": "semi_collapse",
@@ -261,7 +267,8 @@ window.GAME_DATA.events = [
         }
       }
     ],
-    "type": "shock"
+    "type": "shock",
+    "effectGuide": "Chip-dependent work stalls. Semiconductor programmes gain leverage; supply-insecure teams suffer."
   },
   {
     "id": "fusion_breakthrough",
@@ -292,7 +299,8 @@ window.GAME_DATA.events = [
       }
     },
     "modifiers": [],
-    "type": "boost"
+    "type": "boost",
+    "effectGuide": "A shared opportunity — cheap clean power is suddenly plausible. Energy programmes gain most."
   },
   {
     "id": "cyberattack",
@@ -331,7 +339,8 @@ window.GAME_DATA.events = [
         }
       }
     ],
-    "type": "shock"
+    "type": "shock",
+    "effectGuide": "Security-weak teams lose research and public confidence. Well-defended teams mostly hold."
   },
   {
     "id": "debris_cascade",
@@ -364,7 +373,8 @@ window.GAME_DATA.events = [
         }
       }
     ],
-    "type": "shock"
+    "type": "shock",
+    "effectGuide": "Orbit becomes hazardous for everyone. Space programmes take the direct hit."
   },
   {
     "id": "new_treaty",
@@ -400,7 +410,8 @@ window.GAME_DATA.events = [
         }
       }
     ],
-    "type": "boost"
+    "type": "boost",
+    "effectGuide": "Shared rules reward the open and well-regarded, and put pressure on the isolated."
   },
   {
     "id": "tech_backlash",
@@ -435,7 +446,8 @@ window.GAME_DATA.events = [
         }
       }
     ],
-    "type": "shock"
+    "type": "shock",
+    "effectGuide": "Welfare and political-support penalties become more dangerous, especially for fast-moving teams."
   },
   {
     "id": "talent_wave",
@@ -476,7 +488,8 @@ window.GAME_DATA.events = [
         }
       }
     ],
-    "type": "mixed"
+    "type": "mixed",
+    "effectGuide": "Researchers are on the move. Attractive countries gain capacity; closed ones bleed it."
   },
   {
     "id": "pandemic",
@@ -519,7 +532,8 @@ window.GAME_DATA.events = [
         }
       }
     ],
-    "type": "shock"
+    "type": "shock",
+    "effectGuide": "A health emergency strains everyone. Biotech programmes gain relevance; low-welfare teams suffer most."
   },
   {
     "id": "resource_nationalism",
@@ -562,7 +576,8 @@ window.GAME_DATA.events = [
         }
       }
     ],
-    "type": "shock"
+    "type": "shock",
+    "effectGuide": "Critical materials get weaponized. Supply-secure teams gain leverage; dependent ones pay."
   },
   {
     "id": "quantum_break",
@@ -604,7 +619,8 @@ window.GAME_DATA.events = [
         }
       }
     ],
-    "type": "mixed"
+    "type": "mixed",
+    "effectGuide": "Encryption everywhere is suddenly suspect. Quantum programmes gain; the unprepared are exposed."
   },
   {
     "id": "compute_rationing",
@@ -648,7 +664,8 @@ window.GAME_DATA.events = [
           "rdCapacity": 2
         }
       }
-    ]
+    ],
+    "effectGuide": "Compute becomes scarce and expensive. AI-heavy strategies are constrained until it eases."
   },
   {
     "id": "export_controls",
@@ -685,7 +702,8 @@ window.GAME_DATA.events = [
           "rdCapacity": -3
         }
       }
-    ]
+    ],
+    "effectGuide": "Trade in advanced technology fragments. Cooperation is harder; self-sufficiency gains value."
   },
   {
     "id": "automation_backlash",
@@ -722,7 +740,8 @@ window.GAME_DATA.events = [
           "politicalSupport": -4
         }
       }
-    ]
+    ],
+    "effectGuide": "Welfare and political-support penalties become more dangerous, especially for automation-heavy teams."
   },
   {
     "id": "subsidy_race",
@@ -761,7 +780,8 @@ window.GAME_DATA.events = [
           "politicalSupport": -3
         }
       }
-    ]
+    ],
+    "effectGuide": "Everyone can buy progress this round — but it is expensive, and treasuries will notice."
   },
   {
     "id": "standards_race",
@@ -797,7 +817,8 @@ window.GAME_DATA.events = [
         }
       }
     ],
-    "domainEffects": {}
+    "domainEffects": {},
+    "effectGuide": "Teams already ahead can set the rules and profit. Teams behind risk being locked out."
   },
   {
     "id": "privacy_backlash",
@@ -834,7 +855,8 @@ window.GAME_DATA.events = [
           "publicWelfare": -3
         }
       }
-    ]
+    ],
+    "effectGuide": "Data-hungry strategies become politically costly. Public trust is the stat under pressure."
   },
   {
     "id": "dual_use_controversy",
@@ -869,7 +891,8 @@ window.GAME_DATA.events = [
         }
       }
     ],
-    "domainEffects": {}
+    "domainEffects": {},
+    "effectGuide": "Military-adjacent research draws scrutiny. Security gains have a reputational price this round."
   },
   {
     "id": "environmental_regulation",
@@ -912,7 +935,8 @@ window.GAME_DATA.events = [
           "politicalSupport": -2
         }
       }
-    ]
+    ],
+    "effectGuide": "Clean strategies are rewarded; heavy industry pays. Low-environment teams face extra costs."
   },
   {
     "id": "reproducibility_crisis",
@@ -951,7 +975,8 @@ window.GAME_DATA.events = [
           "politicalSupport": -3
         }
       }
-    ]
+    ],
+    "effectGuide": "Scientific credibility takes a hit everywhere; low-reputation teams find no goodwill left."
   },
   {
     "id": "university_industry_conflict",
@@ -986,7 +1011,8 @@ window.GAME_DATA.events = [
         }
       }
     ],
-    "domainEffects": {}
+    "domainEffects": {},
+    "effectGuide": "Research independence is under strain. Well-funded teams cope; cash-poor ones lose capacity."
   },
   {
     "id": "research_consortium",
@@ -1016,6 +1042,448 @@ window.GAME_DATA.events = [
         }
       }
     ],
-    "domainEffects": {}
+    "domainEffects": {},
+    "effectGuide": "A shared opportunity — pooled research pays off, and cooperative teams gain the most."
+  },
+  {
+    "id": "gen_recession",
+    "title": "Global Recession",
+    "type": "shock",
+    "severity": 3,
+    "situation": "Demand collapses worldwide. Budgets are cut everywhere and long-horizon research is the first thing finance ministries look at.",
+    "effectGuide": "Money gets tight for everyone. Expensive strategies are riskier this round, and teams already short of treasury will feel it worst.",
+    "tags": [
+      "economy",
+      "general"
+    ],
+    "discussionPrompt": "Should research budgets be protected during a downturn, or is that a luxury?",
+    "educationalNote": "R&D spending is historically pro-cyclical — it gets cut exactly when long-term investment matters most.",
+    "base": {
+      "treasury": -7,
+      "rdCapacity": -2
+    },
+    "modifiers": [
+      {
+        "when": "statBelow",
+        "stat": "treasury",
+        "value": 35,
+        "effects": {
+          "rdCapacity": -4,
+          "politicalSupport": -3
+        }
+      },
+      {
+        "when": "statAbove",
+        "stat": "treasury",
+        "value": 65,
+        "effects": {
+          "treasury": 3
+        }
+      }
+    ]
+  },
+  {
+    "id": "gen_energy_shock",
+    "title": "Global Energy Shock",
+    "type": "shock",
+    "severity": 3,
+    "situation": "Energy prices spike worldwide overnight. Anything that runs hot — factories, data centres, laboratories — suddenly costs far more to operate.",
+    "effectGuide": "Energy-heavy strategies become riskier this round. Teams with weak energy reserves are exposed; energy-secure teams gain relative advantage.",
+    "tags": [
+      "energy",
+      "general"
+    ],
+    "discussionPrompt": "How quickly can an economy actually reduce its energy intensity when prices spike?",
+    "educationalNote": "Energy price shocks reprice every energy-intensive technology at once, with no warning.",
+    "base": {
+      "energy": -6,
+      "treasury": -4
+    },
+    "modifiers": [
+      {
+        "when": "statBelow",
+        "stat": "energy",
+        "value": 35,
+        "effects": {
+          "rdCapacity": -4,
+          "publicWelfare": -4
+        }
+      },
+      {
+        "when": "statAbove",
+        "stat": "energy",
+        "value": 65,
+        "effects": {
+          "treasury": 4,
+          "reputation": 2
+        }
+      }
+    ]
+  },
+  {
+    "id": "gen_distrust",
+    "title": "Public Distrust of Technology",
+    "type": "shock",
+    "severity": 2,
+    "situation": "A wave of documentaries and viral posts convinces much of the public that the national technology programme serves elites, not them.",
+    "effectGuide": "Welfare and political-support penalties become more dangerous this round. Teams that have been ignoring their public will pay for it.",
+    "tags": [
+      "society",
+      "trust",
+      "general"
+    ],
+    "discussionPrompt": "Is public distrust of technology irrational, or a reasonable response to how it has been deployed?",
+    "educationalNote": "Legitimacy is a precondition for technology policy, not a consequence of it.",
+    "base": {
+      "publicWelfare": -5,
+      "politicalSupport": -4
+    },
+    "modifiers": [
+      {
+        "when": "statBelow",
+        "stat": "publicWelfare",
+        "value": 35,
+        "effects": {
+          "politicalSupport": -5
+        }
+      },
+      {
+        "when": "statAbove",
+        "stat": "publicWelfare",
+        "value": 65,
+        "effects": {
+          "politicalSupport": 3,
+          "reputation": 2
+        }
+      }
+    ]
+  },
+  {
+    "id": "gen_talent_migration",
+    "title": "Global Talent Migration",
+    "type": "mixed",
+    "severity": 2,
+    "situation": "A generation of researchers is on the move, chasing better funding, freer institutions and somewhere they actually want to live.",
+    "effectGuide": "Open, well-regarded countries attract talent and gain research capacity. Isolated or low-reputation countries lose people.",
+    "tags": [
+      "talent",
+      "migration",
+      "general"
+    ],
+    "discussionPrompt": "What actually makes researchers stay somewhere — money, freedom, or belonging?",
+    "educationalNote": "Talent flows toward openness and opportunity; coercive retention accelerates the exodus it tries to stop.",
+    "base": {},
+    "modifiers": [
+      {
+        "when": "statAbove",
+        "stat": "reputation",
+        "value": 60,
+        "effects": {
+          "rdCapacity": 6,
+          "reputation": 2
+        }
+      },
+      {
+        "when": "statBelow",
+        "stat": "reputation",
+        "value": 35,
+        "effects": {
+          "rdCapacity": -6
+        }
+      },
+      {
+        "when": "statBelow",
+        "stat": "publicWelfare",
+        "value": 30,
+        "effects": {
+          "rdCapacity": -3
+        }
+      }
+    ]
+  },
+  {
+    "id": "gen_supply_disruption",
+    "title": "Supply-Chain Disruption",
+    "type": "shock",
+    "severity": 3,
+    "situation": "A chokepoint closes — a strait, a port, a single supplier — and physical goods stop moving. Everyone discovers what they cannot make themselves.",
+    "effectGuide": "Import-dependent strategies suffer. Security and self-sufficiency become more valuable; teams with weak security are hit hardest.",
+    "tags": [
+      "supply-chain",
+      "trade",
+      "general"
+    ],
+    "discussionPrompt": "How much redundancy should a country pay for in normal times?",
+    "educationalNote": "Just-in-time supply chains optimize for cost, and cost efficiency is the opposite of resilience.",
+    "base": {
+      "treasury": -4,
+      "rdCapacity": -3
+    },
+    "modifiers": [
+      {
+        "when": "statBelow",
+        "stat": "security",
+        "value": 35,
+        "effects": {
+          "rdCapacity": -4,
+          "treasury": -3
+        }
+      },
+      {
+        "when": "statAbove",
+        "stat": "security",
+        "value": 65,
+        "effects": {
+          "treasury": 3,
+          "reputation": 3
+        }
+      }
+    ]
+  },
+  {
+    "id": "gen_cyberattack",
+    "title": "Coordinated Cyberattack",
+    "type": "shock",
+    "severity": 3,
+    "situation": "A coordinated intrusion campaign hits research institutions, utilities and ministries across every participating country at once.",
+    "effectGuide": "Security-weak countries lose research work and public confidence. Well-defended countries mostly hold, and look competent doing it.",
+    "tags": [
+      "cyber",
+      "security",
+      "general"
+    ],
+    "discussionPrompt": "Should stolen research be treated as a security failure or an inevitability?",
+    "educationalNote": "Cyber resilience is invisible until the moment it fails publicly.",
+    "base": {
+      "security": -5,
+      "rdCapacity": -3
+    },
+    "modifiers": [
+      {
+        "when": "statBelow",
+        "stat": "security",
+        "value": 35,
+        "effects": {
+          "rdCapacity": -5,
+          "publicWelfare": -4,
+          "treasury": -3
+        }
+      },
+      {
+        "when": "statAbove",
+        "stat": "security",
+        "value": 65,
+        "effects": {
+          "reputation": 4,
+          "politicalSupport": 3
+        }
+      }
+    ]
+  },
+  {
+    "id": "gen_climate_disaster",
+    "title": "Major Climate Disaster",
+    "type": "shock",
+    "severity": 3,
+    "situation": "An extreme weather event destroys infrastructure and displaces thousands. Emergency spending is not optional.",
+    "effectGuide": "Everyone pays for the damage. Countries that neglected their environment pay considerably more, and their public notices.",
+    "tags": [
+      "climate",
+      "disaster",
+      "general"
+    ],
+    "discussionPrompt": "Did earlier environmental shortcuts raise the bill that just arrived?",
+    "educationalNote": "Environmental shocks expose the deferred cost of prior environmental tradeoffs.",
+    "base": {
+      "treasury": -5,
+      "publicWelfare": -5,
+      "environment": -3
+    },
+    "modifiers": [
+      {
+        "when": "statBelow",
+        "stat": "environment",
+        "value": 35,
+        "effects": {
+          "publicWelfare": -5,
+          "politicalSupport": -4
+        }
+      },
+      {
+        "when": "statAbove",
+        "stat": "environment",
+        "value": 65,
+        "effects": {
+          "politicalSupport": 4,
+          "reputation": 3
+        }
+      }
+    ]
+  },
+  {
+    "id": "gen_export_tension",
+    "title": "Export-Control Tension",
+    "type": "condition_change",
+    "severity": 2,
+    "situation": "Blocs begin screening technology transfers aggressively. Every collaboration now comes with a licence, a lawyer and a political calculation.",
+    "effectGuide": "Cooperation becomes harder and less rewarding this round, while security-focused choices gain value. Isolated teams suffer least — and gain least.",
+    "tags": [
+      "export-control",
+      "trade",
+      "general"
+    ],
+    "discussionPrompt": "Do export controls protect security, or just fragment the research system everyone depends on?",
+    "educationalNote": "Controls reliably push the targeted country toward domestic substitution within a few years.",
+    "base": {
+      "rdCapacity": -2
+    },
+    "modifiers": [
+      {
+        "when": "statAbove",
+        "stat": "security",
+        "value": 60,
+        "effects": {
+          "security": 3,
+          "politicalSupport": 2
+        }
+      },
+      {
+        "when": "statBelow",
+        "stat": "security",
+        "value": 35,
+        "effects": {
+          "rdCapacity": -3,
+          "treasury": -3
+        }
+      },
+      {
+        "when": "statAbove",
+        "stat": "reputation",
+        "value": 65,
+        "effects": {
+          "reputation": -3
+        }
+      }
+    ]
+  },
+  {
+    "id": "gen_fraud_scandal",
+    "title": "Research Fraud Scandal",
+    "type": "shock",
+    "severity": 2,
+    "situation": "A landmark result turns out to be fabricated. The retraction cascade reaches every country that built on it.",
+    "effectGuide": "Reputation and research capacity take a hit everywhere. Countries already low on reputation find nobody willing to give them benefit of the doubt.",
+    "tags": [
+      "fraud",
+      "reproducibility",
+      "general"
+    ],
+    "discussionPrompt": "Does the pressure to publish breakthroughs first make fraud structurally likely?",
+    "educationalNote": "Fraud is usually a symptom of incentives that reward speed and novelty over rigour.",
+    "base": {
+      "reputation": -4,
+      "rdCapacity": -3
+    },
+    "modifiers": [
+      {
+        "when": "statBelow",
+        "stat": "reputation",
+        "value": 35,
+        "effects": {
+          "politicalSupport": -4,
+          "rdCapacity": -2
+        }
+      },
+      {
+        "when": "statAbove",
+        "stat": "reputation",
+        "value": 65,
+        "effects": {
+          "reputation": 2
+        }
+      }
+    ]
+  },
+  {
+    "id": "gen_standards_dispute",
+    "title": "Global Standards Dispute",
+    "type": "mixed",
+    "severity": 2,
+    "situation": "Two incompatible standards fight to become the global default. Committees, markets and diplomats all pick sides at once.",
+    "effectGuide": "Countries already ahead in research or reputation can shape the outcome and profit. Countries behind risk being locked into someone else’s rules.",
+    "tags": [
+      "standards",
+      "governance",
+      "general"
+    ],
+    "discussionPrompt": "Are technical standards chosen on merit, or on market power?",
+    "educationalNote": "Standards races compound existing advantage: whoever is ahead is best placed to set the rules.",
+    "base": {},
+    "modifiers": [
+      {
+        "when": "statAbove",
+        "stat": "rdCapacity",
+        "value": 60,
+        "effects": {
+          "reputation": 5,
+          "treasury": 3
+        }
+      },
+      {
+        "when": "statBelow",
+        "stat": "rdCapacity",
+        "value": 40,
+        "effects": {
+          "reputation": -4,
+          "rdCapacity": -2
+        }
+      },
+      {
+        "when": "statAbove",
+        "stat": "reputation",
+        "value": 65,
+        "effects": {
+          "politicalSupport": 3
+        }
+      }
+    ]
+  },
+  {
+    "id": "gen_open_science",
+    "title": "Open Science Movement",
+    "type": "boost",
+    "severity": 1,
+    "situation": "A global push makes publicly funded research free to read, reuse and build on. Journals resist; researchers do not.",
+    "effectGuide": "A shared opportunity: research capacity rises for everyone, and open, well-regarded countries benefit the most.",
+    "tags": [
+      "openness",
+      "science",
+      "general"
+    ],
+    "discussionPrompt": "Who loses when publicly funded research becomes genuinely public?",
+    "educationalNote": "Open access measurably widens participation in research beyond wealthy institutions.",
+    "base": {
+      "rdCapacity": 3,
+      "reputation": 2
+    },
+    "modifiers": [
+      {
+        "when": "statAbove",
+        "stat": "reputation",
+        "value": 55,
+        "effects": {
+          "rdCapacity": 3,
+          "reputation": 2
+        }
+      },
+      {
+        "when": "statBelow",
+        "stat": "security",
+        "value": 30,
+        "effects": {
+          "security": -3
+        }
+      }
+    ]
   }
 ];

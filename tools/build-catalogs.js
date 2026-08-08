@@ -81,7 +81,7 @@ const eventHeader = [
   'event_title', 'event_type', 'description', 'affected_resource_or_issue',
   'resource_conflict_required',
   ...STAT_COLS.map(c => c[1]),
-  'global_trust_effect', 'follow_up_domestic_relevance', 'educational_note',
+  'global_trust_effect', 'effect_guide', 'follow_up_domestic_relevance', 'educational_note',
 ];
 
 // For a normal event: base effects, noting which are domain-conditional.
@@ -132,6 +132,7 @@ D.events.slice().sort((a, b) => a.type.localeCompare(b.type) || a.title.localeCo
     'no',
     ...STAT_COLS.map(([key]) => eventEffectCell(ev, key)),
     TRUST_NOTE[ev.type] || '—',
+    ev.effectGuide || '',
     Object.keys(ev.domainEffects || {}).length
       ? `hits ${Object.keys(ev.domainEffects).join(', ')} programmes hardest`
       : 'applies evenly to all four teams',
@@ -148,6 +149,7 @@ D.resources.slice().sort((a, b) => a.title.localeCompare(b.title)).forEach(res =
     'yes — if 2+ teams choose compete, resolve with Rock-Paper-Scissors on stage',
     ...STAT_COLS.map(([key]) => resourceEffectCell(res, key)),
     'compete −3 per competing team; cooperate +3 per cooperating team',
+    res.effectGuide || '',
     (res.relevantDomains || []).length
       ? `most relevant to ${res.relevantDomains.join(', ')} programmes`
       : 'relevant to all programmes',

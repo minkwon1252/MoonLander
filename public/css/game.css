@@ -381,3 +381,20 @@ button { font-family: inherit; cursor: pointer; }
 
 /* Facilitator panel stays deliberately compact — it is operator UI, not audience UI. */
 .facilitator-panel { width: 420px; }
+
+/* --- event effect guide (shown before decisions, qualitative only) --- */
+.situation-banner { align-items: flex-start; }
+.sb-body { display: flex; flex-direction: column; gap: 3px; flex: 1; min-width: 0; }
+.sb-line { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.sb-guide {
+  font-size: 1.2rem; color: #ffe08a; background: #ffffff12;
+  border-left: 4px solid #ffd166; border-radius: 0 8px 8px 0;
+  padding: 5px 12px; margin-top: 2px; line-height: 1.35;
+}
+.sb-guide b { color: #fff; }
+.crisis-guide {
+  font-size: 1.25rem; color: #ffe08a; background: #ffffff12;
+  border-left: 4px solid #ffd166; border-radius: 0 8px 8px 0;
+  padding: 10px 16px; margin: 4px 0 16px; text-align: left; line-height: 1.4;
+}
+.crisis-guide b { color: #fff; }

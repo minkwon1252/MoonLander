@@ -56,7 +56,8 @@ window.GAME_DATA.resources = [
     },
     "type": "resource_conflict",
     "title": "Oil",
-    "severity": 2
+    "severity": 2,
+    "effectGuide": "Teams must compete for limited oil. Competing can win big but risks a real penalty if you lose the Rock-Paper-Scissors; cooperating is smaller but safe."
   },
   {
     "id": "electricity",
@@ -112,7 +113,8 @@ window.GAME_DATA.resources = [
     },
     "type": "resource_conflict",
     "title": "Electricity",
-    "severity": 2
+    "severity": 2,
+    "effectGuide": "Teams must compete for limited electricity. Competing can win big but risks a real penalty if you lose the Rock-Paper-Scissors; cooperating is smaller but safe."
   },
   {
     "id": "fab_capacity",
@@ -169,7 +171,8 @@ window.GAME_DATA.resources = [
     },
     "type": "resource_conflict",
     "title": "Semiconductor Manufacturing Capacity",
-    "severity": 2
+    "severity": 2,
+    "effectGuide": "Teams must compete for limited semiconductor manufacturing capacity. Competing can win big but risks a real penalty if you lose the Rock-Paper-Scissors; cooperating is smaller but safe."
   },
   {
     "id": "rare_earths",
@@ -224,7 +227,8 @@ window.GAME_DATA.resources = [
     },
     "type": "resource_conflict",
     "title": "Rare Earth Metals",
-    "severity": 2
+    "severity": 2,
+    "effectGuide": "Teams must compete for limited rare earth metals. Competing can win big but risks a real penalty if you lose the Rock-Paper-Scissors; cooperating is smaller but safe."
   },
   {
     "id": "lithium",
@@ -280,7 +284,8 @@ window.GAME_DATA.resources = [
     },
     "type": "resource_conflict",
     "title": "Lithium",
-    "severity": 2
+    "severity": 2,
+    "effectGuide": "Teams must compete for limited lithium. Competing can win big but risks a real penalty if you lose the Rock-Paper-Scissors; cooperating is smaller but safe."
   },
   {
     "id": "cobalt",
@@ -335,7 +340,8 @@ window.GAME_DATA.resources = [
     },
     "type": "resource_conflict",
     "title": "Cobalt",
-    "severity": 2
+    "severity": 2,
+    "effectGuide": "Teams must compete for limited cobalt. Competing can win big but risks a real penalty if you lose the Rock-Paper-Scissors; cooperating is smaller but safe."
   },
   {
     "id": "gpus",
@@ -389,7 +395,8 @@ window.GAME_DATA.resources = [
     },
     "type": "resource_conflict",
     "title": "High-End GPUs",
-    "severity": 2
+    "severity": 2,
+    "effectGuide": "Teams must compete for limited high-end gpus. Competing can win big but risks a real penalty if you lose the Rock-Paper-Scissors; cooperating is smaller but safe."
   },
   {
     "id": "launch_windows",
@@ -443,7 +450,8 @@ window.GAME_DATA.resources = [
     },
     "type": "resource_conflict",
     "title": "Launch Windows",
-    "severity": 2
+    "severity": 2,
+    "effectGuide": "Teams must compete for limited launch windows. Competing can win big but risks a real penalty if you lose the Rock-Paper-Scissors; cooperating is smaller but safe."
   },
   {
     "id": "spectrum",
@@ -496,7 +504,8 @@ window.GAME_DATA.resources = [
     },
     "type": "resource_conflict",
     "title": "Satellite Spectrum",
-    "severity": 2
+    "severity": 2,
+    "effectGuide": "Teams must compete for limited satellite spectrum. Competing can win big but risks a real penalty if you lose the Rock-Paper-Scissors; cooperating is smaller but safe."
   },
   {
     "id": "water",
@@ -553,7 +562,8 @@ window.GAME_DATA.resources = [
     },
     "type": "resource_conflict",
     "title": "Clean Water",
-    "severity": 2
+    "severity": 2,
+    "effectGuide": "Teams must compete for limited clean water. Competing can win big but risks a real penalty if you lose the Rock-Paper-Scissors; cooperating is smaller but safe."
   },
   {
     "id": "talent",
@@ -608,7 +618,8 @@ window.GAME_DATA.resources = [
     },
     "type": "resource_conflict",
     "title": "Research Talent",
-    "severity": 2
+    "severity": 2,
+    "effectGuide": "Teams must compete for limited research talent. Competing can win big but risks a real penalty if you lose the Rock-Paper-Scissors; cooperating is smaller but safe."
   },
   {
     "id": "lithography",
@@ -663,6 +674,7 @@ window.GAME_DATA.resources = [
     },
     "type": "resource_conflict",
     "title": "Advanced Lithography Equipment",
-    "severity": 2
+    "severity": 2,
+    "effectGuide": "Teams must compete for limited advanced lithography equipment. Competing can win big but risks a real penalty if you lose the Rock-Paper-Scissors; cooperating is smaller but safe."
   }
 ];

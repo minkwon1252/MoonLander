@@ -99,16 +99,26 @@
       document.getElementById('trustNum').textContent = state.globalTrust;
     },
 
+    // The banner carries the round's event AND its plain-language effect guide, and stays up
+    // through resource-conflict rounds too so teams can see the guidance while they choose.
     renderSituationBanner(state) {
       const el = document.getElementById('situationBanner');
-      if (state.phase === 'round' && state.currentSituation) {
-        const meta = EVENT_TYPE_META[state.currentSituation.type] || EVENT_TYPE_META.shock;
-        el.classList.remove('hidden');
-        el.className = 'situation-banner type-' + (state.currentSituation.type || 'shock');
-        el.innerHTML = `<span class="sb-icon">${meta.icon}</span><span class="sb-type">${esc(meta.label)}</span><span class="sb-title">${esc(state.currentSituation.title)}</span><span class="sb-text">${esc(state.currentSituation.situation)}</span>`;
-      } else {
-        el.classList.add('hidden');
-      }
+      const ev = state.currentSituation
+        || ((state.phase === 'crisis' || state.phase === 'crisis-rps') && state.currentCrisis
+          ? state.currentCrisis.resource : null);
+      const showing = ev && ['round', 'crisis', 'crisis-rps'].includes(state.phase);
+      if (!showing) { el.classList.add('hidden'); return; }
+
+      const meta = EVENT_TYPE_META[ev.type] || EVENT_TYPE_META.shock;
+      const title = ev.type === 'resource_conflict' ? `${ev.icon || ''} ${ev.resource}` : ev.title;
+      el.classList.remove('hidden');
+      el.className = 'situation-banner type-' + (ev.type || 'shock');
+      el.innerHTML = `<span class="sb-icon">${meta.icon}</span>
+        <div class="sb-body">
+          <div class="sb-line"><span class="sb-type">${esc(meta.label)}</span><span class="sb-title">${esc(title)}</span></div>
+          <div class="sb-text">${esc(ev.situation)}</div>
+          ${ev.effectGuide ? `<div class="sb-guide"><b>What this means:</b> ${esc(ev.effectGuide)}</div>` : ''}
+        </div>`;
     },
 
     // ---------------- Team grid ----------------
@@ -376,6 +386,10 @@
           opportunity), a <b>mixed event</b> (helps some strategies, hurts others), a <b>strategic condition
           change</b> (shifts what's safe going forward), or a <b>resource conflict</b> (see below). It applies to
           all four teams before that round's cards are dealt.</p>
+          <p>Every event comes with a short <b>"What this means"</b> guide in the banner — a plain-language
+          hint at who is exposed and which strategies get riskier this round (for example: <i>"Energy-heavy
+          strategies become riskier this round"</i>). It never gives you exact numbers, but read it before you
+          decide.</p>
         </div>
 
         <div class="guide-section">
@@ -407,7 +421,7 @@
 
         <div class="guide-section">
           <h4>Final objective</h4>
-          <p>After 5–6 rounds the game ends in a debrief. Your score is <b>half roadmap progress, half national
+          <p>After 8 rounds the game ends in a debrief. Your score is <b>half roadmap progress, half national
           balance</b>. Racing ahead on a collapsing country scores badly — and so does a perfectly stable country
           that never built anything. You have to do both.</p>
         </div>
@@ -462,6 +476,7 @@
           <div class="crisis-icon">${r.icon}</div>
           <div class="crisis-title">Shared Scarce Resource Crisis: ${esc(r.resource)}</div>
           <div class="crisis-situation">${esc(r.situation)}</div>
+          ${r.effectGuide ? `<div class="crisis-guide"><b>What this means:</b> ${esc(r.effectGuide)}</div>` : ''}
           <button class="cb-btn primary" onclick="UI.dismissCrisisAnnouncement('${r.id}')">Begin — Collect Team Choices</button>
         </div>`;
         return;
@@ -634,7 +649,7 @@
           <h4>Game Settings</h4>
           <div class="fp-row">
             <label class="cb-hint">Rounds: </label>
-            <input type="number" min="3" max="10" value="${state.maxRounds}" style="width:50px;background:#1c2033;color:#fff;border:1px solid #343a58;border-radius:6px;" onchange="UI.setMaxRounds(this.value)" />
+            <input type="number" min="3" max="12" value="${state.maxRounds}" style="width:50px;background:#1c2033;color:#fff;border:1px solid #343a58;border-radius:6px;" onchange="UI.setMaxRounds(this.value)" />
           </div>
           <div class="fp-row">
             <label class="cb-hint">Text size (for your projector):</label>

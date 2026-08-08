@@ -71,7 +71,7 @@
     return {
       phase: 'guide', // guide | setup | idle-round | round | crisis | crisis-rps | summary | debrief
       round: 0,
-      maxRounds: 6,
+      maxRounds: 8,
       globalTrust: 60,
       tension: 0,
       usedEventIds: [], // shared pool: covers both GAME_DATA.events and GAME_DATA.resources (unique ids)

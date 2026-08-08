@@ -9,7 +9,7 @@ policy decisions in front of a shared projected screen — no logins, no network
 > below. The final score is half roadmap progress and half national balance. See the in-app
 > [**Game Book**](public/gamebook.html) for full rules, the 2-hour schedule, and debrief questions.
 
-**Flow:** Guide screen → Team goal selection → Main game (5–6 rounds) → Final debrief.
+**Flow:** Guide screen → Team goal selection → Main game (8 rounds) → Final debrief.
 
 ## Project purpose
 
@@ -30,7 +30,7 @@ representatives stand in front of their section, argue their case, and the facil
 - **Plain HTML / CSS / vanilla JavaScript.** No build step, no framework, no CDN, no bundler.
 - **All game data lives in the browser tab** (in-memory JS state). Nothing is sent over a network.
 - **Optional `localStorage` checkpoint** and **JSON/CSV export** for the decision log.
-- Content (teams, domains, 152 policy cards, 27 international/global events, 12 resource conflicts) is data-driven
+- Content (teams, domains, 152 policy cards, 38 international/global events, 12 resource conflicts) is data-driven
   in `public/js/data/*.js` — plain JS files, easy to read and edit without any tooling.
 - Fully static — works from `file://`, a local server, or **GitHub Pages** (see below).
 - Two review spreadsheets (`policy_decisions_catalog.csv`, `international_events_catalog.csv`) are generated
@@ -91,12 +91,21 @@ at once. Early-round behaviour therefore sets how punishing the later rounds are
 ## One random event per round
 
 The facilitator never picks what happens — clicking **🌐 Reveal Round Event** draws one random entry from a
-single pool of 27 global events + 12 resource conflicts. Its type decides the round:
+single pool of 38 global events + 12 resource conflicts. Its type decides the round:
 
 - **⚠️ Shock** — bad news for everyone · **✨ Boost** — a shared opportunity
 - **🔀 Mixed** — helps some strategies, hurts others · **⚖️ Condition change** — shifts what's safe going forward
 - **⚔️ Resource conflict** — no cards this round; all 4 teams pick compete/cooperate/conserve/diversify, and 2+
   "compete" picks resolve with **Rock-Paper-Scissors on stage** (facilitator enters the winner)
+
+Every event carries a short **"What this means"** guide shown in the banner *before* anyone decides — a
+plain-language hint at who is exposed and which strategies just got riskier (e.g. *"Energy Shock — energy-heavy
+strategies become riskier this round"*). It never reveals exact numbers.
+
+About a third of the events are **domain-agnostic**: recession, energy shock, public distrust, talent migration,
+supply-chain disruption, cyberattack, climate disaster, export-control tension, research fraud, standards
+disputes and open science hit every team regardless of the technology they chose — what separates the teams is
+how they have been playing, not what they picked.
 
 For the first four types, the event applies to all teams, then each team gets one policy card. The card previews
 only its **1–2 most influential stat effects** (not all 2–4) to keep the board readable; the full effect applies
@@ -174,7 +183,7 @@ Everything lives in `public/js/data/`, as plain arrays of JS objects (no build s
 | `teams.js` | The 4 teams: identity, flavor text, starting stat modifiers. |
 | `domains.js` | The 9 technology directions and their 5-stage roadmap labels. |
 | `cards.js` | 152 policy cards. Each has `domain`, `stage`, `title`, `situation`, `question`, `left`/`right` options (`label`, `effects`, optional `stance`), `tags`, `severity`, `discussionPrompt`, `educationalNote`. |
-| `events.js` | 27 international/global events, each tagged `type`: `shock`, `boost`, `mixed`, or `condition_change` (`base` effects for all teams, optional `domainEffects` and stat-threshold `modifiers`). |
+| `events.js` | 38 international/global events (11 of them domain-agnostic), each tagged `type`: `shock`, `boost`, `mixed`, or `condition_change` (`base` effects for all teams, optional `domainEffects` and stat-threshold `modifiers`). |
 | `resources.js` | 12 resource conflicts (`type: 'resource_conflict'`) with `compete`/`cooperate`/`conserve`/`diversify` choices. |
 
 `events.js` and `resources.js` are combined into a single pool at runtime — `Engine.revealEvent()` picks one
@@ -196,6 +205,18 @@ To add a card, copy an existing object in `cards.js` and give it a unique `id`. 
 the simplified international-interaction system described in the Game Book. Use **2–4 affected stats per
 option** — the UI automatically previews only the 1–2 most influential ones on the card itself.
 
+## Pre-game slide deck
+
+`Tech_Race_Quick_Guide.pptx` — a 9-slide briefing to run **before** gameplay: why we play, your role, the eight
+balances, how a round works, global events, the roadmap, winning, and a closing message. Bright conference
+styling, very large type, Selene logo on every slide.
+
+Regenerate it after editing `tools/build_slides.py`:
+
+```bash
+python3 tools/build_slides.py     # requires python-pptx
+```
+
 ## Reviewing the content (CSV catalogs)
 
 Two spreadsheets at the repo root let you review every decision and event without reading any code:
@@ -203,7 +224,7 @@ Two spreadsheets at the repo root let you review every decision and event withou
 | File | Contents |
 |---|---|
 | `policy_decisions_catalog.csv` | All 152 policy cards — domain, stage, title, question, both choices, all eight stat effects (as `L+8 / R-4`), educational note. |
-| `international_events_catalog.csv` | All 39 events — title, type, description, affected issue, whether Rock-Paper-Scissors is required, all eight stat effects, global-trust effect, domestic relevance, educational note. |
+| `international_events_catalog.csv` | All 50 events — title, type, description, affected issue, whether Rock-Paper-Scissors is required, all eight stat effects, global-trust effect, the player-facing effect guide, domestic relevance, educational note. |
 
 Both are **generated from the game's own data**, so they can never drift out of sync. After editing anything in
 `public/js/data/`, regenerate them with:
@@ -243,6 +264,8 @@ public/
     main.js                  # bootstrap + keyboard shortcuts
 server.js              # optional zero-dependency static file server (npm start)
 tools/build-catalogs.js  # regenerates the two review CSVs from public/js/data/
+tools/build_slides.py    # regenerates the pre-game PPTX deck
+Tech_Race_Quick_Guide.pptx        # 9-slide pre-game briefing
 policy_decisions_catalog.csv      # all 152 policy decisions, for review
 international_events_catalog.csv  # all 39 global events & resource conflicts, for review
 .github/workflows/

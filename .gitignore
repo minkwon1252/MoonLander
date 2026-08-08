@@ -4,3 +4,6 @@ npm-debug.log*
 *.local
 
 .claude/
+
+# LibreOffice lock files (created when a CSV is open in the GUI)
+.~lock.*#
