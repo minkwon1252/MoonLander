@@ -88,6 +88,10 @@ Two further pressures make fast growth genuinely hard:
 A team must recover its weak stats before development continues. Live status shows as a badge on each panel,
 and every round summary names exactly which stats blocked or reversed progress.
 
+📐 **[docs/TECH_ADVANCE_FORMULA.md](docs/TECH_ADVANCE_FORMULA.md)** has the complete equation, worked
+examples, edge cases, and a set of hints to give players when they ask how progress is calculated —
+keep it open while facilitating.
+
 ## Global Trust
 
 One shared value for the whole room (starts at 60), representing the world's overall willingness to cooperate.
@@ -327,6 +331,7 @@ public/
 server.js              # optional zero-dependency static file server (npm start)
 tools/build-catalogs.js  # regenerates the two review CSVs from public/js/data/
 tools/build_slides.py    # regenerates the pre-game PPTX deck
+docs/TECH_ADVANCE_FORMULA.md      # the progress equation, for answering "how is this calculated?"
 Tech_Race_Quick_Guide.pptx        # 9-slide pre-game briefing
 policy_decisions_catalog.csv      # all 152 policy decisions, for review
 international_events_catalog.csv  # all 39 global events & resource conflicts, for review

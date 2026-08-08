@@ -512,8 +512,9 @@
         .map(([stat, t]) => ({ stat, label: t.label }));
     },
 
-    // Number of the seven non-tech stats currently below their danger threshold — drives
-    // roadmap blocking/regression (see _applyRoadmapAdvance) and the team-panel balance badge.
+    // How many of the eight stats are currently below their danger threshold. All eight have a
+    // threshold, R&D Capacity included. Drives roadmap blocking/regression (see
+    // _applyRoadmapAdvance) and the team-panel balance badge.
     dangerCount(teamId) {
       const team = this.state.teams[teamId];
       return Object.entries(THRESHOLDS).filter(([stat, t]) => team.stats[stat] < t.value).length;
@@ -533,12 +534,13 @@
     // Roadmap progress is EARNED from R&D Capacity but GATED by whole-system balance.
     // Building fast is only possible if money, energy, politics, welfare, security and the
     // environment all hold up at the same time.
-    //   0 danger stats  -> full advance
-    //   1 danger stat   -> halved ("strained")
-    //   2 danger stats  -> no advance at all ("blocked")
-    //   3+ danger stats -> roadmap actively REGRESSES ("regressing")
-    // A very wide spread between best and worst stat costs an extra point even when nothing
-    // has crossed a threshold yet — lopsided development is penalised on its own.
+    //   0 danger stats, none within 5 of a threshold -> full advance ("stable")
+    //   0 danger stats, but one is within 5           -> halved ("strained")
+    //   1 danger stat                                 -> no advance at all ("blocked")
+    //   2+ danger stats                               -> roadmap REGRESSES ("regressing")
+    // A spread over 45 between best and worst stat costs a further 3 even when nothing has
+    // crossed a threshold — lopsided development is penalised on its own.
+    // The full formula is documented in docs/TECH_ADVANCE_FORMULA.md; keep the two in sync.
     _applyRoadmapAdvance(team) {
       const dangerCount = this.dangerCount(team.id);
       const danger = this.activeWarnings(team.id).map(w => w.label);
