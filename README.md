@@ -42,7 +42,7 @@ representatives stand in front of their section, argue their case, and the facil
 - **Plain HTML / CSS / vanilla JavaScript.** No build step, no framework, no CDN, no bundler.
 - **All game data lives in the browser tab** (in-memory JS state). Nothing is sent over a network.
 - **Optional `localStorage` checkpoint** and **JSON/CSV export** for the decision log.
-- Content (teams, domains, 152 policy cards, 38 international/global events, 12 resource conflicts) is data-driven
+- Content (teams, domains, 164 policy cards, 38 international/global events, 12 resource conflicts) is data-driven
   in `public/js/data/*.js` — plain JS files, easy to read and edit without any tooling.
 - Fully static — works from `file://`, a local server, or **GitHub Pages** (see below).
 - Two review spreadsheets (`policy_decisions_catalog.csv`, `international_events_catalog.csv`) are generated
@@ -73,17 +73,17 @@ stats sit below their danger threshold:
 
 | Stats in danger | Status | Effect on roadmap |
 |---|---|---|
-| 0 | 🟢 Stable | Full advance |
-| 1 | 🟡 Strained | Advance **halved** |
-| 2 | 🟠 Blocked | Advance is **zero** — the roadmap freezes |
-| 3+ | 🔴 Regressing | The roadmap **goes backwards**; completed work is lost |
+| 0, but one is within 5 of a threshold | 🟡 Strained | Advance **halved** |
+| 0, all comfortably clear | 🟢 Stable | Full advance |
+| 1 | 🟠 Blocked | Advance is **zero** — the roadmap freezes |
+| 2+ | 🔴 Regressing | The roadmap **goes backwards**; completed work is lost |
 
 Two further pressures make fast growth genuinely hard:
 
 - **Development upkeep** — every point of roadmap progress burns treasury and energy, so the faster you build,
   the harder your money and grid are squeezed. This is usually what eventually trips a threshold.
-- **Imbalance penalty** — a very wide spread between your best and worst stat costs extra progress even if
-  nothing has crossed a threshold yet.
+- **Imbalance penalty** — a spread wider than 45 points between your best and worst stat costs extra
+  progress even if nothing has crossed a threshold yet.
 
 A team must recover its weak stats before development continues. Live status shows as a badge on each panel,
 and every round summary names exactly which stats blocked or reversed progress.
@@ -100,6 +100,19 @@ It is a real multiplier, not decoration:
 It rises when teams cooperate (in card choices and in resource conflicts) and falls when several teams compete
 at once. Early-round behaviour therefore sets how punishing the later rounds are — for everyone.
 
+## Gambles: decisions with unknown outcomes
+
+Twelve cards carry a **probabilistic** option. The card shows the odds and *both* branches, but
+which one lands is rolled at the moment the choice is committed:
+
+> **Bet everything on the run** — 🎲 55%: R&D +14 · 45%: R&D −12
+> *"The model converged — a genuine leap"* / *"It diverged; a year of compute is gone"*
+
+The safe side of the same card always has a certain, smaller outcome. These are the cards that can
+undo a roadmap in a single round, and they are flagged `GAMBLE (probabilistic outcome)` in the CSV
+catalog. Add your own with a `gamble: { chance, success, failure, successLabel, failureLabel }`
+block on an option instead of `effects`.
+
 ## One random event per round
 
 The facilitator never picks what happens — clicking **🌐 Reveal Round Event** draws one random entry from a
@@ -107,8 +120,10 @@ single pool of 38 global events + 12 resource conflicts. Its type decides the ro
 
 - **⚠️ Shock** — bad news for everyone · **✨ Boost** — a shared opportunity
 - **🔀 Mixed** — helps some strategies, hurts others · **⚖️ Condition change** — shifts what's safe going forward
-- **⚔️ Resource conflict** — no cards this round; all 4 teams pick compete/cooperate/conserve/diversify, and 2+
-  "compete" picks resolve with **Rock-Paper-Scissors on stage** (facilitator enters the winner)
+- **⚔️ Resource conflict** — all 4 teams pick compete/cooperate/conserve/diversify, and 2+ "compete" picks
+  resolve with **Rock-Paper-Scissors on stage** (facilitator enters the winner). This is an *extra layer*:
+  once the scramble is settled the round **continues into policy cards as normal**, so no round ever skips
+  the decision-making.
 
 Every event carries a short **"What this means"** guide shown in the banner *before* anyone decides — a
 plain-language hint at who is exposed and which strategies just got riskier (e.g. *"Energy Shock — energy-heavy
@@ -227,7 +242,7 @@ Everything lives in `public/js/data/`, as plain arrays of JS objects (no build s
 |---|---|
 | `teams.js` | The 4 teams: identity, flavor text, starting stat modifiers. |
 | `domains.js` | The 9 technology directions and their 5-stage roadmap labels. |
-| `cards.js` | 152 policy cards. Each has `domain`, `stage`, `title`, `situation`, `question`, `left`/`right` options (`label`, `effects`, optional `stance`), `tags`, `severity`, `discussionPrompt`, `educationalNote`. |
+| `cards.js` | 164 policy cards, 12 of them **gambles**. Each has `domain`, `stage`, `title`, `situation`, `question`, `left`/`right` options (`label`, `effects`, optional `stance`), `tags`, `severity`, `discussionPrompt`, `educationalNote`. |
 | `events.js` | 38 international/global events (11 of them domain-agnostic), each tagged `type`: `shock`, `boost`, `mixed`, or `condition_change` (`base` effects for all teams, optional `domainEffects` and stat-threshold `modifiers`). |
 | `resources.js` | 12 resource conflicts (`type: 'resource_conflict'`) with `compete`/`cooperate`/`conserve`/`diversify` choices. |
 
@@ -268,7 +283,7 @@ Two spreadsheets at the repo root let you review every decision and event withou
 
 | File | Contents |
 |---|---|
-| `policy_decisions_catalog.csv` | All 152 policy cards — domain, stage, title, question, both choices, all eight stat effects (as `L+8 / R-4`), educational note. |
+| `policy_decisions_catalog.csv` | All 164 policy cards — domain, stage, title, question, both choices, all eight stat effects (as `L+8 / R-4`), educational note. |
 | `international_events_catalog.csv` | All 50 events — title, type, description, affected issue, whether Rock-Paper-Scissors is required, all eight stat effects, global-trust effect, the player-facing effect guide, domestic relevance, educational note. |
 
 Both are **generated from the game's own data**, so they can never drift out of sync. After editing anything in

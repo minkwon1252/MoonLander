@@ -177,10 +177,10 @@
   counts how many of your eight stats sit below their danger threshold:</p>
   <table>
     <tr><th>Stats in danger</th><th>Status</th><th>Effect on Roadmap Progress</th></tr>
-    <tr><td>0</td><td>🟢 Stable</td><td>Full advance.</td></tr>
-    <tr><td>1</td><td>🟡 Strained</td><td>Advance is <b>halved</b>.</td></tr>
-    <tr><td>2</td><td>🟠 Blocked</td><td>Advance is <b>zero</b> — the roadmap freezes entirely.</td></tr>
-    <tr><td>3 or more</td><td>🔴 Regressing</td><td>The roadmap <b>goes backwards</b>. Work already done is lost.</td></tr>
+    <tr><td>0 — all comfortably clear</td><td>🟢 Stable</td><td>Full advance.</td></tr>
+    <tr><td>0 — but one is within 5 of a threshold</td><td>🟡 Strained</td><td>Advance is <b>halved</b>.</td></tr>
+    <tr><td>1</td><td>🟠 Blocked</td><td>Advance is <b>zero</b> — the roadmap freezes entirely.</td></tr>
+    <tr><td>2 or more</td><td>🔴 Regressing</td><td>The roadmap <b>goes backwards</b>. Work already done is lost.</td></tr>
   </table>
   <p>A team with an <b>extremely wide spread</b> between its best and worst stat loses further progress on top
   of that, even if nothing has crossed a threshold yet — lopsided development is penalised on its own.</p>
@@ -279,9 +279,12 @@
   </ul>
 
   <h2 id="crisis">Resource conflicts &amp; Rock-Paper-Scissors</h2>
+  <p><b>A resource conflict does not replace the round.</b> Once the scramble is settled, every team is
+  still dealt a policy card and still has to swipe — the conflict is an extra layer on top of the normal
+  decision-making, not a substitute for it.</p>
   <p>When the revealed event is a <b>resource conflict</b> — oil, electricity, semiconductor fab capacity, rare
   earths, lithium, cobalt, high-end GPUs, launch windows, satellite spectrum, clean water, research talent, or
-  advanced lithography equipment — that round has no cards. Instead, all four teams choose one stance:</p>
+  advanced lithography equipment — all four teams first choose one stance:</p>
   <table>
     <tr><th>Stance</th><th>Effect</th></tr>
     <tr><td>⚔️ Compete aggressively</td><td>Big potential payoff, but if two or more teams compete for the same

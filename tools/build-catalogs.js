@@ -36,12 +36,25 @@ function esc(v) {
 function row(cols) { return cols.map(esc).join(','); }
 function signed(n) { return n ? (n > 0 ? '+' + n : String(n)) : ''; }
 
-// Combine a card's two options into one readable cell per stat: "L+8 / R-4"
+// One readable cell per stat, combining both options: "L+8 / R-4".
+// A gamble option has no flat `effects` — its outcome is two probability branches, so it is
+// rendered as "L 55%:+14 / 45%:-12" to keep both possibilities visible in the review sheet.
+function optionCell(opt, key, tag) {
+  if (opt.gamble) {
+    const pct = Math.round(opt.gamble.chance * 100);
+    const win = opt.gamble.success[key];
+    const lose = opt.gamble.failure[key];
+    if (!win && !lose) return '';
+    return `${tag} ${pct}%:${signed(win) || '0'} / ${100 - pct}%:${signed(lose) || '0'}`;
+  }
+  const v = opt.effects[key];
+  return v ? `${tag}${signed(v)}` : '';
+}
 function combinedEffect(left, right, key) {
-  const l = left.effects[key];
-  const r = right.effects[key];
+  const l = optionCell(left, key, 'L');
+  const r = optionCell(right, key, 'R');
   if (!l && !r) return '';
-  return `L${signed(l) || '0'} / R${signed(r) || '0'}`;
+  return [l || 'L0', r || 'R0'].join(' / ');
 }
 
 // ----------------------------- policy decisions -----------------------------
@@ -54,7 +67,7 @@ const STAGE_LABEL = {
 
 const policyHeader = [
   'technology_domain', 'roadmap_stage', 'decision_title', 'core_question',
-  'left_choice', 'right_choice',
+  'left_choice', 'right_choice', 'decision_type',
   ...STAT_COLS.map(c => c[1]),
   'educational_note',
 ];
@@ -69,6 +82,7 @@ const policyRows = D.cards
     c.question,
     c.left.label,
     c.right.label,
+    (c.left.gamble || c.right.gamble) ? 'GAMBLE (probabilistic outcome)' : 'certain outcome',
     ...STAT_COLS.map(([key]) => combinedEffect(c.left, c.right, key)),
     c.educationalNote || '',
   ]));

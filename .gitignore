@@ -7,3 +7,9 @@ npm-debug.log*
 
 # LibreOffice lock files (created when a CSV is open in the GUI)
 .~lock.*#
+
+# Source logo artwork (kept locally; the processed README copy lives in assets/)
+TechRace_Logo*.png
+
+# Generated slide deck — rebuild with: python3 tools/build_slides.py
+Tech_Race_Quick_Guide.pptx

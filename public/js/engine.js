@@ -77,6 +77,7 @@
       usedEventIds: [], // shared pool: covers both GAME_DATA.events and GAME_DATA.resources (unique ids)
       currentSituation: null,
       currentCrisis: null,
+      crisisOutcome: null, // set when a resource conflict was settled earlier this round
       teams,
       teamOrder: D.teams.map(t => t.id),
       log: [],
@@ -189,6 +190,7 @@
       this.state.roundSummary = null;
       this.state.currentSituation = null;
       this.state.currentCrisis = null;
+      this.state.crisisOutcome = null;
 
       this.state.teamOrder.forEach(id => {
         const team = this.state.teams[id];
@@ -273,9 +275,27 @@
       if (!team.pendingCard || team.choice) return;
       const card = team.pendingCard;
       const opt = side === 'left' ? card.left : card.right;
-      this._applyEffects(team, opt.effects);
-      team.choice = { side, label: opt.label, effects: opt.effects, stance: opt.stance, rationale: rationale || '' };
-      team.lastEffects = opt.effects;
+
+      // GAMBLE OPTIONS: some choices do not have a known outcome. The card shows the odds and
+      // both branches, but which one lands is rolled here, at the moment of commitment.
+      let effects = opt.effects;
+      let gambleResult = null;
+      if (opt.gamble) {
+        const won = Math.random() < opt.gamble.chance;
+        effects = won ? opt.gamble.success : opt.gamble.failure;
+        gambleResult = {
+          won,
+          chance: opt.gamble.chance,
+          label: won ? (opt.gamble.successLabel || 'It paid off') : (opt.gamble.failureLabel || 'It failed'),
+        };
+      }
+
+      this._applyEffects(team, effects);
+      team.choice = {
+        side, label: opt.label, effects, stance: opt.stance,
+        rationale: rationale || '', gambleResult,
+      };
+      team.lastEffects = effects;
       if (opt.stance) team.stanceCounts[opt.stance] = (team.stanceCounts[opt.stance] || 0) + 1;
 
       this.state.log.push({
@@ -283,7 +303,8 @@
         teamId, teamName: team.name, domain: team.domain,
         cardId: card.id, cardTitle: card.title, situation: card.situation, question: card.question,
         choiceSide: side, choiceLabel: opt.label, stance: opt.stance,
-        rationale: rationale || '', statEffects: opt.effects, resultingStats: Object.assign({}, team.stats),
+        rationale: rationale || '', statEffects: effects, resultingStats: Object.assign({}, team.stats),
+        gamble: gambleResult ? `${Math.round(gambleResult.chance * 100)}% — ${gambleResult.won ? 'SUCCESS' : 'FAILURE'}` : '',
         discussionPrompt: card.discussionPrompt, educationalNote: card.educationalNote, severity: card.severity,
         timestamp: Date.now(),
       });
@@ -314,6 +335,7 @@
         }),
         interactionLog,
         balanceNotes,
+        crisisOutcome: this.state.crisisOutcome || null,
       };
       this.state.phase = 'summary';
       this._emit();
@@ -447,15 +469,20 @@
         choices: Object.assign({}, crisis.choices), rpsWinner: crisis.rpsWinner, effectsApplied,
         timestamp: Date.now(),
       });
-      const balanceNotes = this._finalizeTeamsForRound();
-      this.state.roundSummary = {
-        round: this.state.round,
-        crisis: crisis.resource,
-        choices: this.state.teamOrder.map(id => ({ teamId: id, teamName: this.state.teams[id].name, stance: crisis.choices[id], effects: effectsApplied[id] })),
+
+      // A resource conflict is an EXTRA layer on top of the round, not a replacement for it.
+      // Once the scramble is settled, every team still receives a policy card and still has to
+      // swipe — so no round is ever skipped just because a conflict came up.
+      this.state.crisisOutcome = {
+        resource: crisis.resource,
         rpsWinner: crisis.rpsWinner,
-        balanceNotes,
+        choices: Object.assign({}, crisis.choices),
+        effectsApplied,
       };
-      this.state.phase = 'summary';
+      this.state.currentSituation = crisis.resource;  // banner keeps showing the conflict
+      this.state.currentCrisis = null;
+      this.state.phase = 'round';
+      this._dealCards();
       this._emit();
     },
 
@@ -491,12 +518,15 @@
       const team = this.state.teams[teamId];
       return Object.entries(THRESHOLDS).filter(([stat, t]) => team.stats[stat] < t.value).length;
     },
+    // Must mirror _applyRoadmapAdvance(): 0 danger = moving (possibly strained by a near-miss),
+    // 1 = frozen, 2+ = going backwards.
     balanceStatus(teamId) {
+      const team = this.state.teams[teamId];
       const dc = this.dangerCount(teamId);
-      if (dc === 0) return 'stable';
-      if (dc === 1) return 'strained';
-      if (dc === 2) return 'blocked';
-      return 'regressing';
+      if (dc >= 2) return 'regressing';
+      if (dc === 1) return 'blocked';
+      const nearMiss = STATS.some(k => THRESHOLDS[k] && team.stats[k] < THRESHOLDS[k].value + 5);
+      return nearMiss ? 'strained' : 'stable';
     },
 
     // ---------- Roadmap advance: the core difficulty mechanic ----------
@@ -520,23 +550,30 @@
       let status = 'stable';
 
       if (dangerCount === 1) {
-        advance = advance / 2;
-        status = 'strained';
-        note = `${team.name}: roadmap slowed by half — ${danger[0]}.`;
-      } else if (dangerCount === 2) {
         advance = 0;
         status = 'blocked';
-        note = `${team.name}: roadmap BLOCKED — ${danger.join(' & ')}. Recover these before development continues.`;
-      } else if (dangerCount >= 3) {
-        advance = -(dangerCount - 2) * 4;
+        note = `${team.name}: roadmap BLOCKED — ${danger[0]}. Fix it before development can continue.`;
+      } else if (dangerCount >= 2) {
+        advance = -(dangerCount - 1) * 5;
         status = 'regressing';
         note = `${team.name}: roadmap REGRESSING — ${dangerCount} stats in danger (${danger.join(', ')}).`;
       }
 
+      // Even before anything crosses a threshold, sitting just above one slows you down —
+      // there is no comfortable margin any more.
+      if (status === 'stable') {
+        const nearMiss = STATS.filter(k => THRESHOLDS[k] && team.stats[k] < THRESHOLDS[k].value + 5).length;
+        if (nearMiss > 0) {
+          advance = advance / 2;
+          status = 'strained';
+          note = `${team.name}: roadmap slowed by half — ${nearMiss} stat${nearMiss > 1 ? 's are' : ' is'} close to the danger line.`;
+        }
+      }
+
       const spread = Math.max(...STATS.map(s => team.stats[s])) - Math.min(...STATS.map(s => team.stats[s]));
-      if (spread > 55) {
-        advance -= 2;
-        const extra = `Development is badly unbalanced (${spread}-point spread) — 2 further progress lost.`;
+      if (spread > 45) {
+        advance -= 3;
+        const extra = `Development is badly unbalanced (${spread}-point spread) — 3 further progress lost.`;
         note = note ? note + ' ' + extra : `${team.name}: ${extra}`;
         if (status === 'stable') status = 'unbalanced';
       }
@@ -552,7 +589,7 @@
       // money and power, so a team sprinting on high R&D drains its treasury and grid — which
       // is usually what eventually trips the balance gate above.
       if (advance > 0) {
-        const cost = { treasury: -Math.round(advance / 2.5), energy: -Math.round(advance / 3.5) };
+        const cost = { treasury: -Math.round(advance / 2.0), energy: -Math.round(advance / 2.8) };
         this._applyEffects(team, cost);
         const costNote = `Development upkeep: ${cost.treasury} treasury, ${cost.energy} energy.`;
         note = note ? note + ' ' + costNote : null; // only surfaced when something else is already wrong

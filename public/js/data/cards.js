@@ -1,4 +1,5 @@
-// 152 policy cards (stage-specific + general fallback).
+// 164 policy cards (stage-specific + general fallback; some carry probabilistic gamble options).
+// A gamble option has no `effects`: its outcome lives entirely in gamble.success / gamble.failure.
 window.GAME_DATA = window.GAME_DATA || {};
 window.GAME_DATA.cards = [
   {
@@ -5093,5 +5094,527 @@ window.GAME_DATA.cards = [
     "discussionPrompt": "Who should pay to clean up a shared commons that everyone contributed to polluting?",
     "educationalNote": "Orbital debris is a textbook tragedy of the commons: no single actor caused it, and no single actor can fix it.",
     "stage": "any"
+  },
+  {
+    "id": "gam-ai1",
+    "domain": "ai",
+    "stage": "mid",
+    "title": "The Untested Training Run",
+    "situation": "Your lab wants to spend the whole year's compute on one enormous training run. Nobody knows if it will converge.",
+    "question": "Bet the year’s compute on a single run?",
+    "left": {
+      "label": "Bet everything on the run",
+      "gamble": {
+        "chance": 0.55,
+        "success": {
+          "rdCapacity": 14,
+          "reputation": 6,
+          "treasury": -6
+        },
+        "failure": {
+          "rdCapacity": -12,
+          "treasury": -10,
+          "politicalSupport": -5
+        },
+        "successLabel": "The model converged — a genuine leap",
+        "failureLabel": "It diverged; a year of compute is gone"
+      },
+      "stance": "compete"
+    },
+    "right": {
+      "label": "Run three smaller, safer models",
+      "effects": {
+        "rdCapacity": 3,
+        "treasury": -3
+      },
+      "stance": null
+    },
+    "tags": [
+      "risk",
+      "compute",
+      "ai"
+    ],
+    "severity": 3,
+    "discussionPrompt": "When is a moonshot good science, and when is it just an expensive gamble with public money?",
+    "educationalNote": "Frontier training runs are close to irreversible bets: the compute is spent whether or not the model works."
+  },
+  {
+    "id": "gam-space1",
+    "domain": "space",
+    "stage": "mid",
+    "title": "Launch Into the Weather Window",
+    "situation": "The weather forecast is marginal. The next launch window is eight months away.",
+    "question": "Launch into marginal weather?",
+    "left": {
+      "label": "Launch now",
+      "gamble": {
+        "chance": 0.6,
+        "success": {
+          "rdCapacity": 13,
+          "reputation": 8,
+          "politicalSupport": 6
+        },
+        "failure": {
+          "rdCapacity": -14,
+          "treasury": -12,
+          "publicWelfare": -6
+        },
+        "successLabel": "Clean launch — the mission is flying",
+        "failureLabel": "Vehicle lost on ascent"
+      },
+      "stance": null
+    },
+    "right": {
+      "label": "Wait for the next window",
+      "effects": {
+        "treasury": -5,
+        "rdCapacity": -3,
+        "politicalSupport": -2
+      },
+      "stance": null
+    },
+    "tags": [
+      "risk",
+      "safety",
+      "space"
+    ],
+    "severity": 3,
+    "discussionPrompt": "Who should carry the decision when schedule pressure meets an engineer’s doubt?",
+    "educationalNote": "Launch-window pressure has contributed to several historical failures, including Challenger."
+  },
+  {
+    "id": "gam-semi1",
+    "domain": "semiconductors",
+    "stage": "mid",
+    "title": "The Yield Gamble",
+    "situation": "Skipping validation reaches market two quarters early — if the yield holds.",
+    "question": "Skip validation to reach market first?",
+    "left": {
+      "label": "Ship early, validate later",
+      "gamble": {
+        "chance": 0.5,
+        "success": {
+          "treasury": 14,
+          "rdCapacity": 10,
+          "reputation": 5
+        },
+        "failure": {
+          "treasury": -14,
+          "reputation": -10,
+          "rdCapacity": -8
+        },
+        "successLabel": "Yields held — you took the market",
+        "failureLabel": "Mass recall; the node is a write-off"
+      },
+      "stance": "compete"
+    },
+    "right": {
+      "label": "Complete validation first",
+      "effects": {
+        "rdCapacity": -3,
+        "treasury": -4,
+        "reputation": 3
+      },
+      "stance": null
+    },
+    "tags": [
+      "risk",
+      "yield",
+      "semiconductors"
+    ],
+    "severity": 3,
+    "discussionPrompt": "Is shipping unvalidated hardware ever an acceptable commercial risk?",
+    "educationalNote": "Silicon defects surface only at volume, when recall is most expensive."
+  },
+  {
+    "id": "gam-energy1",
+    "domain": "energy",
+    "stage": "mid",
+    "title": "Run the Reactor Past Schedule",
+    "situation": "Deferring the reactor outage keeps the grid comfortable through winter. The margin is thin but legal.",
+    "question": "Defer the maintenance outage?",
+    "left": {
+      "label": "Defer the outage",
+      "gamble": {
+        "chance": 0.65,
+        "success": {
+          "energy": 12,
+          "treasury": 8,
+          "politicalSupport": 4
+        },
+        "failure": {
+          "energy": -14,
+          "publicWelfare": -10,
+          "politicalSupport": -8
+        },
+        "successLabel": "It held — a comfortable winter",
+        "failureLabel": "Forced shutdown and rolling blackouts"
+      },
+      "stance": null
+    },
+    "right": {
+      "label": "Take the outage on schedule",
+      "effects": {
+        "energy": -6,
+        "publicWelfare": -3,
+        "security": 4
+      },
+      "stance": null
+    },
+    "tags": [
+      "risk",
+      "grid",
+      "safety"
+    ],
+    "severity": 3,
+    "discussionPrompt": "How thin a safety margin is acceptable when the downside is a blackout?",
+    "educationalNote": "Deferred maintenance is a classic hidden risk: cheap until precisely the moment it is not."
+  },
+  {
+    "id": "gam-climate1",
+    "domain": "climate",
+    "stage": "mid",
+    "title": "The Unproven Capture Plant",
+    "situation": "A first-of-a-kind capture plant could transform your emissions — or never reach spec.",
+    "question": "Build the first-of-a-kind plant?",
+    "left": {
+      "label": "Build it",
+      "gamble": {
+        "chance": 0.45,
+        "success": {
+          "environment": 15,
+          "reputation": 9,
+          "rdCapacity": 6
+        },
+        "failure": {
+          "treasury": -14,
+          "environment": -5,
+          "politicalSupport": -7
+        },
+        "successLabel": "It works at scale — a world first",
+        "failureLabel": "The plant never reached spec"
+      },
+      "stance": null
+    },
+    "right": {
+      "label": "Buy proven offsets instead",
+      "effects": {
+        "environment": 4,
+        "treasury": -5,
+        "reputation": -2
+      },
+      "stance": null
+    },
+    "tags": [
+      "risk",
+      "carbon-removal",
+      "funding"
+    ],
+    "severity": 3,
+    "discussionPrompt": "Should public money fund technologies that will probably fail but might be transformative?",
+    "educationalNote": "First-of-a-kind industrial plants historically underperform their design specification."
+  },
+  {
+    "id": "gam-quantum1",
+    "domain": "quantum",
+    "stage": "mid",
+    "title": "Bet on the Qubit Architecture",
+    "situation": "You must commit the whole programme to one qubit architecture. Only one will scale.",
+    "question": "Commit everything to your architecture?",
+    "left": {
+      "label": "Go all-in on your bet",
+      "gamble": {
+        "chance": 0.5,
+        "success": {
+          "rdCapacity": 16,
+          "reputation": 8
+        },
+        "failure": {
+          "rdCapacity": -13,
+          "treasury": -8,
+          "reputation": -5
+        },
+        "successLabel": "You picked the winning architecture",
+        "failureLabel": "You backed the dead end"
+      },
+      "stance": "compete"
+    },
+    "right": {
+      "label": "Hedge across two platforms",
+      "effects": {
+        "rdCapacity": 2,
+        "treasury": -9
+      },
+      "stance": null
+    },
+    "tags": [
+      "risk",
+      "strategy",
+      "quantum"
+    ],
+    "severity": 3,
+    "discussionPrompt": "Is hedging across technologies prudent, or just a way to be second at everything?",
+    "educationalNote": "Quantum computing has no settled hardware winner; national programmes are making exactly this bet."
+  },
+  {
+    "id": "gam-biotech1",
+    "domain": "biotech",
+    "stage": "mid",
+    "title": "The Accelerated Trial",
+    "situation": "Compressing the trial puts the therapy in patients a year early — or hides a fatal side effect.",
+    "question": "Compress the trial timeline?",
+    "left": {
+      "label": "Compress the timeline",
+      "gamble": {
+        "chance": 0.55,
+        "success": {
+          "rdCapacity": 12,
+          "publicWelfare": 8,
+          "reputation": 6
+        },
+        "failure": {
+          "publicWelfare": -14,
+          "reputation": -10,
+          "politicalSupport": -6
+        },
+        "successLabel": "Safe and effective — lives saved early",
+        "failureLabel": "A fatal side effect emerged post-approval"
+      },
+      "stance": null
+    },
+    "right": {
+      "label": "Keep the full timeline",
+      "effects": {
+        "publicWelfare": 4,
+        "rdCapacity": -4
+      },
+      "stance": null
+    },
+    "tags": [
+      "risk",
+      "clinical",
+      "ethics"
+    ],
+    "severity": 3,
+    "discussionPrompt": "How many statistical lives is a year of earlier access worth?",
+    "educationalNote": "Accelerated approval trades certainty for speed, and the cost lands on patients."
+  },
+  {
+    "id": "gam-robotics1",
+    "domain": "robotics",
+    "stage": "mid",
+    "title": "Deploy Before Full Validation",
+    "situation": "The fleet passes in simulation but has thin real-world mileage. Deploying now puts you a year ahead.",
+    "question": "Deploy on public roads now?",
+    "left": {
+      "label": "Deploy now",
+      "gamble": {
+        "chance": 0.55,
+        "success": {
+          "rdCapacity": 12,
+          "treasury": 10,
+          "reputation": 5
+        },
+        "failure": {
+          "publicWelfare": -13,
+          "reputation": -11,
+          "politicalSupport": -7
+        },
+        "successLabel": "A clean safety record so far",
+        "failureLabel": "A fatal incident in week three"
+      },
+      "stance": "compete"
+    },
+    "right": {
+      "label": "Extend closed testing",
+      "effects": {
+        "rdCapacity": -3,
+        "treasury": -5,
+        "publicWelfare": 3
+      },
+      "stance": null
+    },
+    "tags": [
+      "risk",
+      "safety",
+      "automation"
+    ],
+    "severity": 3,
+    "discussionPrompt": "Who consented to the risk when an unproven system is deployed in public space?",
+    "educationalNote": "Simulation coverage systematically under-represents rare real-world edge cases."
+  },
+  {
+    "id": "gam-materials1",
+    "domain": "materials",
+    "stage": "mid",
+    "title": "Scale Straight From the Lab",
+    "situation": "It works at gram scale. Skipping the pilot plant saves two years.",
+    "question": "Skip the pilot plant?",
+    "left": {
+      "label": "Scale straight up",
+      "gamble": {
+        "chance": 0.45,
+        "success": {
+          "rdCapacity": 14,
+          "treasury": 12,
+          "reputation": 6
+        },
+        "failure": {
+          "treasury": -15,
+          "rdCapacity": -10,
+          "environment": -6
+        },
+        "successLabel": "It scaled — you own the process",
+        "failureLabel": "The process failed at volume"
+      },
+      "stance": null
+    },
+    "right": {
+      "label": "Build the pilot plant first",
+      "effects": {
+        "treasury": -6,
+        "rdCapacity": 2,
+        "security": 3
+      },
+      "stance": null
+    },
+    "tags": [
+      "risk",
+      "scale-up",
+      "materials"
+    ],
+    "severity": 3,
+    "discussionPrompt": "Why do so many materials that work in the lab never survive industrial scale-up?",
+    "educationalNote": "Scale-up failure is the single most common way promising materials die."
+  },
+  {
+    "id": "gam-gen1",
+    "domain": "general",
+    "stage": "any",
+    "title": "The Emergency Bond",
+    "situation": "A large sovereign bond would fund the whole programme — if the auction is well received.",
+    "question": "Go to the bond market now?",
+    "left": {
+      "label": "Issue the bond",
+      "gamble": {
+        "chance": 0.6,
+        "success": {
+          "treasury": 16,
+          "politicalSupport": 4
+        },
+        "failure": {
+          "treasury": -10,
+          "politicalSupport": -8,
+          "reputation": -6
+        },
+        "successLabel": "Heavily oversubscribed",
+        "failureLabel": "The auction failed publicly"
+      },
+      "stance": null
+    },
+    "right": {
+      "label": "Fund it from reserves",
+      "effects": {
+        "treasury": -8,
+        "security": -3,
+        "politicalSupport": 2
+      },
+      "stance": null
+    },
+    "tags": [
+      "risk",
+      "funding",
+      "economy"
+    ],
+    "severity": 2,
+    "discussionPrompt": "How much should a technology programme depend on market confidence?",
+    "educationalNote": "A failed sovereign auction raises borrowing costs across the whole economy."
+  },
+  {
+    "id": "gam-gen2",
+    "domain": "general",
+    "stage": "any",
+    "title": "Poach the Rival’s Team",
+    "situation": "A rival's entire senior research group can be hired at once.",
+    "question": "Hire the whole group?",
+    "left": {
+      "label": "Take the whole team",
+      "gamble": {
+        "chance": 0.5,
+        "success": {
+          "rdCapacity": 13,
+          "treasury": -8
+        },
+        "failure": {
+          "reputation": -12,
+          "treasury": -12,
+          "politicalSupport": -4
+        },
+        "successLabel": "They settled in and delivered",
+        "failureLabel": "Litigation, and half of them left again"
+      },
+      "stance": "compete"
+    },
+    "right": {
+      "label": "Recruit slowly and openly",
+      "effects": {
+        "rdCapacity": 3,
+        "reputation": 3,
+        "treasury": -4
+      },
+      "stance": "open"
+    },
+    "tags": [
+      "risk",
+      "talent",
+      "competition"
+    ],
+    "severity": 2,
+    "discussionPrompt": "Is mass poaching legitimate competition or predatory behaviour?",
+    "educationalNote": "Acqui-hires frequently fail because the culture that produced the results does not transfer."
+  },
+  {
+    "id": "gam-gen3",
+    "domain": "general",
+    "stage": "any",
+    "title": "Announce Before You Are Sure",
+    "situation": "Announcing now locks in funding and prestige. Replication is still incomplete.",
+    "question": "Announce the result now?",
+    "left": {
+      "label": "Announce it",
+      "gamble": {
+        "chance": 0.5,
+        "success": {
+          "reputation": 11,
+          "politicalSupport": 8,
+          "treasury": 6
+        },
+        "failure": {
+          "reputation": -14,
+          "politicalSupport": -8,
+          "rdCapacity": -6
+        },
+        "successLabel": "Replication confirmed it",
+        "failureLabel": "It did not replicate — public retraction"
+      },
+      "stance": null
+    },
+    "right": {
+      "label": "Wait for replication",
+      "effects": {
+        "reputation": 3,
+        "politicalSupport": -3,
+        "treasury": -3
+      },
+      "stance": null
+    },
+    "tags": [
+      "risk",
+      "reproducibility",
+      "science"
+    ],
+    "severity": 3,
+    "discussionPrompt": "What does a premature announcement cost, beyond the people who made it?",
+    "educationalNote": "Premature announcements damage trust in the whole field, not just the lab responsible."
   }
 ];

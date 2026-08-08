@@ -265,8 +265,78 @@ para(tf, "If your national balance collapses,", 28, INK, space_after=2,
 para(tf, "progress stops — or goes backwards.", 30, RGBColor(0xB4, 0x3A, 0x2A), bold=True,
      align=PP_ALIGN.CENTER)
 
+# ------------------------------------------------------ 7b. How progress rises and falls
+s = new("07", "How Progress Rises & Falls")
+
+# left column: what moves it up
+up = s.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(2.25),
+                        Inches(5.85), Inches(2.05))
+solid(up, RGBColor(0xE7, 0xF5, 0xEC))
+up.line.color.rgb = RGBColor(0x3E, 0xA0, 0x62); up.line.width = Pt(2)
+up.shadow.inherit = False
+tf = up.text_frame; tf.word_wrap = True
+tf.margin_left = tf.margin_right = Inches(0.28); tf.margin_top = Inches(0.18)
+tf.vertical_anchor = MSO_ANCHOR.TOP
+p0 = tf.paragraphs[0]; p0.space_after = Pt(6)
+r = p0.add_run(); r.text = "▲  RISES"
+r.font.size = Pt(26); r.font.bold = True
+r.font.color.rgb = RGBColor(0x1E, 0x6E, 0x3C); r.font.name = "Calibri"
+for line in ["Each round you gain about", "R&D Capacity ÷ 5"]:
+    p1 = tf.add_paragraph(); p1.space_after = Pt(2)
+    rr = p1.add_run(); rr.text = line
+    rr.font.size = Pt(22 if "÷" not in line else 26)
+    rr.font.bold = "÷" in line
+    rr.font.color.rgb = INK if "÷" not in line else RGBColor(0x1E, 0x6E, 0x3C)
+    rr.font.name = "Calibri"
+
+# right column: what stops or reverses it
+down = s.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(6.95), Inches(2.25),
+                          Inches(5.6), Inches(2.05))
+solid(down, RGBColor(0xFB, 0xEA, 0xE8))
+down.line.color.rgb = RGBColor(0xB4, 0x3A, 0x2A); down.line.width = Pt(2)
+down.shadow.inherit = False
+tf = down.text_frame; tf.word_wrap = True
+tf.margin_left = tf.margin_right = Inches(0.28); tf.margin_top = Inches(0.18)
+tf.vertical_anchor = MSO_ANCHOR.TOP
+p0 = tf.paragraphs[0]; p0.space_after = Pt(6)
+r = p0.add_run(); r.text = "▼  STOPS & FALLS"
+r.font.size = Pt(26); r.font.bold = True
+r.font.color.rgb = RGBColor(0x8E, 0x2A, 0x1E); r.font.name = "Calibri"
+for line in ["Any stat in danger freezes it.", "Building also costs money & energy."]:
+    p1 = tf.add_paragraph(); p1.space_after = Pt(2)
+    rr = p1.add_run(); rr.text = line
+    rr.font.size = Pt(20); rr.font.color.rgb = INK; rr.font.name = "Calibri"
+
+# the rule table, as four coloured chips
+chips = [
+    ("0 stats in danger", "full speed", RGBColor(0x3E, 0xA0, 0x62), RGBColor(0xE7, 0xF5, 0xEC)),
+    ("1 stat in danger", "FROZEN", RGBColor(0xD9, 0x9A, 0x1E), RGBColor(0xFD, 0xF4, 0xDF)),
+    ("2 stats in danger", "GOES BACKWARDS", RGBColor(0xB4, 0x3A, 0x2A), RGBColor(0xFB, 0xEA, 0xE8)),
+    ("Very unbalanced", "extra loss", RGBColor(0x8E, 0x2A, 0x1E), RGBColor(0xFB, 0xEA, 0xE8)),
+]
+CWc = Inches(2.83)
+for i, (cond, effect, edge, fill) in enumerate(chips):
+    x = Inches(0.8) + i * (CWc + Inches(0.13))
+    box = s.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, x, Inches(4.62), CWc, Inches(1.35))
+    solid(box, fill)
+    box.line.color.rgb = edge; box.line.width = Pt(1.75)
+    box.shadow.inherit = False
+    tf = box.text_frame; tf.word_wrap = True
+    tf.margin_left = tf.margin_right = Inches(0.12)
+    tf.vertical_anchor = MSO_ANCHOR.MIDDLE
+    p0 = tf.paragraphs[0]; p0.alignment = PP_ALIGN.CENTER; p0.space_after = Pt(3)
+    r = p0.add_run(); r.text = cond
+    r.font.size = Pt(17); r.font.color.rgb = SLATE; r.font.name = "Calibri"
+    p1 = tf.add_paragraph(); p1.alignment = PP_ALIGN.CENTER
+    r1 = p1.add_run(); r1.text = effect
+    r1.font.size = Pt(21); r1.font.bold = True; r1.font.color.rgb = edge; r1.font.name = "Calibri"
+
+tf = textbox(s, Inches(0.8), Inches(6.3), Inches(11.75), Inches(0.6))
+para(tf, "You cannot sprint out of a collapsing country — repair it first.", 22, NAVY,
+     bold=True, align=PP_ALIGN.CENTER, first=True)
+
 # ------------------------------------------------------------------ 8. Winning
-s = new("07", "Winning")
+s = new("08", "Winning")
 bullets(s, [
     "Fast technology growth matters.",
     "But an unstable country cannot sustain innovation.",

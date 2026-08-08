@@ -298,16 +298,27 @@
           return `<div class="pcard-resolved">
             <div class="r-title">${esc(team.pendingCard.title)}</div>
             <div class="r-choice">✅ ${esc(team.choice.label)}${team.choice.stance ? ' · ' + STANCE_LABEL[team.choice.stance] : ''}</div>
+            ${team.choice.gambleResult ? `<div class="r-gamble ${team.choice.gambleResult.won ? 'won' : 'lost'}">🎲 ${Math.round(team.choice.gambleResult.chance * 100)}% bet — ${team.choice.gambleResult.won ? 'SUCCESS' : 'FAILED'}: ${esc(team.choice.gambleResult.label)}</div>` : ''}
             <div class="r-effects">${badges}</div>
             ${team.choice.rationale ? `<div class="rationale-box"><label>Rationale</label><div style="font-size:0.72rem;color:#cdd3ef;">${esc(team.choice.rationale)}</div></div>` : ''}
           </div>`;
         }
         const card = team.pendingCard;
         if (!card) return `<div class="tp-idle">Waiting for next card…</div>`;
-        const previewBadges = (effects) => pickPreviewEffects(effects).map(([k, v]) => {
+        const badges = (effects) => pickPreviewEffects(effects).map(([k, v]) => {
           const m = statMeta(k);
           return `<span class="opt-preview ${v >= 0 ? 'pos' : 'neg'}">${m ? m.icon : ''} ${fmtSigned(v)}</span>`;
         }).join('');
+        // A gamble shows the odds and BOTH branches — the room can weigh the bet, but nobody
+        // knows which way it lands until the choice is committed.
+        const previewBadges = (opt) => {
+          if (!opt.gamble) return badges(opt.effects);
+          const pct = Math.round(opt.gamble.chance * 100);
+          // Kept to two tight lines: the odds ride on the branch tags themselves rather than
+          // taking a third line, which would squeeze the card text above.
+          return `<span class="opt-preview-line"><span class="opt-gamble">🎲</span><span class="og-tag win">${pct}%</span>${badges(opt.gamble.success)}</span>
+            <span class="opt-preview-line"><span class="og-tag lose">${100 - pct}%</span>${badges(opt.gamble.failure)}</span>`;
+        };
         return `<div class="pcard">
             <div class="pcard-title">${esc(card.title)}</div>
             <div class="pcard-situation">${esc(card.situation)}</div>
@@ -316,11 +327,11 @@
           <div class="pcard-options">
             <button class="pcard-opt left" onclick="UI.resolve('${teamId}','left')">
               <span class="opt-arrow">◀</span> ${esc(card.left.label)}
-              <span class="opt-preview-row">${previewBadges(card.left.effects)}</span>
+              <span class="opt-preview-row${card.left.gamble ? " is-gamble" : ""}">${previewBadges(card.left)}</span>
             </button>
             <button class="pcard-opt right" onclick="UI.resolve('${teamId}','right')">
               ${esc(card.right.label)} <span class="opt-arrow">▶</span>
-              <span class="opt-preview-row">${previewBadges(card.right.effects)}</span>
+              <span class="opt-preview-row${card.right.gamble ? " is-gamble" : ""}">${previewBadges(card.right)}</span>
             </button>
           </div>
           <div class="rationale-box">
@@ -625,34 +636,37 @@
       const isLast = state.round >= state.maxRounds;
       const contBtn = `<div class="debrief-actions"><button class="cb-btn primary" onclick="UI.closeSummary()">${isLast ? '🏁 Finish Game → Final Debrief' : 'Continue → Round ' + (state.round + 1)}</button></div>`;
 
-      if (s.crisis) {
-        el.innerHTML = `<div class="overlay-box"><div class="summary-box">
-          <div class="summary-title">${s.crisis.icon} Crisis Resolved: ${esc(s.crisis.resource)}</div>
-          <div class="summary-list">
-            ${s.choices.map(c => {
-              const eff = Object.entries(c.effects || {}).map(([k, v]) => {
-                const m = STAT_META.find(mm => mm.key === k);
-                return `<span class="eff-badge ${v >= 0 ? 'pos' : 'neg'}">${m ? m.icon : ''} ${fmtSigned(v)}</span>`;
-              }).join(' ');
-              const won = s.rpsWinner === c.teamId ? ' 🏆' : '';
-              return `<div class="summary-item"><b>${esc(c.teamName)}${won}</b> — ${CRISIS_STANCE_ICON[c.stance] || ''} ${esc(c.stance)}<br>${eff}</div>`;
-            }).join('')}
-          </div>
-          ${balHtml}
-          ${contBtn}
-        </div></div>`;
-        return;
-      }
+      // A resource conflict now happens *within* a round, so its result is shown as a block
+      // above that round's card decisions rather than replacing them.
+      const co = s.crisisOutcome;
+      const crisisHtml = co ? `<div class="summary-crisis">
+        <div class="sc-title">${co.resource.icon || '⚔️'} Resource conflict: ${esc(co.resource.resource)}</div>
+        <div class="summary-list">
+          ${Engine.state.teamOrder.map(id => {
+            const eff = Object.entries(co.effectsApplied[id] || {}).map(([k, v]) => {
+              const m = statMeta(k);
+              return `<span class="eff-badge ${v >= 0 ? 'pos' : 'neg'}">${m ? m.icon : ''} ${fmtSigned(v)}</span>`;
+            }).join(' ');
+            const won = co.rpsWinner === id ? ' 🏆' : '';
+            const stance = co.choices[id];
+            return `<div class="summary-item"><b>${esc(Engine.state.teams[id].name)}${won}</b> — ${CRISIS_STANCE_ICON[stance] || ''} ${esc(stance)}<br>${eff}</div>`;
+          }).join('')}
+        </div>
+      </div>` : '';
 
       const ixHtml = s.interactionLog.length ? `<div class="summary-interactions">
         ${s.interactionLog.map(ix => `<div class="ix-row">🔗 <b>${esc(ix.rule.replace(/_/g, ' '))}:</b> ${esc(ix.description)}</div>`).join('')}
       </div>` : '';
 
-      const typeMeta = EVENT_TYPE_META[s.situation.type] || EVENT_TYPE_META.shock;
+      const typeMeta = EVENT_TYPE_META[(s.situation && s.situation.type) || 'shock'] || EVENT_TYPE_META.shock;
+      const sumTitle = s.situation
+        ? (s.situation.type === 'resource_conflict' ? s.situation.resource : s.situation.title)
+        : 'Round complete';
       el.innerHTML = `<div class="overlay-box"><div class="summary-box">
-        <div class="summary-title">${typeMeta.icon} Round ${s.round} Summary — ${esc(s.situation.title)}</div>
+        <div class="summary-title">${typeMeta.icon} Round ${s.round} Summary — ${esc(sumTitle)}</div>
+        ${crisisHtml}
         <div class="summary-list">
-          ${s.choices.map(c => `<div class="summary-item"><b>${esc(c.teamName)}</b> — ${esc(c.cardTitle)}<br>Chose: <i>${esc(c.choice.label)}</i>${c.choice.rationale ? '<br><span style="color:#8a91ad;">"' + esc(c.choice.rationale) + '"</span>' : ''}</div>`).join('')}
+          ${s.choices.map(c => `<div class="summary-item"><b>${esc(c.teamName)}</b> — ${esc(c.cardTitle)}<br>Chose: <i>${esc(c.choice.label)}</i>${c.choice.gambleResult ? ` <b class="${c.choice.gambleResult.won ? 'sg-won' : 'sg-lost'}">🎲 ${Math.round(c.choice.gambleResult.chance * 100)}% bet ${c.choice.gambleResult.won ? 'SUCCEEDED' : 'FAILED'}</b>` : ''}${c.choice.rationale ? '<br><span style="color:#8a91ad;">"' + esc(c.choice.rationale) + '"</span>' : ''}</div>`).join('')}
         </div>
         ${ixHtml}
         ${balHtml}
