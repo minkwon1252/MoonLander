@@ -88,9 +88,21 @@ Two further pressures make fast growth genuinely hard:
 A team must recover its weak stats before development continues. Live status shows as a badge on each panel,
 and every round summary names exactly which stats blocked or reversed progress.
 
-📐 **[docs/TECH_ADVANCE_FORMULA.md](docs/TECH_ADVANCE_FORMULA.md)** has the complete equation, worked
-examples, edge cases, and a set of hints to give players when they ask how progress is calculated —
-keep it open while facilitating.
+📐 **The complete equation** — with worked examples, edge cases, and graded hints to give players when
+they ask how progress is calculated — is available in four formats, all generated from the same source:
+
+| Format | File | Best for |
+|---|---|---|
+| Markdown | [`docs/TECH_ADVANCE_FORMULA.md`](docs/TECH_ADVANCE_FORMULA.md) | reading on GitHub |
+| **EPUB** | [`docs/TECH_ADVANCE_FORMULA.epub`](docs/TECH_ADVANCE_FORMULA.epub) | **e-readers** (reflowable, 27-entry TOC) |
+| **PDF** | [`docs/TECH_ADVANCE_FORMULA.pdf`](docs/TECH_ADVANCE_FORMULA.pdf) | printing, tablets, tables render best |
+| HTML | [`docs/TECH_ADVANCE_FORMULA.html`](docs/TECH_ADVANCE_FORMULA.html) | any browser, offline |
+
+Rebuild them after editing the Markdown with:
+
+```bash
+calibre-debug tools/build_docs.py     # calibre ships the markdown module python3 lacks
+```
 
 ## Global Trust
 
@@ -331,7 +343,8 @@ public/
 server.js              # optional zero-dependency static file server (npm start)
 tools/build-catalogs.js  # regenerates the two review CSVs from public/js/data/
 tools/build_slides.py    # regenerates the pre-game PPTX deck
-docs/TECH_ADVANCE_FORMULA.md      # the progress equation, for answering "how is this calculated?"
+tools/build_docs.py      # regenerates the EPUB / PDF / HTML from docs/*.md
+docs/TECH_ADVANCE_FORMULA.{md,epub,pdf,html}   # the progress equation, in four formats
 Tech_Race_Quick_Guide.pptx        # 9-slide pre-game briefing
 policy_decisions_catalog.csv      # all 152 policy decisions, for review
 international_events_catalog.csv  # all 39 global events & resource conflicts, for review

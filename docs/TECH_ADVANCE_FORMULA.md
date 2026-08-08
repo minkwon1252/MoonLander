@@ -27,13 +27,16 @@ interaction effects have been applied.
 ### Step 0 — Definitions
 
 ```
-S       = the eight stats {treasury, energy, politicalSupport, publicWelfare,
-                           rdCapacity, reputation, security, environment}
-T(k)    = danger threshold of stat k          (see table in §3)
-D       = |{ k ∈ S : stat(k) <  T(k)     }|   "danger count"
-N       = |{ k ∈ S : stat(k) <  T(k) + 5 }|   "near-miss count" (only used when D = 0)
-spread  = max(stat) − min(stat)  over all eight stats
-P       = current roadmap progress (0–100)
+The eight stats: treasury, energy, politicalSupport, publicWelfare,
+                 rdCapacity, reputation, security, environment
+
+T(k)   = danger threshold of stat k  (see section 3)
+D      = DANGER COUNT     stats below their threshold
+N      = NEAR-MISS COUNT  stats below threshold + 5
+                          (only counted when D = 0)
+spread = highest stat - lowest stat, over all eight
+P      = current roadmap progress, 0 to 100
+A      = this round's advance (what we solve for)
 ```
 
 > **Note:** all eight stats have a threshold — **R&D Capacity included**. Letting R&D itself fall
@@ -42,22 +45,22 @@ P       = current roadmap progress (0–100)
 ### Step 1 — Base rate
 
 ```
-A ← rdCapacity / 5
+A = rdCapacity / 5
 ```
 
 ### Step 2 — The balance gate (this is the important one)
 
 ```
-if      D = 1        →  A ← 0                 status = BLOCKED
-else if D ≥ 2        →  A ← −(D − 1) × 5      status = REGRESSING
-else if D = 0 and N > 0 →  A ← A / 2          status = STRAINED
-else                 →  A unchanged           status = STABLE
+if D = 1                  A = 0                 status = BLOCKED
+else if D >= 2            A = -(D - 1) * 5      status = REGRESSING
+else if D = 0 and N > 0   A = A / 2             status = STRAINED
+else                      A stays as it is      status = STABLE
 ```
 
 ### Step 3 — Imbalance penalty
 
 ```
-if spread > 45  →  A ← A − 3
+if spread > 45    A = A - 3
 ```
 
 Applies in **every** status, including REGRESSING (making it worse). It is the one penalty that
@@ -66,23 +69,23 @@ can bite while all eight stats are still technically safe.
 ### Step 4 — Round, then enforce the freeze
 
 ```
-A ← round(A)                  ← the only rounding; everything above is exact arithmetic
-if status = BLOCKED  →  A ← 0 ← so "blocked" means frozen, never negative
+A = round(A)              the only rounding; all above is exact
+if status = BLOCKED       A = 0   (frozen, never negative)
 ```
 
-This ordering matters: a blocked team with a huge spread still moves **0**, not −3.
+This ordering matters: a blocked team with a huge spread still moves **0**, not -3.
 
 ### Step 5 — Apply
 
 ```
-P ← clamp(P + A, 0, 100)
+P = clamp(P + A, 0, 100)
 ```
 
 ### Step 6 — Development upkeep (only if A > 0)
 
 ```
-treasury ← treasury − round(A / 2.0)
-energy   ← energy   − round(A / 2.8)
+treasury = treasury - round(A / 2.0)
+energy   = energy   - round(A / 2.8)
 ```
 
 Building is not free. This is usually what eventually drags a fast-moving team into the danger
@@ -90,22 +93,26 @@ zone in step 2 — the mechanism is self-limiting by design.
 
 ### The whole thing as one expression
 
-For the common case (`D = 0`, no near-miss, `spread ≤ 45`):
+For the common case (`D = 0`, no near-miss, `spread <= 45`):
 
 ```
-ΔP = round( rdCapacity / 5 )
-cost = ( −round(ΔP / 2.0) treasury , −round(ΔP / 2.8) energy )
+delta = round( rdCapacity / 5 )
+cost = ( -round(delta / 2.0) treasury , -round(delta / 2.8) energy )
 ```
 
 Full form:
 
 ```
-                ⎧ 0                          if D = 1
-ΔP = round(  A  ⎨ −(D−1)×5                   if D ≥ 2      ) − (3 if spread > 45 else 0)
-                ⎪ (rdCapacity/5) / 2         if D = 0, N > 0
-                ⎩ rdCapacity/5               otherwise
+             0                        if D = 1          (BLOCKED)
+             -(D - 1) * 5             if D >= 2         (REGRESSING)
+   A    =    (rdCapacity / 5) / 2     if D = 0, N > 0   (STRAINED)
+             rdCapacity / 5           otherwise         (STABLE)
+
+   A    =    A - 3                    if spread > 45
+
+  delta =    round(A)
+  delta =    0                        if status is BLOCKED
 ```
-…then forced to 0 if the status is BLOCKED.
 
 ---
 
@@ -132,23 +139,23 @@ Full form:
 | Stats in danger | Badge | Effect on roadmap |
 |---|---|---|
 | 0, all clear by 5+ | 🟢 **Stable** | Full rate |
-| 0, but ≥1 within 5 of a threshold | 🟡 **Strained** | **Halved** |
+| 0, but >=1 within 5 of a threshold | 🟡 **Strained** | **Halved** |
 | 1 | 🟠 **Blocked** | **Frozen at 0** |
-| 2 | 🔴 **Regressing** | **−5** |
-| 3 | 🔴 **Regressing** | **−10** |
-| 4 | 🔴 **Regressing** | **−15** |
+| 2 | 🔴 **Regressing** | **-5** |
+| 3 | 🔴 **Regressing** | **-10** |
+| 4 | 🔴 **Regressing** | **-15** |
 
 ### Base rate by R&D Capacity *(verified output)*
 
 | R&D Capacity | Advance / round | Upkeep cost |
 |---|---|---|
-| 30 | +6 | −3 treasury, −2 energy |
-| 40 | +8 | −4 treasury, −3 energy |
-| 50 | +10 | −5 treasury, −4 energy |
-| 60 | +12 | −6 treasury, −4 energy |
-| 70 | +14 | −7 treasury, −5 energy |
-| 80 | +16 | −8 treasury, −6 energy |
-| 90 | +18 | −9 treasury, −6 energy |
+| 30 | +6 | -3 treasury, -2 energy |
+| 40 | +8 | -4 treasury, -3 energy |
+| 50 | +10 | -5 treasury, -4 energy |
+| 60 | +12 | -6 treasury, -4 energy |
+| 70 | +14 | -7 treasury, -5 energy |
+| 80 | +16 | -8 treasury, -6 energy |
+| 90 | +18 | -9 treasury, -6 energy |
 
 ### Roadmap progress → stage and card difficulty
 
@@ -170,14 +177,14 @@ All figures below are actual engine output.
 ```
 A = 60/5 = 12 ,  D=0 , N=0 , spread 6
 → +12 progress  (40% → 52%)
-→ upkeep: −6 treasury, −4 energy
+→ upkeep: -6 treasury, -4 energy
 ```
 
 **B — Same team, but Public Welfare has slipped to 27** *(threshold 25, so within 5 → near-miss)*
 ```
 A = 12 → halved → 6
 → +6 progress  (40% → 46%)
-→ upkeep: −3 treasury, −2 energy
+→ upkeep: -3 treasury, -2 energy
 ```
 
 **C — Public Welfare falls to 20** *(now genuinely below threshold)*
@@ -189,26 +196,26 @@ D = 1 → BLOCKED
 
 **D — Welfare 20 *and* Treasury 15**
 ```
-D = 2 → A = −(2−1)×5 = −5
-→ −5 progress  (40% → 35%)
+D = 2 → A = -(2-1)*5 = -5
+→ -5 progress  (40% → 35%)
 ```
 
 **E — Three stats down (Welfare 20, Treasury 15, Energy 15)**
 ```
-D = 3 → A = −(3−1)×5 = −10
-→ −10 progress  (40% → 30%)
+D = 3 → A = -(3-1)*5 = -10
+→ -10 progress  (40% → 30%)
 ```
 
 **F — Imbalance alone, nothing in danger** (R&D 60, Treasury 40, Energy 86)
 ```
-A = 12 , D = 0 , spread = 48 > 45 → −3
+A = 12 , D = 0 , spread = 48 > 45 → -3
 → +9 progress
 ```
 
 **G — Regressing *and* badly unbalanced** (D=2, spread 80)
 ```
-A = −5 , then −3 for spread
-→ −8 progress  (40% → 32%)
+A = -5 , then -3 for spread
+→ -8 progress  (40% → 32%)
 ```
 
 ---
@@ -218,13 +225,13 @@ A = −5 , then −3 for spread
 - **Blocked never goes negative.** A blocked team with a 75-point spread still moves exactly 0 —
   the freeze is applied *after* the spread penalty.
 - **Upkeep is charged on the advance, not on the progress actually gained.** A team at 96% that
-  earns +12 is clamped to 100% (gaining only 4) but still pays the full −6 / −4 upkeep. Finishing
+  earns +12 is clamped to 100% (gaining only 4) but still pays the full -6 / -4 upkeep. Finishing
   the roadmap is expensive.
 - **No upkeep when frozen or regressing.** Upkeep only applies when `A > 0`.
 - **Rounding happens once**, at the very end of step 4 — not at each intermediate step. So R&D 61
   strained with a spread penalty is `61/5 = 12.2 → 6.1 → 3.1 → round → 3`.
 - **Every stat is clamped to 0–100** and rounded whenever it changes.
-- **R&D Capacity is itself gate-able.** Below 20 it is a danger stat *and* the base rate is ≤4.
+- **R&D Capacity is itself gate-able.** Below 20 it is a danger stat *and* the base rate is <=4.
   This is the one genuine death spiral in the game.
 
 ---
@@ -233,10 +240,10 @@ A = −5 , then −3 for spread
 
 ```
 balance = mean of all eight stats
-SCORE   = roadmapProgress × 0.5  +  balance × 0.5
+SCORE   = roadmapProgress * 0.5  +  balance * 0.5
 ```
 
-Example: roadmap 80%, all stats at 50 → `80×0.5 + 50×0.5 = 65`.
+Example: roadmap 80%, all stats at 50 → `80*0.5 + 50*0.5 = 65`.
 
 Half the score is what you built; half is the state you left the country in. A team that races to
 90% on a wrecked country and a team that keeps a perfect country at 20% both score badly.

@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>Tech Race — How Technology Advance Is Calculated</title>
+<style>
+body { font-family: Georgia, 'Times New Roman', serif; line-height: 1.55;
+       margin: 0 auto; padding: 1em; max-width: 42em; color: #111; }
+h1 { font-size: 1.7em; line-height: 1.25; border-bottom: 3px solid #1B2A5B;
+     padding-bottom: .25em; color: #1B2A5B; page-break-before: avoid; }
+h2 { font-size: 1.32em; color: #1B2A5B; margin-top: 1.6em;
+     border-bottom: 1px solid #ccc; padding-bottom: .18em; page-break-after: avoid; }
+h3 { font-size: 1.1em; color: #33406B; margin-top: 1.2em; page-break-after: avoid; }
+p, li { font-size: 1em; }
+strong { color: #000; }
+blockquote { border-left: 4px solid #D99A1E; background: #FFFBF0;
+             margin: 1em 0; padding: .6em 1em; font-style: normal; }
+code { font-family: 'DejaVu Sans Mono', Consolas, monospace; font-size: .88em;
+       background: #F2F3F7; padding: .1em .3em; border-radius: 3px; }
+pre { background: #F2F3F7; border: 1px solid #DDE0EA; border-left: 4px solid #1B2A5B;
+      border-radius: 4px; padding: .7em .9em; page-break-inside: avoid; }
+/* no horizontal scrolling on an e-reader: wrap long lines instead */
+pre code { background: none; padding: 0; font-size: .82em; display: block;
+           white-space: pre-wrap; word-wrap: break-word; overflow-wrap: break-word; }
+table { border-collapse: collapse; width: 100%; margin: 1em 0; font-size: .86em;
+        page-break-inside: avoid; }
+th, td { border: 1px solid #C4C9DA; padding: .38em .5em; text-align: left;
+         vertical-align: top; }
+th { background: #EEF1FA; color: #1B2A5B; }
+tr:nth-child(even) td { background: #FAFBFF; }
+hr { border: none; border-top: 1px solid #CCC; margin: 1.8em 0; }
+ul, ol { padding-left: 1.4em; }
+li { margin-bottom: .3em; }
+a { color: #1B2A5B; }
+</style>
+</head>
+<body>
+<h1 id="how-technology-advance-is-calculated">How Technology Advance Is Calculated</h1>
+<p><strong>Facilitator reference.</strong> Everything here is taken directly from
+<code>public/js/engine.js</code> → <code>_applyRoadmapAdvance()</code>, and every number below was produced by running
+the real engine. If someone in the room asks <em>"so how is the score actually calculated?"</em>, this is
+the answer.</p>
+<p>The last section, Hints to give players, is written to be read <em>aloud</em> —
+use it during the game without giving the whole formula away.</p>
+<hr />
+<h2 id="1-the-one-line-answer">1. The one-line answer</h2>
+<blockquote>
+<p>Each round, your roadmap gains <strong>R&amp;D Capacity ÷ 5</strong> — but only if none of your eight stats is in
+danger. One stat in danger freezes it. Two or more push it backwards.</p>
+</blockquote>
+<p>That is the honest short version and it is usually enough.</p>
+<hr />
+<h2 id="2-the-full-equation">2. The full equation</h2>
+<p>Run once per team, at the end of every round, <strong>after</strong> all event effects, card effects and
+interaction effects have been applied.</p>
+<h3 id="step-0-definitions">Step 0 — Definitions</h3>
+<pre><code>The eight stats: treasury, energy, politicalSupport, publicWelfare,
+                 rdCapacity, reputation, security, environment
+
+T(k)   = danger threshold of stat k  (see section 3)
+D      = DANGER COUNT     stats below their threshold
+N      = NEAR-MISS COUNT  stats below threshold + 5
+                          (only counted when D = 0)
+spread = highest stat - lowest stat, over all eight
+P      = current roadmap progress, 0 to 100
+A      = this round's advance (what we solve for)
+</code></pre>
+<blockquote>
+<p><strong>Note:</strong> all eight stats have a threshold — <strong>R&amp;D Capacity included</strong>. Letting R&amp;D itself fall
+below 20 both freezes the roadmap <em>and</em> shrinks the base rate.</p>
+</blockquote>
+<h3 id="step-1-base-rate">Step 1 — Base rate</h3>
+<pre><code>A = rdCapacity / 5
+</code></pre>
+<h3 id="step-2-the-balance-gate-this-is-the-important-one">Step 2 — The balance gate (this is the important one)</h3>
+<pre><code>if D = 1                  A = 0                 status = BLOCKED
+else if D &gt;= 2            A = -(D - 1) * 5      status = REGRESSING
+else if D = 0 and N &gt; 0   A = A / 2             status = STRAINED
+else                      A stays as it is      status = STABLE
+</code></pre>
+<h3 id="step-3-imbalance-penalty">Step 3 — Imbalance penalty</h3>
+<pre><code>if spread &gt; 45    A = A - 3
+</code></pre>
+<p>Applies in <strong>every</strong> status, including REGRESSING (making it worse). It is the one penalty that
+can bite while all eight stats are still technically safe.</p>
+<h3 id="step-4-round-then-enforce-the-freeze">Step 4 — Round, then enforce the freeze</h3>
+<pre><code>A = round(A)              the only rounding; all above is exact
+if status = BLOCKED       A = 0   (frozen, never negative)
+</code></pre>
+<p>This ordering matters: a blocked team with a huge spread still moves <strong>0</strong>, not -3.</p>
+<h3 id="step-5-apply">Step 5 — Apply</h3>
+<pre><code>P = clamp(P + A, 0, 100)
+</code></pre>
+<h3 id="step-6-development-upkeep-only-if-a-0">Step 6 — Development upkeep (only if A &gt; 0)</h3>
+<pre><code>treasury = treasury - round(A / 2.0)
+energy   = energy   - round(A / 2.8)
+</code></pre>
+<p>Building is not free. This is usually what eventually drags a fast-moving team into the danger
+zone in step 2 — the mechanism is self-limiting by design.</p>
+<h3 id="the-whole-thing-as-one-expression">The whole thing as one expression</h3>
+<p>For the common case (<code>D = 0</code>, no near-miss, <code>spread &lt;= 45</code>):</p>
+<pre><code>delta = round( rdCapacity / 5 )
+cost = ( -round(delta / 2.0) treasury , -round(delta / 2.8) energy )
+</code></pre>
+<p>Full form:</p>
+<pre><code>             0                        if D = 1          (BLOCKED)
+             -(D - 1) * 5             if D &gt;= 2         (REGRESSING)
+   A    =    (rdCapacity / 5) / 2     if D = 0, N &gt; 0   (STRAINED)
+             rdCapacity / 5           otherwise         (STABLE)
+
+   A    =    A - 3                    if spread &gt; 45
+
+  delta =    round(A)
+  delta =    0                        if status is BLOCKED
+</code></pre>
+<hr />
+<h2 id="3-reference-tables">3. Reference tables</h2>
+<h3 id="danger-thresholds">Danger thresholds</h3>
+<table>
+<thead>
+<tr>
+<th>Stat</th>
+<th>In danger below</th>
+<th>Warning shown</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>💰 Treasury</td>
+<td><strong>20</strong></td>
+<td>Fiscal crisis</td>
+</tr>
+<tr>
+<td>⚡ Energy / Compute</td>
+<td><strong>20</strong></td>
+<td>Power / compute shortage</td>
+</tr>
+<tr>
+<td>🔬 R&amp;D Capacity</td>
+<td><strong>20</strong></td>
+<td>Research capacity collapse</td>
+</tr>
+<tr>
+<td>🏛️ Political Support</td>
+<td><strong>25</strong></td>
+<td>Political instability</td>
+</tr>
+<tr>
+<td>❤️ Public Welfare</td>
+<td><strong>25</strong></td>
+<td>Social unrest</td>
+</tr>
+<tr>
+<td>🌐 International Reputation</td>
+<td><strong>25</strong></td>
+<td>Diplomatically isolated</td>
+</tr>
+<tr>
+<td>🛡️ Security / Sovereignty</td>
+<td><strong>25</strong></td>
+<td>Sovereignty at risk</td>
+</tr>
+<tr>
+<td>🌱 Environment</td>
+<td><strong>25</strong></td>
+<td>Environmental backlash</td>
+</tr>
+</tbody>
+</table>
+<p>"Near-miss" = within <strong>5</strong> points above the threshold (so 20–24 for a 20-threshold stat,
+25–29 for a 25-threshold stat).</p>
+<h3 id="what-each-status-does">What each status does</h3>
+<table>
+<thead>
+<tr>
+<th>Stats in danger</th>
+<th>Badge</th>
+<th>Effect on roadmap</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0, all clear by 5+</td>
+<td>🟢 <strong>Stable</strong></td>
+<td>Full rate</td>
+</tr>
+<tr>
+<td>0, but &gt;=1 within 5 of a threshold</td>
+<td>🟡 <strong>Strained</strong></td>
+<td><strong>Halved</strong></td>
+</tr>
+<tr>
+<td>1</td>
+<td>🟠 <strong>Blocked</strong></td>
+<td><strong>Frozen at 0</strong></td>
+</tr>
+<tr>
+<td>2</td>
+<td>🔴 <strong>Regressing</strong></td>
+<td><strong>-5</strong></td>
+</tr>
+<tr>
+<td>3</td>
+<td>🔴 <strong>Regressing</strong></td>
+<td><strong>-10</strong></td>
+</tr>
+<tr>
+<td>4</td>
+<td>🔴 <strong>Regressing</strong></td>
+<td><strong>-15</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="base-rate-by-rd-capacity-verified-output">Base rate by R&amp;D Capacity <em>(verified output)</em></h3>
+<table>
+<thead>
+<tr>
+<th>R&amp;D Capacity</th>
+<th>Advance / round</th>
+<th>Upkeep cost</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>30</td>
+<td>+6</td>
+<td>-3 treasury, -2 energy</td>
+</tr>
+<tr>
+<td>40</td>
+<td>+8</td>
+<td>-4 treasury, -3 energy</td>
+</tr>
+<tr>
+<td>50</td>
+<td>+10</td>
+<td>-5 treasury, -4 energy</td>
+</tr>
+<tr>
+<td>60</td>
+<td>+12</td>
+<td>-6 treasury, -4 energy</td>
+</tr>
+<tr>
+<td>70</td>
+<td>+14</td>
+<td>-7 treasury, -5 energy</td>
+</tr>
+<tr>
+<td>80</td>
+<td>+16</td>
+<td>-8 treasury, -6 energy</td>
+</tr>
+<tr>
+<td>90</td>
+<td>+18</td>
+<td>-9 treasury, -6 energy</td>
+</tr>
+</tbody>
+</table>
+<h3 id="roadmap-progress-stage-and-card-difficulty">Roadmap progress → stage and card difficulty</h3>
+<table>
+<thead>
+<tr>
+<th>Progress</th>
+<th>Stage shown</th>
+<th>Policy cards drawn from</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0–19%</td>
+<td>1 / 5</td>
+<td>early</td>
+</tr>
+<tr>
+<td>20–39%</td>
+<td>2 / 5</td>
+<td>early</td>
+</tr>
+<tr>
+<td>40–59%</td>
+<td>3 / 5</td>
+<td><strong>mid</strong></td>
+</tr>
+<tr>
+<td>60–79%</td>
+<td>4 / 5</td>
+<td><strong>late</strong></td>
+</tr>
+<tr>
+<td>80–100%</td>
+<td>5 / 5</td>
+<td><strong>late</strong></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="4-worked-examples">4. Worked examples</h2>
+<p>All figures below are actual engine output.</p>
+<p><strong>A — Healthy team, R&amp;D 60, everything clear</strong></p>
+<pre><code>A = 60/5 = 12 ,  D=0 , N=0 , spread 6
+→ +12 progress  (40% → 52%)
+→ upkeep: -6 treasury, -4 energy
+</code></pre>
+<p><strong>B — Same team, but Public Welfare has slipped to 27</strong> <em>(threshold 25, so within 5 → near-miss)</em></p>
+<pre><code>A = 12 → halved → 6
+→ +6 progress  (40% → 46%)
+→ upkeep: -3 treasury, -2 energy
+</code></pre>
+<p><strong>C — Public Welfare falls to 20</strong> <em>(now genuinely below threshold)</em></p>
+<pre><code>D = 1 → BLOCKED
+→ +0 progress  (stays 40%)
+→ no upkeep charged
+</code></pre>
+<p><strong>D — Welfare 20 <em>and</em> Treasury 15</strong></p>
+<pre><code>D = 2 → A = -(2-1)*5 = -5
+→ -5 progress  (40% → 35%)
+</code></pre>
+<p><strong>E — Three stats down (Welfare 20, Treasury 15, Energy 15)</strong></p>
+<pre><code>D = 3 → A = -(3-1)*5 = -10
+→ -10 progress  (40% → 30%)
+</code></pre>
+<p><strong>F — Imbalance alone, nothing in danger</strong> (R&amp;D 60, Treasury 40, Energy 86)</p>
+<pre><code>A = 12 , D = 0 , spread = 48 &gt; 45 → -3
+→ +9 progress
+</code></pre>
+<p><strong>G — Regressing <em>and</em> badly unbalanced</strong> (D=2, spread 80)</p>
+<pre><code>A = -5 , then -3 for spread
+→ -8 progress  (40% → 32%)
+</code></pre>
+<hr />
+<h2 id="5-edge-cases-worth-knowing">5. Edge cases worth knowing</h2>
+<ul>
+<li><strong>Blocked never goes negative.</strong> A blocked team with a 75-point spread still moves exactly 0 —
+  the freeze is applied <em>after</em> the spread penalty.</li>
+<li><strong>Upkeep is charged on the advance, not on the progress actually gained.</strong> A team at 96% that
+  earns +12 is clamped to 100% (gaining only 4) but still pays the full -6 / -4 upkeep. Finishing
+  the roadmap is expensive.</li>
+<li><strong>No upkeep when frozen or regressing.</strong> Upkeep only applies when <code>A &gt; 0</code>.</li>
+<li><strong>Rounding happens once</strong>, at the very end of step 4 — not at each intermediate step. So R&amp;D 61
+  strained with a spread penalty is <code>61/5 = 12.2 → 6.1 → 3.1 → round → 3</code>.</li>
+<li><strong>Every stat is clamped to 0–100</strong> and rounded whenever it changes.</li>
+<li><strong>R&amp;D Capacity is itself gate-able.</strong> Below 20 it is a danger stat <em>and</em> the base rate is &lt;=4.
+  This is the one genuine death spiral in the game.</li>
+</ul>
+<hr />
+<h2 id="6-how-the-final-ranking-uses-this">6. How the final ranking uses this</h2>
+<pre><code>balance = mean of all eight stats
+SCORE   = roadmapProgress * 0.5  +  balance * 0.5
+</code></pre>
+<p>Example: roadmap 80%, all stats at 50 → <code>80*0.5 + 50*0.5 = 65</code>.</p>
+<p>Half the score is what you built; half is the state you left the country in. A team that races to
+90% on a wrecked country and a team that keeps a perfect country at 20% both score badly.</p>
+<hr />
+<h2 id="7-hints-to-give-players">7. Hints to give players</h2>
+<p>Ordered from gentlest to most explicit. Give them out as the room needs them — the discovery is
+part of the exercise.</p>
+<h3 id="round-12-nudges-no-numbers">Round 1–2: nudges (no numbers)</h3>
+<ul>
+<li><em>"Progress comes from R&amp;D Capacity — but only your country lets it."</em></li>
+<li><em>"Watch the badge on your panel. Green is not the only state it has."</em></li>
+<li><em>"Nothing on this board is free. Look at what your last decision cost you."</em></li>
+</ul>
+<h3 id="round-34-mechanics-still-no-formula">Round 3–4: mechanics (still no formula)</h3>
+<ul>
+<li><em>"A single stat in the danger zone stops your roadmap completely. Not slows — stops."</em></li>
+<li><em>"Two stats down and you start losing work you already did."</em></li>
+<li><em>"Being just barely safe is not safe. Sitting near the line already halves your speed."</em></li>
+<li><em>"Your R&amp;D Capacity is a stat like any other. It can collapse too — and if it does, you're stuck twice over."</em></li>
+</ul>
+<h3 id="round-5-full-transparency-if-they-ask-tell-them">Round 5+: full transparency (if they ask, tell them)</h3>
+<ul>
+<li><em>"You gain R&amp;D ÷ 5 per round. At R&amp;D 60 that's 12 points."</em></li>
+<li><em>"Every point of progress costs you about half a point of treasury and a third of a point of energy."</em></li>
+<li><em>"If your best and worst stat are more than 45 apart, you lose 3 more on top."</em></li>
+<li><em>"Blocked is 0. Regressing is minus 5 for the second danger stat, minus 5 again for each one after."</em></li>
+</ul>
+<h3 id="strategic-hints-the-useful-ones">Strategic hints (the useful ones)</h3>
+<ul>
+<li><strong>Repair before you build.</strong> A round spent fixing one stat is worth more than a round of
+  blocked progress. Blocked rounds are the single biggest source of lost progress.</li>
+<li><strong>Aim for a 5-point buffer</strong>, not a 0-point one. The near-miss rule means "just above the line"
+  still costs you half your speed.</li>
+<li><strong>Keep your stats close together.</strong> Two teams with the same average can differ by 3 progress a
+  round purely on spread.</li>
+<li><strong>The faster you build, the harder upkeep bites.</strong> High R&amp;D drains treasury and energy fastest —
+  the strongest team is usually the one that trips first.</li>
+<li><strong>Gamble cards can undo three good rounds in one bad roll.</strong> Bet when you're behind, not when
+  you're ahead.</li>
+</ul>
+<h3 id="the-line-that-usually-lands">The line that usually lands</h3>
+<blockquote>
+<p><em>"You can't sprint out of a collapsing country. Fix it first — then run."</em></p>
+</blockquote>
+<hr />
+<h2 id="8-where-this-lives-in-the-code">8. Where this lives in the code</h2>
+<table>
+<thead>
+<tr>
+<th>What</th>
+<th>Where</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>The formula</td>
+<td><code>public/js/engine.js</code> → <code>_applyRoadmapAdvance()</code></td>
+</tr>
+<tr>
+<td>Thresholds</td>
+<td><code>public/js/engine.js</code> → <code>THRESHOLDS</code></td>
+</tr>
+<tr>
+<td>Danger / near-miss counting</td>
+<td><code>dangerCount()</code>, <code>balanceStatus()</code></td>
+</tr>
+<tr>
+<td>Stage bands</td>
+<td><code>STAGE_BANDS</code>, <code>getRoadmapStage()</code>, <code>stageBand()</code></td>
+</tr>
+<tr>
+<td>Final score</td>
+<td><code>_computeDebrief()</code></td>
+</tr>
+</tbody>
+</table>
+<p>If you change any constant in the engine, update this file — the two are meant to agree, and the
+worked examples above were generated from the code as it stands.</p>
+</body></html>
