@@ -1,4 +1,4 @@
-// 164 policy cards (stage-specific + general fallback; some carry probabilistic gamble options).
+// 185 policy cards (stage-specific + general fallback; some carry probabilistic gamble options).
 // A gamble option has no `effects`: its outcome lives entirely in gamble.success / gamble.failure.
 window.GAME_DATA = window.GAME_DATA || {};
 window.GAME_DATA.cards = [
@@ -5616,5 +5616,912 @@ window.GAME_DATA.cards = [
     "severity": 3,
     "discussionPrompt": "What does a premature announcement cost, beyond the people who made it?",
     "educationalNote": "Premature announcements damage trust in the whole field, not just the lab responsible."
+  },
+  {
+    "id": "gam-ai2",
+    "domain": "ai",
+    "stage": "early",
+    "title": "The Scraped Corpus",
+    "situation": "The fastest way to a national dataset is to scrape the open web. The copyright position is untested.",
+    "question": "Train on scraped data?",
+    "left": {
+      "label": "Scrape and train",
+      "stance": "compete",
+      "gamble": {
+        "chance": 0.6,
+        "success": {
+          "rdCapacity": 12,
+          "treasury": 4
+        },
+        "failure": {
+          "treasury": -12,
+          "reputation": -9,
+          "politicalSupport": -4
+        },
+        "successLabel": "No challenge came — you have the corpus",
+        "failureLabel": "Class action; the dataset is enjoined"
+      }
+    },
+    "right": {
+      "label": "License data properly",
+      "effects": {
+        "rdCapacity": 3,
+        "treasury": -8,
+        "reputation": 4
+      },
+      "stance": null
+    },
+    "tags": [
+      "risk",
+      "data",
+      "copyright"
+    ],
+    "severity": 3,
+    "discussionPrompt": "Is \"ask forgiveness, not permission\" a defensible research strategy at national scale?",
+    "educationalNote": "The legality of training on scraped copyrighted work is still unsettled in most jurisdictions."
+  },
+  {
+    "id": "gam-ai3",
+    "domain": "ai",
+    "stage": "late",
+    "title": "Ship the Autonomous Agent",
+    "situation": "Your agent can act on real systems without a human in the loop. Internal red-teaming is not finished.",
+    "question": "Deploy the agent unsupervised?",
+    "left": {
+      "label": "Keep a human in the loop",
+      "effects": {
+        "publicWelfare": 4,
+        "security": 3,
+        "rdCapacity": -4
+      },
+      "stance": null
+    },
+    "right": {
+      "label": "Let it run unsupervised",
+      "stance": "compete",
+      "gamble": {
+        "chance": 0.45,
+        "success": {
+          "rdCapacity": 14,
+          "treasury": 10,
+          "reputation": 5
+        },
+        "failure": {
+          "security": -12,
+          "publicWelfare": -11,
+          "reputation": -8
+        },
+        "successLabel": "Flawless — a genuine capability jump",
+        "failureLabel": "It took a destructive action nobody authorised"
+      }
+    },
+    "tags": [
+      "risk",
+      "autonomy",
+      "safety"
+    ],
+    "severity": 3,
+    "discussionPrompt": "Who is accountable when an autonomous system takes an action no person approved?",
+    "educationalNote": "Removing the human reviewer removes the last cheap place to catch a failure."
+  },
+  {
+    "id": "gam-space2",
+    "domain": "space",
+    "stage": "early",
+    "title": "The Cheap Rideshare",
+    "situation": "A budget provider will carry your first satellite for a fifth of the price. Their last two flights failed.",
+    "question": "Fly on the cheap launcher?",
+    "left": {
+      "label": "Take the cheap ride",
+      "stance": null,
+      "gamble": {
+        "chance": 0.55,
+        "success": {
+          "rdCapacity": 10,
+          "treasury": 8
+        },
+        "failure": {
+          "rdCapacity": -11,
+          "treasury": -8,
+          "politicalSupport": -5
+        },
+        "successLabel": "In orbit, for a fraction of the cost",
+        "failureLabel": "Vehicle failed; your satellite is gone"
+      }
+    },
+    "right": {
+      "label": "Pay for the proven launcher",
+      "effects": {
+        "rdCapacity": 5,
+        "treasury": -9,
+        "security": 2
+      },
+      "stance": null
+    },
+    "tags": [
+      "risk",
+      "launch",
+      "procurement"
+    ],
+    "severity": 2,
+    "discussionPrompt": "How should a public programme price the risk of a cheaper supplier?",
+    "educationalNote": "Launch insurance exists precisely because early-flight failure rates are high."
+  },
+  {
+    "id": "gam-space3",
+    "domain": "space",
+    "stage": "late",
+    "title": "Land on the Far Side",
+    "situation": "A far-side landing would be a world first. Communications blackout means no help if anything drifts.",
+    "question": "Attempt the far-side landing?",
+    "left": {
+      "label": "Attempt it",
+      "stance": "compete",
+      "gamble": {
+        "chance": 0.5,
+        "success": {
+          "rdCapacity": 15,
+          "reputation": 12
+        },
+        "failure": {
+          "rdCapacity": -12,
+          "treasury": -11,
+          "politicalSupport": -6
+        },
+        "successLabel": "Touchdown — a genuine world first",
+        "failureLabel": "Lost on descent, with no telemetry"
+      }
+    },
+    "right": {
+      "label": "Take the safe near-side site",
+      "effects": {
+        "rdCapacity": 5,
+        "reputation": 3,
+        "treasury": -3
+      },
+      "stance": null
+    },
+    "tags": [
+      "risk",
+      "exploration",
+      "prestige"
+    ],
+    "severity": 3,
+    "discussionPrompt": "How much national prestige is worth a mission you cannot rescue?",
+    "educationalNote": "Far-side operations require a relay satellite; there is no direct line to Earth."
+  },
+  {
+    "id": "gam-semi2",
+    "domain": "semiconductors",
+    "stage": "early",
+    "title": "The Grey-Market Tool",
+    "situation": "A restricted lithography tool is available through an intermediary. The paperwork is plausible but thin.",
+    "question": "Buy the tool through the broker?",
+    "left": {
+      "label": "Refuse and wait for a licence",
+      "effects": {
+        "rdCapacity": -5,
+        "reputation": 4,
+        "security": 3
+      },
+      "stance": "cooperate"
+    },
+    "right": {
+      "label": "Buy through the broker",
+      "stance": "secrecy",
+      "gamble": {
+        "chance": 0.5,
+        "success": {
+          "rdCapacity": 13,
+          "security": 5
+        },
+        "failure": {
+          "reputation": -13,
+          "treasury": -10,
+          "security": -5
+        },
+        "successLabel": "It cleared customs and it works",
+        "failureLabel": "Seized, and you are now sanctioned"
+      }
+    },
+    "tags": [
+      "risk",
+      "export-control",
+      "compliance"
+    ],
+    "severity": 3,
+    "discussionPrompt": "Is circumventing an export control ever justified by national need?",
+    "educationalNote": "Secondary sanctions can cut a country off from far more than the tool it tried to buy."
+  },
+  {
+    "id": "gam-semi3",
+    "domain": "semiconductors",
+    "stage": "late",
+    "title": "Skip a Node",
+    "situation": "You could leapfrog straight to the node after next. If the physics does not cooperate you lose four years.",
+    "question": "Skip a generation?",
+    "left": {
+      "label": "Skip the node",
+      "stance": "compete",
+      "gamble": {
+        "chance": 0.4,
+        "success": {
+          "rdCapacity": 16,
+          "treasury": 10,
+          "reputation": 6
+        },
+        "failure": {
+          "rdCapacity": -14,
+          "treasury": -10
+        },
+        "successLabel": "It worked — you are a generation ahead",
+        "failureLabel": "Dead end; rivals passed you"
+      }
+    },
+    "right": {
+      "label": "Advance one node at a time",
+      "effects": {
+        "rdCapacity": 5,
+        "treasury": -5
+      },
+      "stance": null
+    },
+    "tags": [
+      "risk",
+      "strategy",
+      "semiconductors"
+    ],
+    "severity": 3,
+    "discussionPrompt": "When is leapfrogging visionary, and when is it just skipping the hard work?",
+    "educationalNote": "Node transitions compound: skipping one usually means skipping its process learning too."
+  },
+  {
+    "id": "gam-energy2",
+    "domain": "energy",
+    "stage": "early",
+    "title": "The Deep Geothermal Well",
+    "situation": "One deep well could supply a city with clean baseload. Drilling is expensive and the geology is uncertain.",
+    "question": "Drill the well?",
+    "left": {
+      "label": "Drill it",
+      "stance": null,
+      "gamble": {
+        "chance": 0.45,
+        "success": {
+          "energy": 15,
+          "environment": 8
+        },
+        "failure": {
+          "treasury": -13,
+          "energy": -4,
+          "politicalSupport": -5
+        },
+        "successLabel": "The reservoir is better than modelled",
+        "failureLabel": "A dry hole — nothing to show for it"
+      }
+    },
+    "right": {
+      "label": "Build gas peakers instead",
+      "effects": {
+        "energy": 7,
+        "environment": -7,
+        "treasury": -3
+      },
+      "stance": null
+    },
+    "tags": [
+      "risk",
+      "geothermal",
+      "energy"
+    ],
+    "severity": 2,
+    "discussionPrompt": "Should the state carry exploration risk that private capital will not?",
+    "educationalNote": "Geothermal economics are dominated by drilling risk, not by the technology itself."
+  },
+  {
+    "id": "gam-energy3",
+    "domain": "energy",
+    "stage": "late",
+    "title": "Cut Over the Whole Grid",
+    "situation": "The new control system is ready on paper. A staged rollout takes three years; a single cutover takes a night.",
+    "question": "Cut over in one night?",
+    "left": {
+      "label": "Stage it over three years",
+      "effects": {
+        "energy": 4,
+        "security": 4,
+        "treasury": -7
+      },
+      "stance": null
+    },
+    "right": {
+      "label": "Do it in one night",
+      "stance": null,
+      "gamble": {
+        "chance": 0.6,
+        "success": {
+          "energy": 13,
+          "treasury": 9,
+          "rdCapacity": 4
+        },
+        "failure": {
+          "energy": -13,
+          "publicWelfare": -12,
+          "politicalSupport": -8
+        },
+        "successLabel": "Seamless — the grid woke up modernised",
+        "failureLabel": "National blackout for two days"
+      }
+    },
+    "tags": [
+      "risk",
+      "infrastructure",
+      "grid"
+    ],
+    "severity": 3,
+    "discussionPrompt": "Is a staged rollout worth three extra years of running old, fragile systems?",
+    "educationalNote": "Big-bang infrastructure cutovers fail loudly; staged ones fail quietly and cost more."
+  },
+  {
+    "id": "gam-climate2",
+    "domain": "climate",
+    "stage": "early",
+    "title": "The Offset Portfolio",
+    "situation": "Cheap forestry offsets would close your reporting gap immediately. Auditors call the sector unreliable.",
+    "question": "Buy the cheap offsets?",
+    "left": {
+      "label": "Buy the offsets",
+      "stance": null,
+      "gamble": {
+        "chance": 0.5,
+        "success": {
+          "environment": 10,
+          "reputation": 5,
+          "treasury": -3
+        },
+        "failure": {
+          "reputation": -12,
+          "environment": -6,
+          "politicalSupport": -4
+        },
+        "successLabel": "The credits held up to scrutiny",
+        "failureLabel": "Exposed as worthless — greenwashing headlines"
+      }
+    },
+    "right": {
+      "label": "Cut your own emissions instead",
+      "effects": {
+        "environment": 6,
+        "treasury": -9,
+        "rdCapacity": -2
+      },
+      "stance": null
+    },
+    "tags": [
+      "risk",
+      "offsets",
+      "integrity"
+    ],
+    "severity": 3,
+    "discussionPrompt": "Do offsets buy real atmospheric outcomes, or just permission to keep emitting?",
+    "educationalNote": "Investigations have found a large share of forestry credits represent no additional carbon."
+  },
+  {
+    "id": "gam-climate3",
+    "domain": "climate",
+    "stage": "late",
+    "title": "Seal the Carbon Vault",
+    "situation": "Your stored carbon must stay underground for centuries. The cap rock is well characterised — mostly.",
+    "question": "Certify the site as permanent?",
+    "left": {
+      "label": "Certify it now",
+      "stance": null,
+      "gamble": {
+        "chance": 0.65,
+        "success": {
+          "environment": 12,
+          "reputation": 8,
+          "treasury": 5
+        },
+        "failure": {
+          "environment": -13,
+          "reputation": -10,
+          "publicWelfare": -5
+        },
+        "successLabel": "Sealed and verified for the long term",
+        "failureLabel": "Detectable seepage; the claim collapses"
+      }
+    },
+    "right": {
+      "label": "Keep monitoring before certifying",
+      "effects": {
+        "environment": 3,
+        "treasury": -6,
+        "reputation": 2
+      },
+      "stance": null
+    },
+    "tags": [
+      "risk",
+      "carbon-storage",
+      "verification"
+    ],
+    "severity": 3,
+    "discussionPrompt": "Who is responsible for stored carbon in a hundred years?",
+    "educationalNote": "Storage permanence is the hardest thing to verify and the easiest thing to assume."
+  },
+  {
+    "id": "gam-quantum2",
+    "domain": "quantum",
+    "stage": "early",
+    "title": "The Unknown Postdoc",
+    "situation": "An unaffiliated researcher claims a fabrication method that would halve your error rate. No publications.",
+    "question": "Stake the lab on their method?",
+    "left": {
+      "label": "Stick with the known method",
+      "effects": {
+        "rdCapacity": 3,
+        "treasury": -3
+      },
+      "stance": null
+    },
+    "right": {
+      "label": "Back the unknown method",
+      "stance": null,
+      "gamble": {
+        "chance": 0.4,
+        "success": {
+          "rdCapacity": 15,
+          "reputation": 6
+        },
+        "failure": {
+          "rdCapacity": -10,
+          "treasury": -8,
+          "politicalSupport": -3
+        },
+        "successLabel": "It reproduced — a real breakthrough",
+        "failureLabel": "Unreproducible; months burned"
+      }
+    },
+    "tags": [
+      "risk",
+      "talent",
+      "reproducibility"
+    ],
+    "severity": 2,
+    "discussionPrompt": "How much should credentials matter when judging an extraordinary claim?",
+    "educationalNote": "Extraordinary claims from outside the field are usually wrong, but not always."
+  },
+  {
+    "id": "gam-quantum3",
+    "domain": "quantum",
+    "stage": "late",
+    "title": "Demonstrate Advantage Live",
+    "situation": "A public demonstration of quantum advantage would settle the argument. Your machine is temperamental.",
+    "question": "Demonstrate it publicly?",
+    "left": {
+      "label": "Demonstrate live",
+      "stance": "compete",
+      "gamble": {
+        "chance": 0.55,
+        "success": {
+          "reputation": 14,
+          "rdCapacity": 8,
+          "treasury": 6
+        },
+        "failure": {
+          "reputation": -13,
+          "politicalSupport": -7,
+          "rdCapacity": -3
+        },
+        "successLabel": "It ran — the claim is now undeniable",
+        "failureLabel": "It failed on stage, in front of everyone"
+      }
+    },
+    "right": {
+      "label": "Publish results quietly",
+      "effects": {
+        "reputation": 4,
+        "rdCapacity": 3,
+        "politicalSupport": -2
+      },
+      "stance": "open"
+    },
+    "tags": [
+      "risk",
+      "prestige",
+      "quantum"
+    ],
+    "severity": 2,
+    "discussionPrompt": "What does a scientific field gain, and lose, from public spectacle?",
+    "educationalNote": "Quantum advantage claims have repeatedly been narrowed by later classical algorithms."
+  },
+  {
+    "id": "gam-biotech2",
+    "domain": "biotech",
+    "stage": "early",
+    "title": "Buy the Failing Lab",
+    "situation": "A collapsing biotech will sell its entire platform cheaply. Nobody outside has audited the data.",
+    "question": "Acquire the platform?",
+    "left": {
+      "label": "Acquire it",
+      "stance": null,
+      "gamble": {
+        "chance": 0.5,
+        "success": {
+          "rdCapacity": 13,
+          "treasury": -5
+        },
+        "failure": {
+          "treasury": -13,
+          "rdCapacity": -7,
+          "reputation": -4
+        },
+        "successLabel": "The platform is sound — a bargain",
+        "failureLabel": "The data was inflated; you bought nothing"
+      }
+    },
+    "right": {
+      "label": "Build your own from scratch",
+      "effects": {
+        "rdCapacity": 4,
+        "treasury": -8
+      },
+      "stance": null
+    },
+    "tags": [
+      "risk",
+      "acquisition",
+      "due-diligence"
+    ],
+    "severity": 2,
+    "discussionPrompt": "How much can due diligence really tell you about unpublished biological data?",
+    "educationalNote": "Biotech acquisitions frequently fail because the underlying results do not replicate."
+  },
+  {
+    "id": "gam-biotech3",
+    "domain": "biotech",
+    "stage": "late",
+    "title": "Release the Engineered Crop",
+    "situation": "The modified strain would end a regional famine risk. Gene flow into wild relatives cannot be ruled out.",
+    "question": "Release it into open fields?",
+    "left": {
+      "label": "Keep it in contained trials",
+      "effects": {
+        "environment": 4,
+        "publicWelfare": -4,
+        "rdCapacity": -3
+      },
+      "stance": null
+    },
+    "right": {
+      "label": "Release it",
+      "stance": null,
+      "gamble": {
+        "chance": 0.6,
+        "success": {
+          "publicWelfare": 13,
+          "rdCapacity": 8,
+          "reputation": 5
+        },
+        "failure": {
+          "environment": -13,
+          "reputation": -10,
+          "publicWelfare": -5
+        },
+        "successLabel": "Yields held and nothing escaped",
+        "failureLabel": "Gene flow into wild relatives confirmed"
+      }
+    },
+    "tags": [
+      "risk",
+      "biosafety",
+      "agriculture"
+    ],
+    "severity": 3,
+    "discussionPrompt": "How do you weigh a certain famine risk against an irreversible ecological one?",
+    "educationalNote": "Environmental release is the one biotech decision that genuinely cannot be recalled."
+  },
+  {
+    "id": "gam-robotics2",
+    "domain": "robotics",
+    "stage": "early",
+    "title": "The Unvetted Supplier",
+    "situation": "A new supplier offers precision parts at half price with a six-week lead time. No one has audited their plant.",
+    "question": "Commit your production line to them?",
+    "left": {
+      "label": "Commit to them",
+      "stance": null,
+      "gamble": {
+        "chance": 0.55,
+        "success": {
+          "treasury": 10,
+          "rdCapacity": 7
+        },
+        "failure": {
+          "treasury": -11,
+          "rdCapacity": -8,
+          "security": -5
+        },
+        "successLabel": "Parts arrived on spec and on time",
+        "failureLabel": "Counterfeit components; the line stopped"
+      }
+    },
+    "right": {
+      "label": "Stay with the audited supplier",
+      "effects": {
+        "treasury": -6,
+        "security": 4,
+        "rdCapacity": 2
+      },
+      "stance": null
+    },
+    "tags": [
+      "risk",
+      "supply-chain",
+      "quality"
+    ],
+    "severity": 2,
+    "discussionPrompt": "What does a supply chain you have never inspected actually cost?",
+    "educationalNote": "Counterfeit components are one of the hardest supply-chain failures to detect before use."
+  },
+  {
+    "id": "gam-robotics3",
+    "domain": "robotics",
+    "stage": "late",
+    "title": "Hand Over the Night Shift",
+    "situation": "Running the plant fully autonomous overnight would prove the system. Nobody would be there if it drifts.",
+    "question": "Run unattended overnight?",
+    "left": {
+      "label": "Keep a supervisor on site",
+      "effects": {
+        "publicWelfare": 3,
+        "treasury": -6,
+        "rdCapacity": -2
+      },
+      "stance": null
+    },
+    "right": {
+      "label": "Run it unattended",
+      "stance": null,
+      "gamble": {
+        "chance": 0.65,
+        "success": {
+          "treasury": 12,
+          "rdCapacity": 9
+        },
+        "failure": {
+          "publicWelfare": -12,
+          "treasury": -9,
+          "reputation": -6
+        },
+        "successLabel": "A clean shift — the case is proven",
+        "failureLabel": "Damage nobody was there to stop"
+      }
+    },
+    "tags": [
+      "risk",
+      "autonomy",
+      "labour"
+    ],
+    "severity": 2,
+    "discussionPrompt": "Is removing the last human supervisor a technical decision or a political one?",
+    "educationalNote": "The final human in an automated process is usually the cheapest safeguard remaining."
+  },
+  {
+    "id": "gam-materials2",
+    "domain": "materials",
+    "stage": "early",
+    "title": "The Unverified Survey",
+    "situation": "A survey suggests a large domestic deposit. Confirming it properly costs two years and a lot of money.",
+    "question": "Develop the site on the survey alone?",
+    "left": {
+      "label": "Start developing now",
+      "stance": null,
+      "gamble": {
+        "chance": 0.45,
+        "success": {
+          "security": 13,
+          "treasury": 7,
+          "rdCapacity": 4
+        },
+        "failure": {
+          "treasury": -13,
+          "environment": -7,
+          "politicalSupport": -5
+        },
+        "successLabel": "The deposit is real and rich",
+        "failureLabel": "The grade was overstated; sunk cost"
+      }
+    },
+    "right": {
+      "label": "Confirm the survey first",
+      "effects": {
+        "treasury": -6,
+        "security": 3,
+        "rdCapacity": 2
+      },
+      "stance": null
+    },
+    "tags": [
+      "risk",
+      "mining",
+      "due-diligence"
+    ],
+    "severity": 2,
+    "discussionPrompt": "Why do resource estimates so often shrink once someone starts digging?",
+    "educationalNote": "Inferred resources are routinely revised downward when converted to proven reserves."
+  },
+  {
+    "id": "gam-materials3",
+    "domain": "materials",
+    "stage": "late",
+    "title": "One Customer, One Product",
+    "situation": "A single buyer will take your entire output for five years — if you retool the plant exclusively for them.",
+    "question": "Retool for one customer?",
+    "left": {
+      "label": "Keep a diversified product mix",
+      "effects": {
+        "treasury": -4,
+        "security": 5,
+        "reputation": 2
+      },
+      "stance": null
+    },
+    "right": {
+      "label": "Retool exclusively",
+      "stance": null,
+      "gamble": {
+        "chance": 0.55,
+        "success": {
+          "treasury": 14,
+          "rdCapacity": 6
+        },
+        "failure": {
+          "treasury": -13,
+          "security": -9,
+          "politicalSupport": -5
+        },
+        "successLabel": "Five profitable, predictable years",
+        "failureLabel": "They walked; the plant fits nobody else"
+      }
+    },
+    "tags": [
+      "risk",
+      "dependency",
+      "industry"
+    ],
+    "severity": 3,
+    "discussionPrompt": "Is a guaranteed buyer security, or just a single point of failure with good margins?",
+    "educationalNote": "Single-customer dependence transfers pricing power entirely to the buyer."
+  },
+  {
+    "id": "gam-gen4",
+    "domain": "general",
+    "stage": "any",
+    "title": "The Leaked File",
+    "situation": "An anonymous leak appears to show a rival breaking an agreement. You cannot verify it before acting.",
+    "question": "Act on the unverified leak?",
+    "left": {
+      "label": "Go public with it",
+      "stance": "compete",
+      "gamble": {
+        "chance": 0.5,
+        "success": {
+          "reputation": 10,
+          "security": 7
+        },
+        "failure": {
+          "reputation": -14,
+          "politicalSupport": -6,
+          "security": -4
+        },
+        "successLabel": "It checked out — they were caught",
+        "failureLabel": "It was fabricated; you were used"
+      }
+    },
+    "right": {
+      "label": "Verify quietly first",
+      "effects": {
+        "security": 4,
+        "reputation": 2,
+        "rdCapacity": -2
+      },
+      "stance": null
+    },
+    "tags": [
+      "risk",
+      "intelligence",
+      "trust"
+    ],
+    "severity": 3,
+    "discussionPrompt": "What is the cost of being wrong in public versus slow in private?",
+    "educationalNote": "Fabricated leaks are a standard tool for provoking exactly this kind of overreaction."
+  },
+  {
+    "id": "gam-gen5",
+    "domain": "general",
+    "stage": "any",
+    "title": "The Rival’s Offer",
+    "situation": "A strategic rival offers a genuine joint programme. It would work — or hand them everything you know.",
+    "question": "Accept the rival’s partnership?",
+    "left": {
+      "label": "Decline politely",
+      "effects": {
+        "security": 5,
+        "reputation": -3,
+        "rdCapacity": -3
+      },
+      "stance": "protect"
+    },
+    "right": {
+      "label": "Accept the partnership",
+      "stance": "cooperate",
+      "gamble": {
+        "chance": 0.5,
+        "success": {
+          "rdCapacity": 12,
+          "reputation": 9
+        },
+        "failure": {
+          "security": -13,
+          "rdCapacity": -6,
+          "politicalSupport": -5
+        },
+        "successLabel": "Genuine collaboration — both gained",
+        "failureLabel": "They took your methods and left"
+      }
+    },
+    "tags": [
+      "risk",
+      "cooperation",
+      "security"
+    ],
+    "severity": 3,
+    "discussionPrompt": "Can you cooperate with a rival without eventually being read by them?",
+    "educationalNote": "Research collaboration is the most common legitimate route for technology transfer."
+  },
+  {
+    "id": "gam-gen6",
+    "domain": "general",
+    "stage": "any",
+    "title": "Stake It on the Summit",
+    "situation": "You can spend all your diplomatic capital forcing a binding agreement at one summit. Or keep building slowly.",
+    "question": "Spend everything on one summit?",
+    "left": {
+      "label": "Go all-in at the summit",
+      "stance": "cooperate",
+      "gamble": {
+        "chance": 0.45,
+        "success": {
+          "reputation": 15,
+          "politicalSupport": 6,
+          "rdCapacity": 4
+        },
+        "failure": {
+          "reputation": -11,
+          "politicalSupport": -9
+        },
+        "successLabel": "A binding deal, signed",
+        "failureLabel": "It collapsed publicly; capital spent"
+      }
+    },
+    "right": {
+      "label": "Build consensus slowly",
+      "effects": {
+        "reputation": 5,
+        "politicalSupport": 2,
+        "treasury": -3
+      },
+      "stance": "cooperate"
+    },
+    "tags": [
+      "risk",
+      "diplomacy",
+      "governance"
+    ],
+    "severity": 2,
+    "discussionPrompt": "Do summits create agreements, or only ratify ones already negotiated quietly?",
+    "educationalNote": "Summit failures can set a negotiating track back by years."
   }
 ];

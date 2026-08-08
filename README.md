@@ -42,7 +42,7 @@ representatives stand in front of their section, argue their case, and the facil
 - **Plain HTML / CSS / vanilla JavaScript.** No build step, no framework, no CDN, no bundler.
 - **All game data lives in the browser tab** (in-memory JS state). Nothing is sent over a network.
 - **Optional `localStorage` checkpoint** and **JSON/CSV export** for the decision log.
-- Content (teams, domains, 164 policy cards, 38 international/global events, 12 resource conflicts) is data-driven
+- Content (teams, domains, 185 policy cards, 38 international/global events, 12 resource conflicts) is data-driven
   in `public/js/data/*.js` — plain JS files, easy to read and edit without any tooling.
 - Fully static — works from `file://`, a local server, or **GitHub Pages** (see below).
 - Two review spreadsheets (`policy_decisions_catalog.csv`, `international_events_catalog.csv`) are generated
@@ -102,15 +102,17 @@ at once. Early-round behaviour therefore sets how punishing the later rounds are
 
 ## Gambles: decisions with unknown outcomes
 
-Twelve cards carry a **probabilistic** option. The card shows the odds and *both* branches, but
-which one lands is rolled at the moment the choice is committed:
+**33 cards** carry a **probabilistic** option — three per technology domain (one at each roadmap
+stage) plus six general ones. The card shows the odds and *both* branches, but which one lands is
+rolled at the moment the choice is committed:
 
 > **Bet everything on the run** — 🎲 55%: R&D +14 · 45%: R&D −12
 > *"The model converged — a genuine leap"* / *"It diverged; a year of compute is gone"*
 
-The safe side of the same card always has a certain, smaller outcome. These are the cards that can
-undo a roadmap in a single round, and they are flagged `GAMBLE (probabilistic outcome)` in the CSV
-catalog. Add your own with a `gamble: { chance, success, failure, successLabel, failureLabel }`
+The safe side of the same card always has a certain, smaller outcome. The bet is **not always on the
+same side** — it is marked by a gold border, so teams have to read the card rather than pattern-match
+a position. Odds range from 40% to 65%. These are the cards that can undo a roadmap in a single
+round, and they are flagged `GAMBLE (probabilistic outcome)` in the CSV catalog. Add your own with a `gamble: { chance, success, failure, successLabel, failureLabel }`
 block on an option instead of `effects`.
 
 ## One random event per round
@@ -242,7 +244,7 @@ Everything lives in `public/js/data/`, as plain arrays of JS objects (no build s
 |---|---|
 | `teams.js` | The 4 teams: identity, flavor text, starting stat modifiers. |
 | `domains.js` | The 9 technology directions and their 5-stage roadmap labels. |
-| `cards.js` | 164 policy cards, 12 of them **gambles**. Each has `domain`, `stage`, `title`, `situation`, `question`, `left`/`right` options (`label`, `effects`, optional `stance`), `tags`, `severity`, `discussionPrompt`, `educationalNote`. |
+| `cards.js` | 185 policy cards, 33 of them **gambles**. Each has `domain`, `stage`, `title`, `situation`, `question`, `left`/`right` options (`label`, `effects`, optional `stance`), `tags`, `severity`, `discussionPrompt`, `educationalNote`. |
 | `events.js` | 38 international/global events (11 of them domain-agnostic), each tagged `type`: `shock`, `boost`, `mixed`, or `condition_change` (`base` effects for all teams, optional `domainEffects` and stat-threshold `modifiers`). |
 | `resources.js` | 12 resource conflicts (`type: 'resource_conflict'`) with `compete`/`cooperate`/`conserve`/`diversify` choices. |
 
@@ -283,7 +285,7 @@ Two spreadsheets at the repo root let you review every decision and event withou
 
 | File | Contents |
 |---|---|
-| `policy_decisions_catalog.csv` | All 164 policy cards — domain, stage, title, question, both choices, all eight stat effects (as `L+8 / R-4`), educational note. |
+| `policy_decisions_catalog.csv` | All 185 policy cards — domain, stage, title, question, both choices, all eight stat effects (as `L+8 / R-4`), educational note. |
 | `international_events_catalog.csv` | All 50 events — title, type, description, affected issue, whether Rock-Paper-Scissors is required, all eight stat effects, global-trust effect, the player-facing effect guide, domestic relevance, educational note. |
 
 Both are **generated from the game's own data**, so they can never drift out of sync. After editing anything in
