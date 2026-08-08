@@ -9,7 +9,7 @@ policy decisions in front of a shared projected screen — no logins, no network
 > below. The final score is half roadmap progress and half national balance. See the in-app
 > [**Game Book**](public/gamebook.html) for full rules, the 2-hour schedule, and debrief questions.
 
-**Flow:** Guide screen → Team goal selection → Main game (8 rounds) → Final debrief.
+**Flow:** Guide screen → *(optional)* guided screen tour → Team goal selection → Main game (8 rounds) → Final debrief.
 
 ## Project purpose
 
@@ -161,6 +161,12 @@ open it on the laptop connected to the projector.
 ## How to control the game as facilitator
 
 - The **guide screen** opens first — let the room read it (or narrate it) before setup.
+- **🔎 Start Screen Guide** on that page runs an 11-step interactive tour of the board: it dims the screen,
+  spotlights one element at a time (top bar, event guide, team panels, stats, +3/−2 change indicators, roadmap,
+  policy card, left/right choices, effect preview, facilitator controls, round summary) and explains each in
+  large type. **Enter** advances; **Next**, **Back** and **Skip Guide** buttons are also on screen, and Escape
+  aborts. It runs on a throwaway demo board and restores the real game state exactly when it ends, so it can
+  never affect play. Recommended before a first session.
 - The **setup screen** lets each team's representative pick a technology direction by clicking it live.
 - Each round, click **🌐 Reveal Round Event** — the game randomly picks the event and its type; you do not choose.
 - During a card round, click a team's **left/right card option** directly on their panel to resolve their decision
@@ -169,7 +175,9 @@ open it on the laptop connected to the projector.
   advances the flow (reveal event → apply effects → next round) when the current step is ready. `F` toggles
   the facilitator side panel. `Escape` closes it.
 - The **facilitator panel** (`☰ Facilitator` button, top-right, or press `F`) holds everything that shouldn't
-  clutter the projected board: manual stat adjustment per team, round-count settings, save/load, and log export.
+  clutter the projected board: manual stat adjustment per team, round-count settings, text size, save/load, and
+  log export. It is a non-blocking side panel — gameplay continues while it is open — and closes via its **×**
+  button, **Escape** (even while typing in its own fields), or the top-bar toggle.
 - **Resource conflicts** (one possible outcome of "Reveal Round Event"): if two or more teams choose to compete
   for the same resource, the board displays **"Rock-Paper-Scissors Required"** — play it live on stage, then
   click the winner in the overlay.

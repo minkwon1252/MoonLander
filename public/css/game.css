@@ -398,3 +398,45 @@ button { font-family: inherit; cursor: pointer; }
   padding: 10px 16px; margin: 4px 0 16px; text-align: left; line-height: 1.4;
 }
 .crisis-guide b { color: #fff; }
+
+/* --- facilitator panel: always closable --- */
+/* The panel is fixed to the right edge and would otherwise cover the top-bar toggle button,
+   making it impossible to click closed. Lifting #topbar above the panel keeps the toggle live. */
+#topbar { position: relative; z-index: 55; }
+.fp-title { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.fp-close {
+  background: #2a1b1b; border: 1px solid #6b2530; color: #ff9d9d;
+  width: 34px; height: 34px; line-height: 1; border-radius: 8px;
+  font-size: 1.4rem; font-weight: 800; flex: 0 0 auto;
+}
+.fp-close:hover { background: #4a2020; color: #fff; border-color: #ff5c5c; }
+
+/* --- guided screen tour --- */
+.tour-highlight {
+  position: fixed; z-index: 90; pointer-events: none;
+  border: 3px solid #ffd166; border-radius: 10px;
+  box-shadow: 0 0 0 9999px rgba(6, 7, 12, 0.82), 0 0 22px 4px rgba(255, 209, 102, 0.55);
+  transition: all 0.25s ease;
+}
+.tour-dim {  /* used when a step has no specific target element */
+  position: fixed; inset: 0; z-index: 90; background: rgba(6, 7, 12, 0.82); pointer-events: none;
+}
+.tour-tip {
+  position: fixed; z-index: 92; max-width: 640px;
+  background: #14162a; border: 2px solid #ffd166; border-radius: 14px;
+  padding: 18px 22px; box-shadow: 0 18px 50px rgba(0, 0, 0, 0.55);
+}
+.tour-step { font-size: 0.95rem; font-weight: 800; letter-spacing: 0.08em;
+  text-transform: uppercase; color: #ffd166; }
+.tour-title { font-size: 1.75rem; font-weight: 800; color: #fff; margin: 2px 0 6px; }
+.tour-text { font-size: 1.25rem; line-height: 1.45; color: #dfe3f5; }
+.tour-actions { display: flex; align-items: center; gap: 10px; margin-top: 14px; }
+.tour-actions .cb-btn { font-size: 1.1rem; padding: 10px 20px; }
+.tour-hint { color: #8a91ad; font-size: 1rem; margin-left: auto; }
+.tour-progress { display: flex; gap: 5px; margin-top: 12px; }
+.tour-dot { width: 9px; height: 9px; border-radius: 50%; background: #343a58; }
+.tour-dot.done { background: #ffd166; }
+/* Swallows clicks on the live board while the tour runs, so a stray click cannot
+   resolve a real decision. The tooltip sits above it and stays interactive. */
+.tour-blocker { position: fixed; inset: 0; z-index: 89; background: transparent; }
+.tour-tip { pointer-events: auto; }

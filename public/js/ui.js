@@ -87,13 +87,113 @@
       this.renderSummaryOverlay(state);
       this.renderDebriefOverlay(state);
       this.renderFacilitatorPanel(state);
+      this.renderTour(state); // must run last: it measures the DOM the steps above just wrote
+    },
+
+    // ---------------- Guided screen tour ----------------
+    tourActive: false,
+    tourIndex: 0,
+    TOUR_STEPS: [
+      { sel: '#topbar', title: 'The top bar',
+        text: 'Round number, the current phase, and Global Trust — the world’s willingness to cooperate. Everyone in the room can check the state of play here.' },
+      { sel: '#situationBanner', title: 'The round’s global event',
+        text: 'One random event every round. The gold "What this means" line tells you who is exposed and which strategies just got riskier — read it before deciding.' },
+      { sel: '#teamGrid', title: 'Four team panels',
+        text: 'One panel per country. Your team stands in front of its own panel and argues its case to the room.' },
+      { sel: '.team-panel:first-child .tp-stats', title: 'Your eight national stats',
+        text: 'Treasury, Energy, Politics, Welfare, R&D, Reputation, Security, Environment. A bar turning red means that stat has crossed its danger line.' },
+      { sel: '.team-panel:first-child .stat-delta', title: 'What your last decision did',
+        text: 'The small +3 / −2 numbers show how the previous decision changed each stat. They stay visible until your next decision.' },
+      { sel: '.team-panel:first-child .tp-roadmap', title: 'Your technology roadmap',
+        text: 'Progress toward your national project, starting at 0%. It advances from R&D Capacity — but only while the rest of your country holds together.' },
+      { sel: '.team-panel:first-child .pcard-situation', title: 'The policy card',
+        text: 'A real dilemma facing your country this round. This is the text your representative reads aloud before deciding.' },
+      { sel: '.team-panel:first-child .pcard-options', title: 'Left or right — you must choose',
+        text: 'Two options, no neutral one. Both cost something. The facilitator clicks your choice, or presses 1–4 to focus a team then ← / →.' },
+      { sel: '.team-panel:first-child .opt-preview-row', title: 'The effect preview',
+        text: 'Each side shows only its one or two biggest effects. Every choice quietly moves 2–4 stats — you will not see the full picture until after you commit.' },
+      { sel: '#facilitatorToggle', title: 'Facilitator controls',
+        text: 'Press F or click here for manual stat adjustment, round settings, text size, save/load and log export. Close it with × or Escape at any time.' },
+      { sel: '#controlBar', title: 'Round summary & final debrief',
+        text: 'The facilitator drives the round from here. After each round a summary appears, and after round 8 the final debrief ranks every team.' },
+    ],
+
+    startTour() {
+      this.tourActive = true;
+      this.tourIndex = 0;
+      this.facilitatorOpen = false;
+      Engine.startScreenTour();
+    },
+
+    tourNext() {
+      if (!this.tourActive) return;
+      if (this.tourIndex >= this.TOUR_STEPS.length - 1) { this.endTour(); return; }
+      this.tourIndex += 1;
+      this.render(Engine.state);
+    },
+
+    tourPrev() {
+      if (!this.tourActive || this.tourIndex === 0) return;
+      this.tourIndex -= 1;
+      this.render(Engine.state);
+    },
+
+    // Always restores the pre-tour state, so nothing the tour showed can leak into the game.
+    endTour() {
+      this.tourActive = false;
+      this.tourIndex = 0;
+      Engine.endScreenTour();
+    },
+
+    renderTour(state) {
+      const host = document.getElementById('tourLayer');
+      if (!this.tourActive) { host.innerHTML = ''; return; }
+
+      const step = this.TOUR_STEPS[this.tourIndex];
+      const total = this.TOUR_STEPS.length;
+      const target = step.sel ? document.querySelector(step.sel) : null;
+      const r = target ? target.getBoundingClientRect() : null;
+      const vw = window.innerWidth, vh = window.innerHeight;
+
+      // Spotlight: a bordered box over the target whose enormous outer shadow dims everything
+      // else. If the element is missing for any reason, fall back to a plain dim + centred tip.
+      let spotlight, tipTop, tipLeft;
+      const PAD = 8, TIP_W = 640, TIP_H_EST = 260;
+      if (r && r.width > 0 && r.height > 0) {
+        spotlight = `<div class="tour-highlight" style="top:${r.top - PAD}px;left:${r.left - PAD}px;width:${r.width + PAD * 2}px;height:${r.height + PAD * 2}px"></div>`;
+        const below = r.bottom + 18;
+        tipTop = (below + TIP_H_EST < vh) ? below : Math.max(16, r.top - TIP_H_EST - 18);
+        tipLeft = Math.min(Math.max(16, r.left + r.width / 2 - TIP_W / 2), vw - TIP_W - 16);
+      } else {
+        spotlight = `<div class="tour-dim"></div>`;
+        tipTop = vh / 2 - TIP_H_EST / 2;
+        tipLeft = vw / 2 - TIP_W / 2;
+      }
+
+      const dots = this.TOUR_STEPS.map((_, i) =>
+        `<span class="tour-dot${i <= this.tourIndex ? ' done' : ''}"></span>`).join('');
+      const last = this.tourIndex === total - 1;
+
+      host.innerHTML = `<div class="tour-blocker"></div>${spotlight}
+        <div class="tour-tip" style="top:${tipTop}px;left:${tipLeft}px;width:${TIP_W}px">
+          <div class="tour-step">Step ${this.tourIndex + 1} of ${total}</div>
+          <div class="tour-title">${esc(step.title)}</div>
+          <div class="tour-text">${esc(step.text)}</div>
+          <div class="tour-actions">
+            ${this.tourIndex > 0 ? `<button class="cb-btn" onclick="UI.tourPrev()">← Back</button>` : ''}
+            <button class="cb-btn primary" onclick="UI.tourNext()">${last ? 'Finish → Choose Goals' : 'Next →'}</button>
+            <button class="cb-btn" onclick="UI.endTour()">Skip Guide</button>
+            <span class="tour-hint">Press <b>Enter</b> for next</span>
+          </div>
+          <div class="tour-progress">${dots}</div>
+        </div>`;
     },
 
     // ---------------- Top bar ----------------
     renderTopbar(state) {
       document.getElementById('roundNum').textContent = state.round || '—';
       document.getElementById('maxRoundNum').textContent = state.maxRounds;
-      const phaseNames = { setup: 'Setup', 'idle-round': 'Between Rounds', round: 'Policy Decisions', crisis: 'Resource Crisis', 'crisis-rps': 'Rock-Paper-Scissors', summary: 'Round Summary', debrief: 'Final Debrief' };
+      const phaseNames = { tour: 'Screen Guide', setup: 'Setup', 'idle-round': 'Between Rounds', round: 'Policy Decisions', crisis: 'Resource Crisis', 'crisis-rps': 'Rock-Paper-Scissors', summary: 'Round Summary', debrief: 'Final Debrief' };
       document.getElementById('phaseLabel').textContent = phaseNames[state.phase] || state.phase;
       document.getElementById('trustFill').style.width = state.globalTrust + '%';
       document.getElementById('trustNum').textContent = state.globalTrust;
@@ -106,7 +206,7 @@
       const ev = state.currentSituation
         || ((state.phase === 'crisis' || state.phase === 'crisis-rps') && state.currentCrisis
           ? state.currentCrisis.resource : null);
-      const showing = ev && ['round', 'crisis', 'crisis-rps'].includes(state.phase);
+      const showing = ev && ['round', 'tour', 'crisis', 'crisis-rps'].includes(state.phase);
       if (!showing) { el.classList.add('hidden'); return; }
 
       const meta = EVENT_TYPE_META[ev.type] || EVENT_TYPE_META.shock;
@@ -185,7 +285,7 @@
     renderCardZone(state, teamId) {
       const team = state.teams[teamId];
 
-      if (state.phase === 'round') {
+      if (state.phase === 'round' || state.phase === 'tour') {
         if (team.choice) {
           const eff = team.choice.effects || {};
           const badges = Object.entries(eff).map(([k, v]) => {
@@ -266,6 +366,10 @@
       switch (state.phase) {
         case 'setup':
           html = `<span class="cb-hint">Assign each team's technology direction above, then start the game.</span>`;
+          break;
+        case 'tour':
+          html = `<button class="cb-btn primary">▶ Apply Round Effects</button>
+                  <span class="cb-hint">After every round a summary appears here; after round 8, the final debrief.</span>`;
           break;
         case 'idle-round':
           html = `<button class="cb-btn primary" onclick="Engine.revealEvent()">🌐 Reveal Round Event</button>
@@ -427,8 +531,12 @@
         </div>
 
         <div class="setup-actions">
-          <button class="cb-btn primary" onclick="Engine.finishGuide()">▶ Continue to Team Setup</button>
+          <button class="cb-btn primary" onclick="UI.startTour()">🔎 Start Screen Guide</button>
+          <button class="cb-btn" onclick="Engine.finishGuide()">Skip → Continue to Team Setup</button>
         </div>
+        <p style="text-align:center;color:#8a91ad;font-size:0.95rem;margin-top:10px;">
+          The screen guide walks through the board one element at a time — recommended before your first game.
+        </p>
       </div></div>`;
     },
 
@@ -599,8 +707,16 @@
     },
 
     // ---------------- Facilitator panel ----------------
+    // Non-blocking side panel: gameplay continues while it is open. It can always be closed
+    // by its own × button, by Escape (even from inside its inputs), or by the top-bar toggle
+    // (which stays clickable because #topbar sits above the panel in the stacking order).
     toggleFacilitator() {
       this.facilitatorOpen = !this.facilitatorOpen;
+      this.render(Engine.state);
+    },
+    closeFacilitator() {
+      if (!this.facilitatorOpen) return;
+      this.facilitatorOpen = false;
       this.render(Engine.state);
     },
 
@@ -621,7 +737,10 @@
       if (state.phase === 'summary') flowButtons.push(`<button class="fp-btn" onclick="Engine.nextRound()">Next Round →</button>`);
 
       el.innerHTML = `
-        <div class="fp-title">☰ Facilitator Controls</div>
+        <div class="fp-title">
+          <span>☰ Facilitator Controls</span>
+          <button class="fp-close" onclick="UI.closeFacilitator()" title="Close (Esc)" aria-label="Close facilitator panel">×</button>
+        </div>
 
         <div class="fp-section">
           <h4>Flow</h4>

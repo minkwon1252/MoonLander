@@ -128,6 +128,43 @@
       this._emit();
     },
 
+    // ---------- Guided screen tour ----------
+    // Builds a throwaway demo board (domains, roadmap progress, stat deltas, a dealt card)
+    // purely so the tour has something real to point at. The pre-tour state is stashed and
+    // restored verbatim in endScreenTour(), so nothing here can leak into the real game.
+    startScreenTour() {
+      this._preTourState = this.serialize();
+      const demoDomains = ['ai', 'space', 'semiconductors', 'energy'];
+      this.state.teamOrder.forEach((id, i) => {
+        const t = this.state.teams[id];
+        t.domain = demoDomains[i % demoDomains.length];
+        t.roadmapProgress = [46, 32, 58, 24][i];
+        t.lastRoadmapDelta = [8, 5, 9, 4][i];
+        t.lastStatDeltas = [
+          { treasury: -5, rdCapacity: 3, publicWelfare: -2 },
+          { energy: 4, reputation: -3 },
+          { treasury: 6, environment: -4, security: 2 },
+          { politicalSupport: -3, rdCapacity: 5 },
+        ][i];
+      });
+      const ev = D.events.find(e => e.id === 'gen_energy_shock') || D.events[0];
+      this.state.round = 3;
+      this.state.phase = 'tour';
+      this.state.currentSituation = ev;
+      this.state.currentCrisis = null;
+      this._dealCards();
+      this._emit();
+    },
+
+    endScreenTour() {
+      if (this._preTourState) {
+        this.state = JSON.parse(this._preTourState);
+        this._preTourState = null;
+      }
+      this.state.phase = 'setup';
+      this._emit();
+    },
+
     // ---------- Unified event reveal ----------
     // Every round draws exactly one random event from a single shared pool. The event's own
     // `type` decides what happens next — the facilitator never chooses the type:

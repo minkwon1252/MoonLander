@@ -7,15 +7,28 @@
 
     document.getElementById('facilitatorToggle').addEventListener('click', () => UI.toggleFacilitator());
 
+    // The tour spotlight is drawn from measured element positions, so it has to be
+    // recomputed whenever the layout moves.
+    window.addEventListener('resize', () => { if (UI.tourActive) UI.render(Engine.state); });
+
     document.addEventListener('keydown', (e) => {
+      // Escape must ALWAYS close the facilitator panel, even while typing in one of its own
+      // fields — otherwise clicking the rounds input traps the panel open.
+      if (e.key === 'Escape') {
+        if (UI.tourActive) { UI.endTour(); return; }
+        if (UI.facilitatorOpen) { UI.closeFacilitator(); e.target.blur && e.target.blur(); }
+        return;
+      }
+
       const tag = (e.target.tagName || '').toLowerCase();
       if (tag === 'textarea' || tag === 'input') return; // don't hijack typing
 
-      if (e.key === 'f' || e.key === 'F') { UI.toggleFacilitator(); return; }
-      if (e.key === 'Escape') {
-        if (UI.facilitatorOpen) UI.toggleFacilitator();
-        return;
+      if (UI.tourActive) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); UI.tourNext(); }
+        return; // the tour owns the keyboard while it runs
       }
+
+      if (e.key === 'f' || e.key === 'F') { UI.toggleFacilitator(); return; }
       if (['1', '2', '3', '4'].includes(e.key)) {
         UI.focusedIndex = parseInt(e.key, 10) - 1;
         UI.render(Engine.state);
