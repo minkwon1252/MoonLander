@@ -112,6 +112,30 @@ only its **1–2 most influential stat effects** (not all 2–4) to keep the boa
 once the choice is confirmed. After a decision, each affected stat bar shows a small `(+3)`/`(−5)` beside it
 until that team's next decision.
 
+## Round discussion timer
+
+Each round gives the teams a fixed block of debate time — **10 minutes by default** — shown as a large
+countdown in the top bar. It starts automatically when the round event is revealed, and stops when the round
+resolves. There is nothing to set up.
+
+| Cue | What happens |
+|---|---|
+| 2:00 left | countdown turns **amber** |
+| 1:00 left | a single soft warning beep |
+| 0:30 left | countdown turns **red** and pulses |
+| 0:00 | a rising chime plays and a full-width red banner announces **"TIME'S UP — representatives to the stage"**, then counts the overtime |
+
+That banner is the cue for each team's representative to come to the front, explain their reasoning, and swipe.
+The board does not force the decision — the room keeps going at its own pace while the overtime ticks up.
+
+**Controls** (facilitator panel → Round Timer, or keyboard): pause/resume (`T`), add a minute (`+`), restart,
+**End Now** to cut discussion short, mute, and a **Test Sound** button to check audio before the session. The
+duration and mute setting are remembered in the browser.
+
+The chime is synthesised with Web Audio, so there is no audio file to ship or fail to load — but browsers block
+sound until the page has seen a click, so **click anywhere once when you open the game** (opening the guide or
+revealing the first event is enough) and use **Test Sound** to confirm the hall can hear it.
+
 ## How to run it locally
 
 You do not need Node, npm, or a server. Pick whichever is easiest:
@@ -171,7 +195,8 @@ open it on the laptop connected to the projector.
 - Each round, click **🌐 Reveal Round Event** — the game randomly picks the event and its type; you do not choose.
 - During a card round, click a team's **left/right card option** directly on their panel to resolve their decision
   (the representative should explain their reasoning to the room first).
-- **Keyboard shortcuts:** press `1`–`4` to focus a team, then `←`/`→` to resolve their pending card. `Enter`
+- **Keyboard shortcuts:** `T` pauses/resumes the discussion timer and `+` adds a minute to it. Press `1`–`4`
+  to focus a team, then `←`/`→` to resolve their pending card. `Enter`
   advances the flow (reveal event → apply effects → next round) when the current step is ready. `F` toggles
   the facilitator side panel. `Escape` closes it.
 - The **facilitator panel** (`☰ Facilitator` button, top-right, or press `F`) holds everything that shouldn't

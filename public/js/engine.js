@@ -154,9 +154,18 @@
       this.state.currentCrisis = null;
       this._dealCards();
       this._emit();
+      // the timer is normally hidden outside a live round; show a frozen demo clock so the
+      // tour can point at it without a countdown actually running
+      if (window.Timer) {
+        Timer.active = true; Timer.running = false; Timer.expired = false;
+        Timer.remainingMs = 7 * 60000 + 24000;
+        Timer._startedForRound = null;
+        Timer.render();
+      }
     },
 
     endScreenTour() {
+      if (window.Timer) Timer.stop();
       if (this._preTourState) {
         this.state = JSON.parse(this._preTourState);
         this._preTourState = null;

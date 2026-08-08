@@ -87,6 +87,7 @@
       this.renderSummaryOverlay(state);
       this.renderDebriefOverlay(state);
       this.renderFacilitatorPanel(state);
+      if (window.Timer) Timer.syncWithPhase(state);
       this.renderTour(state); // must run last: it measures the DOM the steps above just wrote
     },
 
@@ -98,6 +99,8 @@
         text: 'Round number, the current phase, and Global Trust — the world’s willingness to cooperate. Everyone in the room can check the state of play here.' },
       { sel: '#situationBanner', title: 'The round’s global event',
         text: 'One random event every round. The gold "What this means" line tells you who is exposed and which strategies just got riskier — read it before deciding.' },
+      { sel: '#timerStat', title: 'The 10-minute discussion clock',
+        text: 'Each round gives your team 10 minutes to debate. It turns amber at 2 minutes and red in the last 30 seconds; at zero a chime sounds and the board calls representatives to the stage.' },
       { sel: '#teamGrid', title: 'Four team panels',
         text: 'One panel per country. Your team stands in front of its own panel and argues its case to the room.' },
       { sel: '.team-panel:first-child .tp-stats', title: 'Your eight national stats',
@@ -778,6 +781,25 @@
             <span class="cb-hint" id="scaleReadout">${Math.round(this.uiScale * 100)}%</span>
           </div>
         </div>
+
+        ${window.Timer ? `
+        <div class="fp-section">
+          <h4>Round Timer</h4>
+          <div class="fp-row">
+            <button class="fp-btn" onclick="Timer.toggle()">⏯ Pause / Resume</button>
+            <button class="fp-btn" onclick="Timer.addMinutes(1)">+1 min</button>
+            <button class="fp-btn" onclick="Timer.restart()">↺ Restart</button>
+          </div>
+          <div class="fp-row">
+            <button class="fp-btn" onclick="Timer.endNow()">⏰ End Now</button>
+            <button class="fp-btn" onclick="Timer.testSound()">🔊 Test Sound</button>
+            <button class="fp-btn" onclick="Timer.toggleMuted(); UI.render(Engine.state)">${window.Timer && Timer.muted ? '🔇 Unmute' : '🔔 Mute'}</button>
+          </div>
+          <div class="fp-row">
+            <label class="cb-hint">Minutes per round:</label>
+            <input type="number" min="1" max="60" value="${window.Timer ? Timer.minutes : 10}" style="width:56px;background:#1c2033;color:#fff;border:1px solid #343a58;border-radius:6px;" onchange="Timer.setMinutes(this.value)" />
+          </div>
+        </div>` : ''}
 
         <div class="fp-section">
           <h4>Save / Export</h4>

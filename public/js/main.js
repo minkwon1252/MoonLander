@@ -6,6 +6,15 @@
     UI.init();
 
     document.getElementById('facilitatorToggle').addEventListener('click', () => UI.toggleFacilitator());
+    const timerBtn = document.getElementById('timerToggle');
+    if (timerBtn && window.Timer) timerBtn.addEventListener('click', () => Timer.toggle());
+
+    // Browsers block audio until the page has seen a real user gesture. Prime the audio
+    // context on the first click so the time-up chime is guaranteed to be audible later.
+    document.addEventListener('click', function primeOnce() {
+      if (window.Timer) Timer.primeAudio();
+      document.removeEventListener('click', primeOnce);
+    }, { once: true });
 
     // The tour spotlight is drawn from measured element positions, so it has to be
     // recomputed whenever the layout moves.
@@ -29,6 +38,10 @@
       }
 
       if (e.key === 'f' || e.key === 'F') { UI.toggleFacilitator(); return; }
+      if (window.Timer) {
+        if (e.key === 't' || e.key === 'T') { Timer.toggle(); return; }        // pause/resume discussion
+        if (e.key === '+' || e.key === '=') { Timer.addMinutes(1); return; }   // give the room another minute
+      }
       if (['1', '2', '3', '4'].includes(e.key)) {
         UI.focusedIndex = parseInt(e.key, 10) - 1;
         UI.render(Engine.state);

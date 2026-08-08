@@ -24,6 +24,11 @@
         <span class="tb-label">Phase</span>
         <span class="tb-value tb-phase" id="phaseLabel">Setup</span>
       </div>
+      <div class="topbar-stat timer-stat hidden" id="timerStat">
+        <span class="tb-label">Discussion</span>
+        <span class="tb-value" id="timerDisplay">10:00</span>
+        <button class="tb-btn timer-btn" id="timerToggle" title="Pause / resume timer">⏸</button>
+      </div>
       <div class="topbar-stat trust-stat">
         <span class="tb-label">Global Trust</span>
         <div class="trust-meter"><div class="trust-fill" id="trustFill" style="width:60%"></div></div>
@@ -37,6 +42,7 @@
   </header>
 
   <div id="situationBanner" class="situation-banner hidden"></div>
+  <div id="timeUpBanner" class="timeup-banner hidden"></div>
 
   <main id="teamGrid" class="team-grid"></main>
 
@@ -60,6 +66,7 @@
 <script src="js/data/resources.js"></script>
 <script src="js/engine.js"></script>
 <script src="js/roadmap.js"></script>
+<script src="js/timer.js"></script>
 <script src="js/export.js"></script>
 <script src="js/ui.js"></script>
 <script src="js/main.js"></script>
