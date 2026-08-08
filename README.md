@@ -1,4 +1,16 @@
-# Tech Race: International Cooperation & Competition
+<div align="center">
+
+<img src="assets/tech-race-logo.png" alt="Tech Race — International Cooperation &amp; Competition" width="340">
+
+# Tech Race: International Cooperation &amp; Competition
+
+### ▶ Play it now — **[minkwon1252.github.io/MoonLander](https://minkwon1252.github.io/MoonLander/)**
+
+*A one-screen technology-policy simulation for the Selene Program*
+
+</div>
+
+---
 
 A **single-screen, local** technology-policy & diplomacy simulation for live conference use, built for the
 Selene Program. Four teams of engineering students each lead a national/regional innovation system, making
