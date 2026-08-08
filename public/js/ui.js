@@ -496,6 +496,8 @@
       const balHtml = (s.balanceNotes && s.balanceNotes.length) ? `<div class="summary-interactions">
         ${s.balanceNotes.map(n => `<div class="ix-row">${n.status === 'regressing' ? '📉' : n.status === 'blocked' ? '⛔' : n.status === 'unbalanced' ? '⚖️' : '🐢'} ${esc(n.message)}</div>`).join('')}
       </div>` : '';
+      const isLast = state.round >= state.maxRounds;
+      const contBtn = `<div class="debrief-actions"><button class="cb-btn primary" onclick="UI.closeSummary()">${isLast ? '🏁 Finish Game → Final Debrief' : 'Continue → Round ' + (state.round + 1)}</button></div>`;
 
       if (s.crisis) {
         el.innerHTML = `<div class="overlay-box"><div class="summary-box">
@@ -511,7 +513,7 @@
             }).join('')}
           </div>
           ${balHtml}
-          <div class="debrief-actions"><button class="cb-btn primary" onclick="UI.closeSummary()">Continue →</button></div>
+          ${contBtn}
         </div></div>`;
         return;
       }
@@ -528,11 +530,12 @@
         </div>
         ${ixHtml}
         ${balHtml}
-        <div class="debrief-actions"><button class="cb-btn primary" onclick="UI.closeSummary()">Continue →</button></div>
+        ${contBtn}
       </div></div>`;
     },
 
-    closeSummary() { /* control bar handles Engine.nextRound(); this just re-renders */ this.render(Engine.state); },
+    // The summary overlay covers the control bar, so this button must advance the game itself.
+    closeSummary() { Engine.nextRound(); },
 
     // ---------------- Debrief overlay ----------------
     renderDebriefOverlay(state) {
