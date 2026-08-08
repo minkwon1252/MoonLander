@@ -1,5 +1,4 @@
 // Four national/regional innovation systems.
-// Auto-generated content, hand-tuned for Tech Race single-screen edition.
 window.GAME_DATA = window.GAME_DATA || {};
 window.GAME_DATA.teams = [
   {
@@ -15,7 +14,7 @@ window.GAME_DATA.teams = [
       "reputation": 18,
       "security": 15,
       "politicalSupport": 12,
-      "techProgress": 6,
+      "rdCapacity": 6,
       "energy": -16
     }
   },
@@ -61,12 +60,12 @@ window.GAME_DATA.teams = [
     "model": "Fast-follower-turned-leader with heavy industry, nuclear-backed energy, and export-driven tech champions.",
     "color": "#2980b9",
     "advantages": "High technology progress, deep manufacturing supply chains, energy-secure (nuclear baseload).",
-    "constraints": "Export dependency and heavy industry create sustainability pressure and external vulnerability.",
+    "constraints": "Export dependency and heavy industry create environmental pressure and external vulnerability.",
     "startMods": {
-      "techProgress": 14,
+      "rdCapacity": 14,
       "security": 12,
       "energy": 12,
-      "sustainability": -14
+      "environment": -14
     }
   }
 ];

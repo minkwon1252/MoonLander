@@ -4,16 +4,23 @@
   'use strict';
 
   const D = window.GAME_DATA;
-  const STATS = ['treasury', 'energy', 'politicalSupport', 'publicWelfare', 'techProgress', 'reputation', 'security', 'sustainability'];
+  // The eight national-system stats. NOTE: rdCapacity is the nation's *ability to do research*,
+  // which is deliberately NOT the same thing as roadmap progress toward the chosen technology goal.
+  // Roadmap progress is tracked separately per team (team.roadmapProgress, starts at 0).
+  const STATS = ['treasury', 'energy', 'politicalSupport', 'publicWelfare', 'rdCapacity', 'reputation', 'security', 'environment'];
   const THRESHOLDS = {
-    treasury: { value: 15, label: 'Fiscal pressure' },
-    energy: { value: 15, label: 'Tech progress limited' },
-    politicalSupport: { value: 20, label: 'Instability risk' },
-    publicWelfare: { value: 20, label: 'Social unrest' },
-    reputation: { value: 20, label: 'Cooperation ineffective' },
-    security: { value: 20, label: 'Espionage / cyber risk' },
-    sustainability: { value: 20, label: 'Environmental backlash' },
+    treasury: { value: 20, label: 'Fiscal crisis' },
+    energy: { value: 20, label: 'Power / compute shortage' },
+    politicalSupport: { value: 25, label: 'Political instability' },
+    publicWelfare: { value: 25, label: 'Social unrest' },
+    rdCapacity: { value: 20, label: 'Research capacity collapse' },
+    reputation: { value: 25, label: 'Diplomatically isolated' },
+    security: { value: 25, label: 'Sovereignty at risk' },
+    environment: { value: 25, label: 'Environmental backlash' },
   };
+  // roadmap stage index (progress/20) -> which band of policy cards that team now faces.
+  // late starts at stage 4 (60%+) so late-stage dilemmas are actually reached within a 6-round game.
+  const STAGE_BANDS = ['early', 'early', 'mid', 'late', 'late'];
 
   function clamp(v) { return Math.max(0, Math.min(100, Math.round(v))); }
   function uid() { return Math.random().toString(36).slice(2, 10); }
@@ -41,6 +48,10 @@
       color: t.color, advantages: t.advantages, constraints: t.constraints,
       domain: null,
       stats: freshStats(t.startMods),
+      // Progress toward the chosen technology goal. ALWAYS starts at 0 — no team gets a head
+      // start on the roadmap regardless of its national stat advantages.
+      roadmapProgress: 0,
+      lastRoadmapDelta: 0,
       usedCardIds: [],
       pendingCard: null,
       choice: null, // {side, label, effects, stance, rationale}
@@ -161,8 +172,13 @@
             Object.entries(m.effects).forEach(([k, v]) => { eff[k] = (eff[k] || 0) + v; });
           }
         });
-        this._applyEffects(team, eff);
-        teamEffects[id] = eff;
+        // Low global trust makes shared crises bite harder; high trust cushions them, because
+        // the world coordinates its response. Only the damage is scaled, never the upside.
+        const scaled = (ev.type === 'shock' || ev.type === 'mixed')
+          ? this._scale(eff, this.harshnessMultiplier(), true)
+          : eff;
+        this._applyEffects(team, scaled);
+        teamEffects[id] = scaled;
       });
 
       this.state.log.push({
@@ -182,13 +198,25 @@
       });
     },
 
+    // Cards depend on BOTH the team's chosen technology AND how far along its roadmap it is.
+    // Priority: (1) domain cards written for the current stage band, (2) other domain cards,
+    // (3) general cross-cutting cards. General cards appear ~25% of the time for variety.
     _pickCard(team) {
-      const domainCards = D.cards.filter(c => c.domain === team.domain && !team.usedCardIds.includes(c.id));
-      const generalCards = D.cards.filter(c => c.domain === 'general' && !team.usedCardIds.includes(c.id));
-      let pool = domainCards;
-      if (generalCards.length && Math.random() < 0.3) pool = generalCards;
-      if (pool.length === 0) pool = domainCards.length ? domainCards : generalCards;
-      if (pool.length === 0) { team.usedCardIds = []; pool = D.cards.filter(c => c.domain === team.domain || c.domain === 'general'); }
+      const band = this.stageBand(team.id);
+      const unused = c => !team.usedCardIds.includes(c.id);
+      const stageCards = D.cards.filter(c => c.domain === team.domain && c.stage === band && unused(c));
+      const anyDomain = D.cards.filter(c => c.domain === team.domain && c.stage === 'any' && unused(c));
+      const generalCards = D.cards.filter(c => c.domain === 'general' && unused(c));
+
+      let pool = null;
+      if (generalCards.length && Math.random() < 0.25) pool = generalCards;
+      if (!pool || !pool.length) pool = stageCards;
+      if (!pool.length) pool = anyDomain;
+      if (!pool.length) pool = generalCards;
+      if (!pool.length) {
+        team.usedCardIds = [];
+        pool = D.cards.filter(c => c.domain === team.domain || c.domain === 'general');
+      }
       const card = pick(pool);
       team.usedCardIds.push(card.id);
       return card;
@@ -256,13 +284,15 @@
 
       if (cooperators.length >= 2) {
         const affected = [];
+        const mult = this.cooperationMultiplier();
         cooperators.forEach(c => {
           const team = this.state.teams[c.id];
           if (team.stats.reputation < THRESHOLDS.reputation.value) return; // low reputation nullifies cooperation
-          this._applyEffects(team, { reputation: 3, techProgress: 2 });
+          this._applyEffects(team, this._scale({ reputation: 4, rdCapacity: 3 }, mult));
           affected.push(c.id);
         });
-        if (affected.length) log.push({ rule: 'cooperation_bonus', teams: affected, description: `${affected.length} teams aligned on cooperation — shared reputation & tech progress gained.` });
+        this.state.globalTrust = clamp(this.state.globalTrust + 4);
+        if (affected.length) log.push({ rule: 'cooperation_bonus', teams: affected, description: `${affected.length} teams aligned on cooperation — shared reputation & R&D gained (x${mult.toFixed(1)} at ${this.state.globalTrust} global trust). Global trust rose.` });
       }
       if (protectors.length >= 1 && cooperators.length >= 2) {
         protectors.forEach(c => {
@@ -278,7 +308,7 @@
       if (secretive.length >= 1 && openTeams.length >= 1) {
         secretive.forEach(c => {
           const team = this.state.teams[c.id];
-          this._applyEffects(team, { techProgress: 3, reputation: -2 });
+          this._applyEffects(team, { rdCapacity: 3, reputation: -2 });
         });
         openTeams.forEach(c => {
           const team = this.state.teams[c.id];
@@ -344,16 +374,25 @@
         let eff;
         if (stance === 'compete') {
           if (competitors.length >= 2) {
-            eff = id === crisis.rpsWinner ? choiceDef.winEffects : choiceDef.loseEffects;
+            // Losing a contested resource hurts more in a low-trust world: nobody helps you recover.
+            eff = id === crisis.rpsWinner
+              ? choiceDef.winEffects
+              : this._scale(choiceDef.loseEffects, this.harshnessMultiplier(), true);
           } else {
             eff = choiceDef.soloEffects;
           }
+        } else if (stance === 'cooperate') {
+          eff = this._scale(choiceDef.effects, this.cooperationMultiplier());
         } else {
           eff = choiceDef.effects;
         }
         this._applyEffects(team, eff);
         effectsApplied[id] = eff;
       });
+
+      // Aggressive scrambles corrode trust; broad cooperation rebuilds it.
+      const cooperatorCount = this.state.teamOrder.filter(id => crisis.choices[id] === 'cooperate').length;
+      this.state.globalTrust = clamp(this.state.globalTrust - competitors.length * 3 + cooperatorCount * 3);
 
       crisis.resolved = true;
       this.state.log.push({
@@ -401,7 +440,7 @@
     },
 
     // Number of the seven non-tech stats currently below their danger threshold — drives
-    // roadmap blocking/regression (see _applyBalanceCheck) and the team-panel balance badge.
+    // roadmap blocking/regression (see _applyRoadmapAdvance) and the team-panel balance badge.
     dangerCount(teamId) {
       const team = this.state.teams[teamId];
       return Object.entries(THRESHOLDS).filter(([stat, t]) => team.stats[stat] < t.value).length;
@@ -414,51 +453,77 @@
       return 'regressing';
     },
 
-    // Balance gate: technology only progresses as fast as the rest of the national system can
-    // support it. Called once per team at the end of every round, after all other effects.
-    //   0 danger stats  -> normal growth
-    //   1 danger stat   -> growth this round is halved ("strained")
-    //   2 danger stats  -> all growth this round is cancelled ("blocked")
-    //   3+ danger stats -> technology progress actively regresses ("regressing")
-    // Extremely unbalanced systems (huge spread between best and worst stat) pay an extra
-    // penalty even when Technology Progress itself is high.
-    _applyBalanceCheck(team) {
+    // ---------- Roadmap advance: the core difficulty mechanic ----------
+    // Roadmap progress is EARNED from R&D Capacity but GATED by whole-system balance.
+    // Building fast is only possible if money, energy, politics, welfare, security and the
+    // environment all hold up at the same time.
+    //   0 danger stats  -> full advance
+    //   1 danger stat   -> halved ("strained")
+    //   2 danger stats  -> no advance at all ("blocked")
+    //   3+ danger stats -> roadmap actively REGRESSES ("regressing")
+    // A very wide spread between best and worst stat costs an extra point even when nothing
+    // has crossed a threshold yet — lopsided development is penalised on its own.
+    _applyRoadmapAdvance(team) {
       const dangerCount = this.dangerCount(team.id);
-      const techDelta = team.roundDeltaAccum.techProgress || 0;
+      const danger = this.activeWarnings(team.id).map(w => w.label);
+      // Base advance scales with R&D capacity: 50 rdCapacity ~ +10/round, 80 ~ +16/round.
+      // Tuned so a well-balanced team that invests in R&D can reach the late stages within
+      // 5-6 rounds, while a merely average one finishes mid-roadmap.
+      let advance = team.stats.rdCapacity / 5;
       let note = null;
+      let status = 'stable';
 
       if (dangerCount === 1) {
-        if (techDelta > 0) {
-          const rollback = Math.round(techDelta / 2);
-          this._applyEffects(team, { techProgress: -rollback });
-        }
-        note = { teamId: team.id, teamName: team.name, status: 'strained', message: `${team.name}'s technology growth was slowed this round — one national stat is under strain.` };
+        advance = advance / 2;
+        status = 'strained';
+        note = `${team.name}: roadmap slowed by half — ${danger[0]}.`;
       } else if (dangerCount === 2) {
-        if (techDelta > 0) this._applyEffects(team, { techProgress: -techDelta });
-        note = { teamId: team.id, teamName: team.name, status: 'blocked', message: `${team.name}'s roadmap progress was blocked this round — two national stats are in danger.` };
+        advance = 0;
+        status = 'blocked';
+        note = `${team.name}: roadmap BLOCKED — ${danger.join(' & ')}. Recover these before development continues.`;
       } else if (dangerCount >= 3) {
-        const penalty = (dangerCount - 2) * 3;
-        this._applyEffects(team, { techProgress: -penalty });
-        note = { teamId: team.id, teamName: team.name, status: 'regressing', message: `${team.name} is destabilizing — technology progress regressed by ${penalty} as ${dangerCount} stats collapsed at once.` };
+        advance = -(dangerCount - 2) * 4;
+        status = 'regressing';
+        note = `${team.name}: roadmap REGRESSING — ${dangerCount} stats in danger (${danger.join(', ')}).`;
       }
 
-      const nonTech = STATS.filter(s => s !== 'techProgress').map(s => team.stats[s]);
-      const spread = Math.max(...nonTech) - Math.min(...nonTech);
-      if (spread > 55 && team.stats.techProgress > 60) {
-        this._applyEffects(team, { techProgress: -3 });
-        const extra = `Extremely unbalanced development cost ${team.name} 3 additional technology progress.`;
-        note = note ? Object.assign({}, note, { message: note.message + ' ' + extra }) : { teamId: team.id, teamName: team.name, status: 'unbalanced', message: extra };
+      const spread = Math.max(...STATS.map(s => team.stats[s])) - Math.min(...STATS.map(s => team.stats[s]));
+      if (spread > 55) {
+        advance -= 2;
+        const extra = `Development is badly unbalanced (${spread}-point spread) — 2 further progress lost.`;
+        note = note ? note + ' ' + extra : `${team.name}: ${extra}`;
+        if (status === 'stable') status = 'unbalanced';
       }
 
-      team.balanceNote = note;
-      return note;
+      advance = Math.round(advance);
+      // "Blocked" must mean frozen, not slightly negative — regression is reserved for 3+ danger stats.
+      if (status === 'blocked') advance = 0;
+      const before = team.roadmapProgress;
+      team.roadmapProgress = clamp(before + advance);
+      team.lastRoadmapDelta = team.roadmapProgress - before;
+
+      // DEVELOPMENT UPKEEP: building fast is not free. Every point of roadmap progress burns
+      // money and power, so a team sprinting on high R&D drains its treasury and grid — which
+      // is usually what eventually trips the balance gate above.
+      if (advance > 0) {
+        const cost = { treasury: -Math.round(advance / 2.5), energy: -Math.round(advance / 3.5) };
+        this._applyEffects(team, cost);
+        const costNote = `Development upkeep: ${cost.treasury} treasury, ${cost.energy} energy.`;
+        note = note ? note + ' ' + costNote : null; // only surfaced when something else is already wrong
+        team.lastUpkeep = cost;
+      } else {
+        team.lastUpkeep = null;
+      }
+
+      team.balanceNote = note ? { teamId: team.id, teamName: team.name, status, message: note } : null;
+      return team.balanceNote;
     },
 
     _finalizeTeamsForRound() {
       const notes = [];
       this.state.teamOrder.forEach(id => {
         const team = this.state.teams[id];
-        const note = this._applyBalanceCheck(team);
+        const note = this._applyRoadmapAdvance(team);
         team.lastStatDeltas = Object.assign({}, team.roundDeltaAccum);
         if (note) notes.push(note);
       });
@@ -468,15 +533,42 @@
     getDomain(domainId) { return D.domains.find(d => d.id === domainId); },
     getRoadmapStage(teamId) {
       const team = this.state.teams[teamId];
-      return Math.min(4, Math.floor(clamp(team.stats.techProgress) / 20));
+      return Math.min(4, Math.floor(team.roadmapProgress / 20));
+    },
+    stageBand(teamId) { return STAGE_BANDS[this.getRoadmapStage(teamId)]; },
+
+    // ---------- Global Trust ----------
+    // Represents the world's overall willingness to cooperate. It is a real multiplier, not decoration:
+    //   high trust -> cooperation bonuses and joint responses work better
+    //   low trust  -> global shocks hurt more and losing a resource conflict hurts more
+    trustFactor() { return this.state.globalTrust / 100; },
+    cooperationMultiplier() { return 0.4 + this.trustFactor() * 1.2; },   // 0.4x at 0 trust, 1.6x at 100
+    harshnessMultiplier() { return 1.6 - this.trustFactor() * 0.8; },      // 1.6x at 0 trust, 0.8x at 100
+    _scale(effects, factor, negativeOnly) {
+      const out = {};
+      Object.entries(effects || {}).forEach(([k, v]) => {
+        out[k] = (negativeOnly && v > 0) ? v : Math.round(v * factor);
+      });
+      return out;
     },
 
     // ---------- Debrief ----------
     _computeDebrief() {
       const teams = this.state.teamOrder.map(id => this.state.teams[id]);
-      const score = t => STATS.reduce((s, k) => s + t.stats[k], 0) / STATS.length;
+      // Final score = how far the national project actually got, weighted equally against how
+      // healthy the country still is. Racing ahead on a collapsing system scores badly, and so
+      // does a perfectly balanced country that never built anything.
+      const balanceOf = t => STATS.reduce((s, k) => s + t.stats[k], 0) / STATS.length;
+      const score = t => t.roadmapProgress * 0.5 + balanceOf(t) * 0.5;
       const ranking = teams.slice().sort((a, b) => score(b) - score(a))
-        .map(t => ({ teamId: t.id, teamName: t.name, score: Math.round(score(t) * 10) / 10, stats: t.stats }));
+        .map(t => ({
+          teamId: t.id, teamName: t.name,
+          score: Math.round(score(t) * 10) / 10,
+          roadmapProgress: t.roadmapProgress,
+          roadmapStage: this.getRoadmapStage(t.id) + 1,
+          balance: Math.round(balanceOf(t) * 10) / 10,
+          stats: t.stats,
+        }));
 
       const mostCooperative = teams.slice().sort((a, b) =>
         (b.stanceCounts.cooperate + b.stanceCounts.open) - (a.stanceCounts.cooperate + a.stanceCounts.open))[0];

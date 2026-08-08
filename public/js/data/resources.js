@@ -1,5 +1,4 @@
-// 12 shared scarce resource crises (type: resource_conflict).
-// Each team picks compete/cooperate/conserve/diversify; 2+ "compete" picks resolve via on-stage Rock-Paper-Scissors.
+// 12 shared scarce resource conflicts.
 window.GAME_DATA = window.GAME_DATA || {};
 window.GAME_DATA.resources = [
   {
@@ -42,7 +41,7 @@ window.GAME_DATA.resources = [
         "label": "Ration domestic use",
         "effects": {
           "energy": 2,
-          "sustainability": 4,
+          "environment": 4,
           "publicWelfare": -2
         }
       },
@@ -50,7 +49,7 @@ window.GAME_DATA.resources = [
         "label": "Accelerate alternative energy",
         "effects": {
           "energy": 1,
-          "sustainability": 5,
+          "environment": 5,
           "treasury": -4
         }
       }
@@ -75,7 +74,7 @@ window.GAME_DATA.resources = [
       "compete": {
         "label": "Requisition grid capacity for priority industries",
         "winEffects": {
-          "techProgress": 8,
+          "rdCapacity": 8,
           "energy": 5
         },
         "loseEffects": {
@@ -83,7 +82,7 @@ window.GAME_DATA.resources = [
           "politicalSupport": -4
         },
         "soloEffects": {
-          "techProgress": 7,
+          "rdCapacity": 7,
           "publicWelfare": -3
         }
       },
@@ -98,15 +97,15 @@ window.GAME_DATA.resources = [
         "label": "Mandate efficiency & rolling curbs",
         "effects": {
           "publicWelfare": 3,
-          "sustainability": 3,
-          "techProgress": -2
+          "environment": 3,
+          "rdCapacity": -2
         }
       },
       "diversify": {
         "label": "Fast-track storage & renewables",
         "effects": {
           "energy": 2,
-          "sustainability": 4,
+          "environment": 4,
           "treasury": -3
         }
       }
@@ -131,22 +130,22 @@ window.GAME_DATA.resources = [
       "compete": {
         "label": "Outbid rivals for production slots",
         "winEffects": {
-          "techProgress": 9,
+          "rdCapacity": 9,
           "security": 3
         },
         "loseEffects": {
           "treasury": -6,
-          "techProgress": -3
+          "rdCapacity": -3
         },
         "soloEffects": {
-          "techProgress": 8,
+          "rdCapacity": 8,
           "treasury": -3
         }
       },
       "cooperate": {
         "label": "Pool orders into a joint procurement bloc",
         "effects": {
-          "techProgress": 3,
+          "rdCapacity": 3,
           "reputation": 4,
           "treasury": -2
         }
@@ -155,15 +154,15 @@ window.GAME_DATA.resources = [
         "label": "Redesign products to need fewer advanced chips",
         "effects": {
           "treasury": 2,
-          "sustainability": 2,
-          "techProgress": -1
+          "environment": 2,
+          "rdCapacity": -1
         }
       },
       "diversify": {
         "label": "Fund a domestic legacy-node line instead",
         "effects": {
           "security": 4,
-          "techProgress": 1,
+          "rdCapacity": 1,
           "treasury": -4
         }
       }
@@ -189,7 +188,7 @@ window.GAME_DATA.resources = [
         "label": "Secure exclusive supply deals",
         "winEffects": {
           "security": 8,
-          "techProgress": 4
+          "rdCapacity": 4
         },
         "loseEffects": {
           "security": -5,
@@ -210,14 +209,14 @@ window.GAME_DATA.resources = [
       "conserve": {
         "label": "Redesign to reduce rare-earth intensity",
         "effects": {
-          "sustainability": 3,
-          "techProgress": -1
+          "environment": 3,
+          "rdCapacity": -1
         }
       },
       "diversify": {
         "label": "Fund recycling & alternative-source R&D",
         "effects": {
-          "sustainability": 4,
+          "environment": 4,
           "security": 2,
           "treasury": -3
         }
@@ -243,22 +242,22 @@ window.GAME_DATA.resources = [
       "compete": {
         "label": "Lock in long-term mining contracts",
         "winEffects": {
-          "sustainability": 5,
+          "environment": 5,
           "treasury": 4
         },
         "loseEffects": {
           "treasury": -6,
-          "sustainability": -2
+          "environment": -2
         },
         "soloEffects": {
-          "sustainability": 4,
+          "environment": 4,
           "treasury": -3
         }
       },
       "cooperate": {
         "label": "Co-invest in a shared extraction venture",
         "effects": {
-          "sustainability": 3,
+          "environment": 3,
           "reputation": 4,
           "treasury": -2
         }
@@ -266,15 +265,15 @@ window.GAME_DATA.resources = [
       "conserve": {
         "label": "Prioritize grid storage over consumer batteries",
         "effects": {
-          "sustainability": 2,
+          "environment": 2,
           "publicWelfare": -1
         }
       },
       "diversify": {
         "label": "Invest in sodium-ion alternatives",
         "effects": {
-          "techProgress": 3,
-          "sustainability": 2,
+          "rdCapacity": 3,
+          "environment": 2,
           "treasury": -4
         }
       }
@@ -300,7 +299,7 @@ window.GAME_DATA.resources = [
         "label": "Sign directly with incumbent suppliers",
         "winEffects": {
           "treasury": 5,
-          "techProgress": 4
+          "rdCapacity": 4
         },
         "loseEffects": {
           "reputation": -5,
@@ -321,15 +320,15 @@ window.GAME_DATA.resources = [
       "conserve": {
         "label": "Redesign batteries to be cobalt-free",
         "effects": {
-          "sustainability": 3,
-          "techProgress": -2
+          "environment": 3,
+          "rdCapacity": -2
         }
       },
       "diversify": {
         "label": "Fund alternative deep-sea or synthetic sources",
         "effects": {
-          "techProgress": 2,
-          "sustainability": -2,
+          "rdCapacity": 2,
+          "environment": -2,
           "treasury": -4
         }
       }
@@ -354,36 +353,36 @@ window.GAME_DATA.resources = [
       "compete": {
         "label": "Pay premium prices for priority allocation",
         "winEffects": {
-          "techProgress": 10
+          "rdCapacity": 10
         },
         "loseEffects": {
           "treasury": -7,
-          "techProgress": -3
+          "rdCapacity": -3
         },
         "soloEffects": {
-          "techProgress": 9,
+          "rdCapacity": 9,
           "treasury": -4
         }
       },
       "cooperate": {
         "label": "Join a shared academic compute cluster",
         "effects": {
-          "techProgress": 4,
+          "rdCapacity": 4,
           "reputation": 4
         }
       },
       "conserve": {
         "label": "Optimize models to use less compute",
         "effects": {
-          "techProgress": 2,
-          "sustainability": 2
+          "rdCapacity": 2,
+          "environment": 2
         }
       },
       "diversify": {
         "label": "Invest in domestic chip alternatives",
         "effects": {
           "security": 4,
-          "techProgress": 1,
+          "rdCapacity": 1,
           "treasury": -4
         }
       }
@@ -406,22 +405,22 @@ window.GAME_DATA.resources = [
       "compete": {
         "label": "Pay premium for priority slots",
         "winEffects": {
-          "techProgress": 9,
+          "rdCapacity": 9,
           "reputation": 2
         },
         "loseEffects": {
-          "techProgress": -4,
+          "rdCapacity": -4,
           "treasury": -5
         },
         "soloEffects": {
-          "techProgress": 8,
+          "rdCapacity": 8,
           "treasury": -4
         }
       },
       "cooperate": {
         "label": "Co-manifest payloads with partners",
         "effects": {
-          "techProgress": 3,
+          "rdCapacity": 3,
           "reputation": 4,
           "treasury": -2
         }
@@ -430,14 +429,14 @@ window.GAME_DATA.resources = [
         "label": "Delay non-critical missions",
         "effects": {
           "treasury": 2,
-          "techProgress": -1
+          "rdCapacity": -1
         }
       },
       "diversify": {
         "label": "Invest in a domestic launch capability",
         "effects": {
           "security": 4,
-          "techProgress": 1,
+          "rdCapacity": 1,
           "treasury": -5
         }
       }
@@ -462,15 +461,15 @@ window.GAME_DATA.resources = [
         "label": "Rush to file exclusive claims",
         "winEffects": {
           "security": 6,
-          "techProgress": 4
+          "rdCapacity": 4
         },
         "loseEffects": {
           "reputation": -4,
-          "techProgress": -3
+          "rdCapacity": -3
         },
         "soloEffects": {
           "security": 5,
-          "techProgress": 3
+          "rdCapacity": 3
         }
       },
       "cooperate": {
@@ -483,14 +482,14 @@ window.GAME_DATA.resources = [
       "conserve": {
         "label": "Limit constellation size to reduce congestion",
         "effects": {
-          "sustainability": 3,
-          "techProgress": -1
+          "environment": 3,
+          "rdCapacity": -1
         }
       },
       "diversify": {
         "label": "Invest in laser/optical inter-satellite links",
         "effects": {
-          "techProgress": 3,
+          "rdCapacity": 3,
           "treasury": -3
         }
       }
@@ -515,7 +514,7 @@ window.GAME_DATA.resources = [
       "compete": {
         "label": "Requisition water for strategic industry",
         "winEffects": {
-          "techProgress": 7,
+          "rdCapacity": 7,
           "security": 2
         },
         "loseEffects": {
@@ -523,7 +522,7 @@ window.GAME_DATA.resources = [
           "politicalSupport": -4
         },
         "soloEffects": {
-          "techProgress": 5,
+          "rdCapacity": 5,
           "publicWelfare": -4
         }
       },
@@ -538,15 +537,15 @@ window.GAME_DATA.resources = [
       "conserve": {
         "label": "Mandate closed-loop industrial cooling",
         "effects": {
-          "sustainability": 4,
+          "environment": 4,
           "publicWelfare": 2,
-          "techProgress": -1
+          "rdCapacity": -1
         }
       },
       "diversify": {
         "label": "Invest in desalination capacity",
         "effects": {
-          "sustainability": 2,
+          "environment": 2,
           "publicWelfare": 2,
           "treasury": -4
         }
@@ -573,7 +572,7 @@ window.GAME_DATA.resources = [
         "label": "Launch an aggressive poaching campaign",
         "winEffects": {
           "reputation": 5,
-          "techProgress": 5
+          "rdCapacity": 5
         },
         "loseEffects": {
           "treasury": -5,
@@ -581,28 +580,28 @@ window.GAME_DATA.resources = [
         },
         "soloEffects": {
           "reputation": 4,
-          "techProgress": 4
+          "rdCapacity": 4
         }
       },
       "cooperate": {
         "label": "Join an international exchange program",
         "effects": {
           "reputation": 4,
-          "techProgress": 2
+          "rdCapacity": 2
         }
       },
       "conserve": {
         "label": "Invest in growing talent domestically",
         "effects": {
           "publicWelfare": 2,
-          "techProgress": 1,
+          "rdCapacity": 1,
           "treasury": -3
         }
       },
       "diversify": {
         "label": "Build fully remote/distributed research teams",
         "effects": {
-          "techProgress": 2,
+          "rdCapacity": 2,
           "security": -1
         }
       }
@@ -627,22 +626,22 @@ window.GAME_DATA.resources = [
       "compete": {
         "label": "Lobby hard for a scarce export license",
         "winEffects": {
-          "techProgress": 10,
+          "rdCapacity": 10,
           "security": 3
         },
         "loseEffects": {
-          "techProgress": -5,
+          "rdCapacity": -5,
           "reputation": -3
         },
         "soloEffects": {
-          "techProgress": 8,
+          "rdCapacity": 8,
           "security": 2
         }
       },
       "cooperate": {
         "label": "Join an allied technology-sharing framework",
         "effects": {
-          "techProgress": 4,
+          "rdCapacity": 4,
           "reputation": 4
         }
       },
@@ -650,14 +649,14 @@ window.GAME_DATA.resources = [
         "label": "Focus on mature-node self-sufficiency",
         "effects": {
           "security": 3,
-          "techProgress": -1
+          "rdCapacity": -1
         }
       },
       "diversify": {
         "label": "Fund a long-shot domestic lithography program",
         "effects": {
           "security": 2,
-          "techProgress": 1,
+          "rdCapacity": 1,
           "treasury": -5
         }
       }

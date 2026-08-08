@@ -1,6 +1,11 @@
 /* Tech Race — single-screen projector edition */
 
 * { box-sizing: border-box; }
+/* --ui-scale is adjustable live from the facilitator panel (A- / A+) so the text can be
+   tuned to whatever projector and room depth you actually get on the day. Everything is
+   sized in rem, so this single variable scales the entire interface. */
+:root { --ui-scale: 1; }
+html { font-size: calc(16px * var(--ui-scale)); }
 html, body {
   margin: 0; padding: 0; height: 100%;
   background: #0d0f16; color: #eef1f8;
@@ -272,3 +277,107 @@ button { font-family: inherit; cursor: pointer; }
   .setup-teams { grid-template-columns: repeat(2, 1fr); }
   .summary-list, .debrief-badges { grid-template-columns: 1fr; }
 }
+
+/* =====================================================================
+   PROJECTOR TYPOGRAPHY
+   Overrides the compact defaults above with sizes meant to be read from
+   the back of a lecture hall. Loaded last so it wins the cascade.
+   The card description is deliberately the largest text on the board.
+   ===================================================================== */
+
+/* --- top bar --- */
+.brand-title { font-size: 2rem; }
+.brand-sub { font-size: 1rem; }
+.tb-label { font-size: 0.95rem; }
+.tb-value { font-size: 2rem; }
+.tb-of { font-size: 1.3rem; }
+.tb-btn { font-size: 1.1rem; padding: 10px 18px; }
+.trust-meter { width: 170px; height: 14px; }
+
+/* --- event banner --- */
+.situation-banner { padding: 14px 28px; }
+.situation-banner .sb-icon { font-size: 2.4rem; }
+.situation-banner .sb-type { font-size: 0.9rem; padding: 4px 12px; }
+.situation-banner .sb-title { font-size: 1.7rem; }
+.situation-banner .sb-text { font-size: 1.3rem; }
+
+/* --- team panel header --- */
+.tp-name { font-size: 1.85rem; }
+.tp-country { font-size: 1rem; }
+.tp-domain { font-size: 1.05rem; padding: 6px 12px; }
+
+/* --- stats --- */
+.tp-stats { gap: 5px 12px; }
+.stat-row { font-size: 1rem; gap: 7px; }
+.stat-icon { width: 20px; font-size: 1.05rem; }
+.stat-label { width: 68px; font-size: 0.95rem; }
+.stat-bar { height: 11px; }
+.stat-num { width: 30px; font-size: 1.05rem; font-weight: 700; }
+.stat-delta { font-size: 0.95rem; }
+.warn-badge { font-size: 0.88rem; padding: 2px 9px; }
+.balance-badge { font-size: 0.9rem; padding: 3px 11px; }
+
+/* --- roadmap --- */
+.tp-roadmap-label { font-size: 0.95rem; }
+.tp-roadmap-stage { font-size: 1.1rem; }
+.roadmap-pct { font-size: 1.25rem; font-weight: 800; color: var(--team-color); margin-left: 6px; }
+.roadmap-delta { font-size: 1rem; font-weight: 800; margin-left: 5px; }
+.roadmap-delta.pos { color: #6bdc94; }
+.roadmap-delta.neg { color: #ff8b8b; }
+
+/* --- THE POLICY CARD: the most important text on the screen --- */
+.pcard { padding: 14px 16px; gap: 8px; }
+.pcard-title { font-size: 1.65rem; line-height: 1.2; }
+.pcard-situation {
+  font-size: 1.6rem;      /* was 0.72rem — the headline readability change */
+  line-height: 1.34;
+  color: #e8ecff;
+}
+.pcard-question { font-size: 1.35rem; font-style: normal; font-weight: 700; color: #ffe08a; }
+.pcard-opt { font-size: 1.3rem; padding: 14px 10px; }
+.pcard-opt .opt-arrow { font-size: 1.5rem; }
+.opt-preview { font-size: 1.1rem; padding: 3px 10px; }
+
+/* --- resolved card / crisis --- */
+.pcard-resolved .r-title { font-size: 1.35rem; }
+.pcard-resolved .r-choice { font-size: 1.25rem; }
+.eff-badge { font-size: 1rem; padding: 3px 9px; }
+.rationale-box label { font-size: 0.85rem; }
+.rationale-box textarea { font-size: 1rem; min-height: 46px; }
+.crisis-choice-btn { font-size: 1.25rem; padding: 13px; }
+.crisis-waiting { font-size: 1.3rem; }
+.tp-idle { font-size: 1.25rem; }
+
+/* --- control bar --- */
+.cb-btn { font-size: 1.3rem; padding: 13px 26px; }
+.cb-hint { font-size: 1.15rem; }
+
+/* --- overlays --- */
+.guide-title, .setup-title { font-size: 2.6rem; }
+.guide-sub, .setup-sub { font-size: 1.2rem; }
+.guide-section h4 { font-size: 1.35rem; }
+.guide-section p { font-size: 1.12rem; line-height: 1.55; }
+.guide-stats { margin: 6px 0 8px; padding-left: 24px; font-size: 1.08rem; line-height: 1.5; color: #dfe3f5; }
+.guide-stats li { margin-bottom: 5px; }
+.guide-th { color: #8a91ad; font-size: 0.92rem; white-space: nowrap; }
+.setup-team h3 { font-size: 1.5rem; }
+.setup-team .st-country { font-size: 1rem; }
+.domain-btn { font-size: 1rem; padding: 11px 8px; }
+.crisis-icon { font-size: 4rem; }
+.crisis-title { font-size: 2.1rem; }
+.crisis-situation { font-size: 1.3rem; }
+.rps-banner { font-size: 1.5rem; padding: 14px; }
+.rps-winner-btn { font-size: 1.3rem; padding: 15px 28px; }
+.summary-title { font-size: 2rem; }
+.summary-item { font-size: 1.15rem; }
+.summary-interactions { font-size: 1.12rem; }
+.debrief-title { font-size: 2.6rem; }
+.rank-table th, .rank-table td { font-size: 1.05rem; padding: 10px 12px; }
+.rank-table th { font-size: 0.9rem; }
+.debrief-badge .db-label { font-size: 0.9rem; }
+.debrief-badge .db-value { font-size: 1.35rem; }
+.debrief-section h4 { font-size: 1.25rem; }
+.debrief-section ul, .debrief-section p { font-size: 1.12rem; }
+
+/* Facilitator panel stays deliberately compact — it is operator UI, not audience UI. */
+.facilitator-panel { width: 420px; }

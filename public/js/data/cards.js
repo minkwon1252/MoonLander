@@ -1,7 +1,1857 @@
-// 98 policy cards (domain-specific + general).
-// Hand-tuned for Tech Race single-screen edition.
+// 152 policy cards (stage-specific + general fallback).
 window.GAME_DATA = window.GAME_DATA || {};
 window.GAME_DATA.cards = [
+  {
+    "id": "ai-e1",
+    "domain": "ai",
+    "stage": "early",
+    "title": "The National Data Trust",
+    "situation": "Your labs need a decade of citizens’ health and education records to train a national model. Consent was never given for this.",
+    "question": "Open public records for model training?",
+    "left": {
+      "label": "Open the records",
+      "effects": {
+        "rdCapacity": 8,
+        "publicWelfare": -7,
+        "reputation": -3
+      },
+      "stance": null
+    },
+    "right": {
+      "label": "Opt-in only",
+      "effects": {
+        "publicWelfare": 5,
+        "reputation": 3,
+        "rdCapacity": -4
+      },
+      "stance": "open"
+    },
+    "tags": [
+      "privacy",
+      "data",
+      "consent"
+    ],
+    "severity": 3,
+    "discussionPrompt": "Can consent be meaningful when the data was collected for something else entirely?",
+    "educationalNote": "Model performance scales with data, which puts constant pressure on privacy norms."
+  },
+  {
+    "id": "ai-e2",
+    "domain": "ai",
+    "stage": "early",
+    "title": "Compute at What Cost",
+    "situation": "The fastest route to a national compute cluster runs on cheap coal power. The clean option costs double and takes two more years.",
+    "question": "Build the cluster on dirty power?",
+    "left": {
+      "label": "Build it fast",
+      "effects": {
+        "energy": 8,
+        "rdCapacity": 5,
+        "environment": -8
+      },
+      "stance": null
+    },
+    "right": {
+      "label": "Wait for clean power",
+      "effects": {
+        "environment": 5,
+        "treasury": -6,
+        "rdCapacity": -3
+      },
+      "stance": null
+    },
+    "tags": [
+      "energy",
+      "environment",
+      "compute"
+    ],
+    "severity": 2,
+    "discussionPrompt": "Is it defensible to pollute now to build the tools that might fix pollution later?",
+    "educationalNote": "AI infrastructure decisions are increasingly energy-policy decisions."
+  },
+  {
+    "id": "ai-m1",
+    "domain": "ai",
+    "stage": "mid",
+    "title": "Ship or Align",
+    "situation": "Your model is ahead of the world today. Safety testing would cost six months — and the lead.",
+    "question": "Ship now or finish alignment work?",
+    "left": {
+      "label": "Ship now",
+      "effects": {
+        "rdCapacity": 7,
+        "security": -6,
+        "publicWelfare": -4
+      },
+      "stance": "compete"
+    },
+    "right": {
+      "label": "Finish alignment",
+      "effects": {
+        "security": 5,
+        "reputation": 5,
+        "rdCapacity": -5
+      },
+      "stance": null
+    },
+    "tags": [
+      "safety",
+      "speed",
+      "ethics"
+    ],
+    "severity": 3,
+    "discussionPrompt": "Who bears the risk when a safety margin is traded for a competitive lead?",
+    "educationalNote": "Safety work is invisible when it succeeds and catastrophic when it is skipped."
+  },
+  {
+    "id": "ai-m2",
+    "domain": "ai",
+    "stage": "mid",
+    "title": "The Defense Contract",
+    "situation": "The defense ministry offers to fund your entire training run — if targeting research gets priority access.",
+    "question": "Take military funding for the lab?",
+    "left": {
+      "label": "Take the funding",
+      "effects": {
+        "treasury": 9,
+        "security": 6,
+        "reputation": -5,
+        "publicWelfare": -2
+      },
+      "stance": null
+    },
+    "right": {
+      "label": "Stay independent",
+      "effects": {
+        "reputation": 5,
+        "rdCapacity": -3,
+        "treasury": -6
+      },
+      "stance": null
+    },
+    "tags": [
+      "dual-use",
+      "military",
+      "research-freedom"
+    ],
+    "severity": 3,
+    "discussionPrompt": "Does accepting military money change what questions a lab is able to ask?",
+    "educationalNote": "Funding source shapes research agendas long before it shapes any single result."
+  },
+  {
+    "id": "ai-l1",
+    "domain": "ai",
+    "stage": "late",
+    "title": "The Automation Dividend",
+    "situation": "National deployment would raise output sharply and make roughly a fifth of clerical jobs redundant within a year.",
+    "question": "Deploy nationally at full speed?",
+    "left": {
+      "label": "Deploy at full speed",
+      "effects": {
+        "treasury": 7,
+        "rdCapacity": 5,
+        "publicWelfare": -9,
+        "politicalSupport": -5
+      },
+      "stance": null
+    },
+    "right": {
+      "label": "Phase in with retraining",
+      "effects": {
+        "publicWelfare": 5,
+        "politicalSupport": 3,
+        "treasury": -6
+      },
+      "stance": null
+    },
+    "tags": [
+      "automation",
+      "labor",
+      "welfare"
+    ],
+    "severity": 3,
+    "discussionPrompt": "Who captures the gains of automation, and who absorbs the losses?",
+    "educationalNote": "Productivity gains and job losses rarely land on the same people."
+  },
+  {
+    "id": "ai-l2",
+    "domain": "ai",
+    "stage": "late",
+    "title": "Open the Model",
+    "situation": "Releasing weights openly would win global goodwill and adoption. Your security services say it hands capability to everyone, including adversaries.",
+    "question": "Release the model openly?",
+    "left": {
+      "label": "Release openly",
+      "effects": {
+        "reputation": 8,
+        "rdCapacity": 3,
+        "security": -8
+      },
+      "stance": "open"
+    },
+    "right": {
+      "label": "Restrict access",
+      "effects": {
+        "security": 7,
+        "reputation": -5
+      },
+      "stance": "protect"
+    },
+    "tags": [
+      "openness",
+      "export-control",
+      "security"
+    ],
+    "severity": 3,
+    "discussionPrompt": "Is open release democratization, proliferation, or both at once?",
+    "educationalNote": "Open weights cannot be recalled — the decision is effectively permanent."
+  },
+  {
+    "id": "space-e1",
+    "domain": "space",
+    "stage": "early",
+    "title": "The Launch Site",
+    "situation": "The best launch corridor sits over a fishing village of four thousand people. They do not want to move.",
+    "question": "Compulsorily acquire the land?",
+    "left": {
+      "label": "Take the land",
+      "effects": {
+        "rdCapacity": 6,
+        "publicWelfare": -8,
+        "politicalSupport": -4
+      },
+      "stance": null
+    },
+    "right": {
+      "label": "Move the site",
+      "effects": {
+        "treasury": -8,
+        "publicWelfare": 4,
+        "rdCapacity": -2
+      },
+      "stance": null
+    },
+    "tags": [
+      "justice",
+      "infrastructure",
+      "welfare"
+    ],
+    "severity": 2,
+    "discussionPrompt": "Whose land is expendable when a national programme needs it?",
+    "educationalNote": "Large infrastructure repeatedly displaces communities with the least political power."
+  },
+  {
+    "id": "space-e2",
+    "domain": "space",
+    "stage": "early",
+    "title": "Dual-Use Launcher",
+    "situation": "Defense will pay for your launcher development — the same vehicle can deliver a warhead.",
+    "question": "Accept defense co-funding?",
+    "left": {
+      "label": "Accept co-funding",
+      "effects": {
+        "treasury": 8,
+        "security": 6,
+        "reputation": -5
+      },
+      "stance": null
+    },
+    "right": {
+      "label": "Keep it civilian",
+      "effects": {
+        "reputation": 5,
+        "treasury": -6,
+        "rdCapacity": -2
+      },
+      "stance": "open"
+    },
+    "tags": [
+      "dual-use",
+      "military",
+      "space"
+    ],
+    "severity": 3,
+    "discussionPrompt": "Can a launch vehicle ever really be civilian-only?",
+    "educationalNote": "Launch and missile technology are physically almost the same problem."
+  },
+  {
+    "id": "space-m1",
+    "domain": "space",
+    "stage": "mid",
+    "title": "Who Owns the Regolith",
+    "situation": "Your lander found extractable water ice. No treaty clearly says who may keep it.",
+    "question": "Stake a unilateral claim?",
+    "left": {
+      "label": "Stake the claim",
+      "effects": {
+        "rdCapacity": 6,
+        "security": 5,
+        "reputation": -8
+      },
+      "stance": "compete"
+    },
+    "right": {
+      "label": "Push for a treaty",
+      "effects": {
+        "reputation": 8,
+        "rdCapacity": -4
+      },
+      "stance": "cooperate"
+    },
+    "tags": [
+      "space-law",
+      "resources",
+      "governance"
+    ],
+    "severity": 3,
+    "discussionPrompt": "Should the first nation able to extract a space resource be the one that owns it?",
+    "educationalNote": "The Outer Space Treaty bars appropriation of territory but is ambiguous on extracted resources."
+  },
+  {
+    "id": "space-m2",
+    "domain": "space",
+    "stage": "mid",
+    "title": "The Risk Margin",
+    "situation": "A sensor fault gives the crewed lander a small but real failure probability. Standing down costs a launch window and enormous prestige.",
+    "question": "Fly on schedule?",
+    "left": {
+      "label": "Fly on schedule",
+      "effects": {
+        "rdCapacity": 7,
+        "publicWelfare": -5,
+        "politicalSupport": -4
+      },
+      "stance": null
+    },
+    "right": {
+      "label": "Stand down",
+      "effects": {
+        "treasury": -7,
+        "publicWelfare": 4,
+        "reputation": 3
+      },
+      "stance": null
+    },
+    "tags": [
+      "safety",
+      "risk",
+      "ethics"
+    ],
+    "severity": 3,
+    "discussionPrompt": "How much risk may a state ask an astronaut to accept for national prestige?",
+    "educationalNote": "Both Shuttle losses followed known, normalized technical risks."
+  },
+  {
+    "id": "space-l1",
+    "domain": "space",
+    "stage": "late",
+    "title": "Debris Liability",
+    "situation": "Your constellation caused a fifth of last year’s near-misses. An international cleanup fund wants your proportional share.",
+    "question": "Pay into the cleanup fund?",
+    "left": {
+      "label": "Pay your share",
+      "effects": {
+        "treasury": -7,
+        "environment": 5,
+        "reputation": 5
+      },
+      "stance": "cooperate"
+    },
+    "right": {
+      "label": "Dispute the bill",
+      "effects": {
+        "treasury": 3,
+        "reputation": -7,
+        "environment": -3
+      },
+      "stance": "protect"
+    },
+    "tags": [
+      "debris",
+      "commons",
+      "responsibility"
+    ],
+    "severity": 2,
+    "discussionPrompt": "Who pays to clean a commons that everybody polluted a little?",
+    "educationalNote": "Orbital debris is the textbook modern tragedy of the commons."
+  },
+  {
+    "id": "space-l2",
+    "domain": "space",
+    "stage": "late",
+    "title": "Weapons in Orbit",
+    "situation": "A treaty banning orbital weapons is on the table. Your new platform could host them.",
+    "question": "Sign the orbital weapons ban?",
+    "left": {
+      "label": "Sign the ban",
+      "effects": {
+        "reputation": 8,
+        "security": -5
+      },
+      "stance": "cooperate"
+    },
+    "right": {
+      "label": "Keep the option",
+      "effects": {
+        "security": 8,
+        "reputation": -7
+      },
+      "stance": "protect"
+    },
+    "tags": [
+      "militarization",
+      "treaty",
+      "security"
+    ],
+    "severity": 3,
+    "discussionPrompt": "Does giving up a capability make you safer or merely weaker?",
+    "educationalNote": "Arms control depends on verification, which orbital systems make unusually hard."
+  },
+  {
+    "id": "semi-e1",
+    "domain": "semiconductors",
+    "stage": "early",
+    "title": "The Lithography Queue",
+    "situation": "One company on Earth makes the machine you need. Getting a slot means an expensive political favour to an allied bloc.",
+    "question": "Buy your way into the queue?",
+    "left": {
+      "label": "Pay and align",
+      "effects": {
+        "rdCapacity": 8,
+        "treasury": -9,
+        "security": -3
+      },
+      "stance": null
+    },
+    "right": {
+      "label": "Build mature-node capacity",
+      "effects": {
+        "security": 6,
+        "rdCapacity": -4,
+        "treasury": -3
+      },
+      "stance": "protect"
+    },
+    "tags": [
+      "chokepoints",
+      "dependency",
+      "sovereignty"
+    ],
+    "severity": 3,
+    "discussionPrompt": "What does sovereignty mean when one vendor controls an entire industry’s ceiling?",
+    "educationalNote": "EUV lithography is the most concentrated chokepoint in the technology stack."
+  },
+  {
+    "id": "semi-e2",
+    "domain": "semiconductors",
+    "stage": "early",
+    "title": "Cleanroom Water",
+    "situation": "The fab needs the district’s water during a drought year. Farms and households are already rationed.",
+    "question": "Give the fab priority water?",
+    "left": {
+      "label": "Prioritize the fab",
+      "effects": {
+        "rdCapacity": 6,
+        "publicWelfare": -8,
+        "environment": -4
+      },
+      "stance": null
+    },
+    "right": {
+      "label": "Fund closed-loop recycling",
+      "effects": {
+        "treasury": -7,
+        "environment": 5,
+        "publicWelfare": 4
+      },
+      "stance": null
+    },
+    "tags": [
+      "water",
+      "environment",
+      "welfare"
+    ],
+    "severity": 2,
+    "discussionPrompt": "Should a water-scarce region host a water-hungry industry at all?",
+    "educationalNote": "Advanced fabs consume millions of litres of ultrapure water daily."
+  },
+  {
+    "id": "semi-m1",
+    "domain": "semiconductors",
+    "stage": "mid",
+    "title": "Yield Secrets",
+    "situation": "Allied fabs want your yield data to speed up a joint programme. It is also your only real commercial edge.",
+    "question": "Share the yield data?",
+    "left": {
+      "label": "Share with allies",
+      "effects": {
+        "reputation": 6,
+        "rdCapacity": 3,
+        "security": -6
+      },
+      "stance": "cooperate"
+    },
+    "right": {
+      "label": "Classify it",
+      "effects": {
+        "security": 6,
+        "treasury": 3,
+        "reputation": -5
+      },
+      "stance": "secrecy"
+    },
+    "tags": [
+      "openness",
+      "alliance",
+      "competitiveness"
+    ],
+    "severity": 2,
+    "discussionPrompt": "How much advantage should you give up to keep an alliance real?",
+    "educationalNote": "Process knowledge, not design, is where fab advantage actually lives."
+  },
+  {
+    "id": "semi-m2",
+    "domain": "semiconductors",
+    "stage": "mid",
+    "title": "Fabs or Schools",
+    "situation": "The same budget line can subsidize one more fab expansion or rebuild the technical school system that feeds it.",
+    "question": "Where does the money go?",
+    "left": {
+      "label": "Subsidize the fab",
+      "effects": {
+        "rdCapacity": 7,
+        "treasury": -9,
+        "publicWelfare": -4
+      },
+      "stance": null
+    },
+    "right": {
+      "label": "Fund the schools",
+      "effects": {
+        "publicWelfare": 6,
+        "politicalSupport": 4,
+        "rdCapacity": -4
+      },
+      "stance": null
+    },
+    "tags": [
+      "subsidies",
+      "education",
+      "welfare"
+    ],
+    "severity": 2,
+    "discussionPrompt": "Is industrial policy that skips human capital actually industrial policy?",
+    "educationalNote": "Fab subsidies are politically visible; the workforce pipeline rarely is."
+  },
+  {
+    "id": "semi-l1",
+    "domain": "semiconductors",
+    "stage": "late",
+    "title": "The Export Control Demand",
+    "situation": "An allied bloc demands you cut off your largest chip customer. That customer is a quarter of your export revenue.",
+    "question": "Comply with the export controls?",
+    "left": {
+      "label": "Comply",
+      "effects": {
+        "security": 5,
+        "reputation": 4,
+        "treasury": -9
+      },
+      "stance": "cooperate"
+    },
+    "right": {
+      "label": "Keep selling",
+      "effects": {
+        "treasury": 8,
+        "reputation": -6,
+        "security": -4
+      },
+      "stance": "compete"
+    },
+    "tags": [
+      "export-control",
+      "trade",
+      "alliance"
+    ],
+    "severity": 3,
+    "discussionPrompt": "When does export control protect security, and when is it just someone else’s trade policy?",
+    "educationalNote": "Controls usually accelerate the target’s drive for self-sufficiency."
+  },
+  {
+    "id": "semi-l2",
+    "domain": "semiconductors",
+    "stage": "late",
+    "title": "Monopoly Pricing",
+    "situation": "You are briefly the only supplier of a critical node. You can price accordingly — including to hospitals and utilities.",
+    "question": "Maximize revenue from the position?",
+    "left": {
+      "label": "Maximize revenue",
+      "effects": {
+        "treasury": 9,
+        "reputation": -7,
+        "publicWelfare": -4
+      },
+      "stance": "compete"
+    },
+    "right": {
+      "label": "Price it fairly",
+      "effects": {
+        "reputation": 7,
+        "publicWelfare": 3,
+        "treasury": -4
+      },
+      "stance": null
+    },
+    "tags": [
+      "monopoly",
+      "pricing",
+      "ethics"
+    ],
+    "severity": 2,
+    "discussionPrompt": "Is extracting maximum rent from a temporary monopoly simply good business?",
+    "educationalNote": "Monopoly pricing in critical inputs propagates through every downstream sector."
+  },
+  {
+    "id": "energy-e1",
+    "domain": "energy",
+    "stage": "early",
+    "title": "Restart the Reactors",
+    "situation": "Idle reactors could close your generation gap within a year. Public memory of the last accident is still raw.",
+    "question": "Restart the nuclear fleet?",
+    "left": {
+      "label": "Restart them",
+      "effects": {
+        "energy": 9,
+        "environment": 4,
+        "publicWelfare": -6,
+        "politicalSupport": -5
+      },
+      "stance": null
+    },
+    "right": {
+      "label": "Keep them shut",
+      "effects": {
+        "politicalSupport": 4,
+        "publicWelfare": 3,
+        "energy": -5,
+        "treasury": -4
+      },
+      "stance": null
+    },
+    "tags": [
+      "nuclear",
+      "acceptance",
+      "energy"
+    ],
+    "severity": 3,
+    "discussionPrompt": "How should a government weigh statistical risk against genuine public fear?",
+    "educationalNote": "Nuclear acceptance is driven far more by trust in institutions than by accident statistics."
+  },
+  {
+    "id": "energy-e2",
+    "domain": "energy",
+    "stage": "early",
+    "title": "Who Controls the Grid",
+    "situation": "The cheapest grid-control software comes from a foreign vendor. Your own security agency cannot audit the source.",
+    "question": "Award the contract abroad?",
+    "left": {
+      "label": "Take the cheap bid",
+      "effects": {
+        "treasury": 7,
+        "energy": 3,
+        "security": -9
+      },
+      "stance": null
+    },
+    "right": {
+      "label": "Pay for a domestic vendor",
+      "effects": {
+        "security": 7,
+        "treasury": -8
+      },
+      "stance": "protect"
+    },
+    "tags": [
+      "cyber",
+      "sovereignty",
+      "infrastructure"
+    ],
+    "severity": 3,
+    "discussionPrompt": "Is the cheapest infrastructure bid ever cheapest once risk is priced in?",
+    "educationalNote": "Grid control systems are among the highest-value targets in any national network."
+  },
+  {
+    "id": "energy-m1",
+    "domain": "energy",
+    "stage": "mid",
+    "title": "Blackout Triage",
+    "situation": "A cold snap means you must shed load. Industry and data centres, or households and hospitals.",
+    "question": "Who keeps the power?",
+    "left": {
+      "label": "Protect industry",
+      "effects": {
+        "rdCapacity": 5,
+        "treasury": 4,
+        "publicWelfare": -9
+      },
+      "stance": null
+    },
+    "right": {
+      "label": "Protect households",
+      "effects": {
+        "publicWelfare": 7,
+        "politicalSupport": 4,
+        "rdCapacity": -5,
+        "treasury": -3
+      },
+      "stance": null
+    },
+    "tags": [
+      "grid",
+      "welfare",
+      "triage"
+    ],
+    "severity": 3,
+    "discussionPrompt": "In a shortage, is economic output or human comfort the right priority?",
+    "educationalNote": "Load-shedding rules are written long before the emergency, and they are political documents."
+  },
+  {
+    "id": "energy-m2",
+    "domain": "energy",
+    "stage": "mid",
+    "title": "The Transmission Corridor",
+    "situation": "Modernizing the grid needs a high-voltage line through farmland and two protected valleys.",
+    "question": "Force the corridor through?",
+    "left": {
+      "label": "Force it through",
+      "effects": {
+        "energy": 8,
+        "publicWelfare": -5,
+        "environment": -4,
+        "politicalSupport": -4
+      },
+      "stance": null
+    },
+    "right": {
+      "label": "Reroute and bury it",
+      "effects": {
+        "treasury": -9,
+        "environment": 3,
+        "publicWelfare": 4
+      },
+      "stance": null
+    },
+    "tags": [
+      "grid",
+      "land",
+      "environment"
+    ],
+    "severity": 2,
+    "discussionPrompt": "Does the energy transition justify overriding local objection?",
+    "educationalNote": "Transmission, not generation, is the binding constraint on most clean-energy plans."
+  },
+  {
+    "id": "energy-l1",
+    "domain": "energy",
+    "stage": "late",
+    "title": "Export the Surplus",
+    "situation": "Your grid finally runs a surplus. Neighbours will pay well for it; your own industry would rather keep prices low.",
+    "question": "Export the surplus power?",
+    "left": {
+      "label": "Export it",
+      "effects": {
+        "treasury": 8,
+        "reputation": 4,
+        "energy": -5
+      },
+      "stance": "cooperate"
+    },
+    "right": {
+      "label": "Keep it domestic",
+      "effects": {
+        "energy": 6,
+        "publicWelfare": 4,
+        "treasury": -3,
+        "reputation": -2
+      },
+      "stance": "protect"
+    },
+    "tags": [
+      "energy",
+      "trade",
+      "welfare"
+    ],
+    "severity": 1,
+    "discussionPrompt": "Should a public energy surplus be sold abroad or spent on domestic prices?",
+    "educationalNote": "Energy interdependence builds both resilience and leverage — in both directions."
+  },
+  {
+    "id": "energy-l2",
+    "domain": "energy",
+    "stage": "late",
+    "title": "The Supergrid Question",
+    "situation": "Joining the regional supergrid would cut costs and stabilize supply — and make you dependent on neighbours in a crisis.",
+    "question": "Join the regional supergrid?",
+    "left": {
+      "label": "Join the supergrid",
+      "effects": {
+        "energy": 7,
+        "reputation": 6,
+        "security": -7
+      },
+      "stance": "cooperate"
+    },
+    "right": {
+      "label": "Stay islanded",
+      "effects": {
+        "security": 7,
+        "energy": -4,
+        "treasury": -5
+      },
+      "stance": "protect"
+    },
+    "tags": [
+      "interdependence",
+      "sovereignty",
+      "grid"
+    ],
+    "severity": 2,
+    "discussionPrompt": "Is interdependence a source of resilience or a strategic vulnerability?",
+    "educationalNote": "Interconnection reduces cost and raises the political stakes of every dispute."
+  },
+  {
+    "id": "climate-e1",
+    "domain": "climate",
+    "stage": "early",
+    "title": "Carbon Tax Now",
+    "situation": "Your monitoring network finally works, and it shows exactly who is emitting. A real carbon price is now technically possible.",
+    "question": "Impose the carbon tax this term?",
+    "left": {
+      "label": "Impose it now",
+      "effects": {
+        "environment": 8,
+        "treasury": 5,
+        "politicalSupport": -7,
+        "rdCapacity": -3
+      },
+      "stance": null
+    },
+    "right": {
+      "label": "Defer it",
+      "effects": {
+        "politicalSupport": 5,
+        "treasury": -2,
+        "environment": -6
+      },
+      "stance": null
+    },
+    "tags": [
+      "carbon-price",
+      "politics",
+      "environment"
+    ],
+    "severity": 2,
+    "discussionPrompt": "Should a government act on a measurement its voters have not accepted yet?",
+    "educationalNote": "Carbon pricing is economically straightforward and politically brutal."
+  },
+  {
+    "id": "climate-e2",
+    "domain": "climate",
+    "stage": "early",
+    "title": "Whose Air",
+    "situation": "The new industrial-efficiency programme sites its retrofit plants in the poorest districts, where land is cheap and objection is weak.",
+    "question": "Site the plants where land is cheapest?",
+    "left": {
+      "label": "Site them cheaply",
+      "effects": {
+        "treasury": 6,
+        "rdCapacity": 3,
+        "publicWelfare": -8
+      },
+      "stance": null
+    },
+    "right": {
+      "label": "Enforce fair siting",
+      "effects": {
+        "publicWelfare": 6,
+        "reputation": 3,
+        "treasury": -6
+      },
+      "stance": null
+    },
+    "tags": [
+      "environmental-justice",
+      "welfare",
+      "siting"
+    ],
+    "severity": 3,
+    "discussionPrompt": "Why do environmental burdens so reliably land on the least powerful communities?",
+    "educationalNote": "Environmental justice research finds siting correlates strongly with local political power."
+  },
+  {
+    "id": "climate-m1",
+    "domain": "climate",
+    "stage": "mid",
+    "title": "The Capture Moonshot",
+    "situation": "Direct-air capture could be transformative or a decade-long dead end. The same money would deliver certain, boring efficiency gains.",
+    "question": "Bet on carbon capture?",
+    "left": {
+      "label": "Fund the moonshot",
+      "effects": {
+        "rdCapacity": 7,
+        "treasury": -9,
+        "environment": 2
+      },
+      "stance": null
+    },
+    "right": {
+      "label": "Fund proven efficiency",
+      "effects": {
+        "environment": 6,
+        "treasury": -3,
+        "rdCapacity": -3
+      },
+      "stance": null
+    },
+    "tags": [
+      "carbon-removal",
+      "risk",
+      "funding"
+    ],
+    "severity": 2,
+    "discussionPrompt": "When is a moonshot leadership, and when is it an excuse to delay boring work?",
+    "educationalNote": "Capture at climate-relevant scale remains unproven and energy-intensive."
+  },
+  {
+    "id": "climate-m2",
+    "domain": "climate",
+    "stage": "mid",
+    "title": "Climate Debt",
+    "situation": "Nations harmed by a century of emissions — much of it yours — demand a compensation fund.",
+    "question": "Pay into the loss-and-damage fund?",
+    "left": {
+      "label": "Pay in full",
+      "effects": {
+        "treasury": -9,
+        "reputation": 9
+      },
+      "stance": "cooperate"
+    },
+    "right": {
+      "label": "Decline liability",
+      "effects": {
+        "treasury": 4,
+        "reputation": -8
+      },
+      "stance": "protect"
+    },
+    "tags": [
+      "burden-sharing",
+      "justice",
+      "diplomacy"
+    ],
+    "severity": 3,
+    "discussionPrompt": "Do present citizens owe anything for emissions produced before they were born?",
+    "educationalNote": "Loss-and-damage financing has been among the most contested items in climate diplomacy."
+  },
+  {
+    "id": "climate-l1",
+    "domain": "climate",
+    "stage": "late",
+    "title": "Green Steel Mandate",
+    "situation": "Mandating low-carbon steel would complete your net-zero pathway and price your manufacturers out of export markets.",
+    "question": "Mandate green steel now?",
+    "left": {
+      "label": "Mandate it",
+      "effects": {
+        "environment": 8,
+        "reputation": 4,
+        "treasury": -6,
+        "politicalSupport": -5
+      },
+      "stance": null
+    },
+    "right": {
+      "label": "Stay cost-competitive",
+      "effects": {
+        "treasury": 6,
+        "environment": -7,
+        "reputation": -3
+      },
+      "stance": "compete"
+    },
+    "tags": [
+      "industry",
+      "transition",
+      "competitiveness"
+    ],
+    "severity": 3,
+    "discussionPrompt": "Can one country decarbonize heavy industry while its competitors do not?",
+    "educationalNote": "Carbon leakage — emissions relocating rather than falling — is the central design problem."
+  },
+  {
+    "id": "climate-l2",
+    "domain": "climate",
+    "stage": "late",
+    "title": "The Geoengineering Trial",
+    "situation": "A stratospheric aerosol trial could buy the world a decade. No international body has authorized it, and effects cross every border.",
+    "question": "Run the trial unilaterally?",
+    "left": {
+      "label": "Run it",
+      "effects": {
+        "rdCapacity": 7,
+        "environment": 3,
+        "reputation": -9,
+        "security": -3
+      },
+      "stance": "compete"
+    },
+    "right": {
+      "label": "Wait for consensus",
+      "effects": {
+        "reputation": 7,
+        "rdCapacity": -4,
+        "environment": -2
+      },
+      "stance": "cooperate"
+    },
+    "tags": [
+      "geoengineering",
+      "governance",
+      "risk"
+    ],
+    "severity": 3,
+    "discussionPrompt": "Who is entitled to consent on behalf of a planet?",
+    "educationalNote": "Solar geoengineering is cheap enough that a single actor could attempt it alone."
+  },
+  {
+    "id": "quantum-e1",
+    "domain": "quantum",
+    "stage": "early",
+    "title": "The Talent War",
+    "situation": "There are perhaps three hundred people worldwide who can build your qubit platform. You can outbid for a dozen of them.",
+    "question": "Poach aggressively or grow your own?",
+    "left": {
+      "label": "Poach the specialists",
+      "effects": {
+        "rdCapacity": 8,
+        "treasury": -8,
+        "reputation": -4
+      },
+      "stance": "compete"
+    },
+    "right": {
+      "label": "Train domestically",
+      "effects": {
+        "publicWelfare": 4,
+        "rdCapacity": -3,
+        "treasury": -5
+      },
+      "stance": null
+    },
+    "tags": [
+      "talent",
+      "competition",
+      "education"
+    ],
+    "severity": 2,
+    "discussionPrompt": "Is buying talent from smaller countries a fair way to compete?",
+    "educationalNote": "Extreme talent concentration makes small teams strategically decisive."
+  },
+  {
+    "id": "quantum-e2",
+    "domain": "quantum",
+    "stage": "early",
+    "title": "The Helium Reserve",
+    "situation": "Dilution refrigerators need helium-3, and global supply is tiny. You can corner enough for a decade.",
+    "question": "Corner the helium supply?",
+    "left": {
+      "label": "Stockpile aggressively",
+      "effects": {
+        "security": 7,
+        "rdCapacity": 4,
+        "treasury": -8,
+        "reputation": -4
+      },
+      "stance": "compete"
+    },
+    "right": {
+      "label": "Join a shared reserve",
+      "effects": {
+        "reputation": 6,
+        "security": 2,
+        "rdCapacity": -2
+      },
+      "stance": "cooperate"
+    },
+    "tags": [
+      "supply-security",
+      "scarcity",
+      "cooperation"
+    ],
+    "severity": 2,
+    "discussionPrompt": "Does stockpiling a scarce input protect you or simply start the shortage?",
+    "educationalNote": "Helium-3 supply is a byproduct of weapons stockpiles, making it structurally scarce."
+  },
+  {
+    "id": "quantum-m1",
+    "domain": "quantum",
+    "stage": "mid",
+    "title": "Publish the Algorithm",
+    "situation": "Your team solved a key error-correction problem. Publishing advances the whole field — including everyone else’s codebreaking.",
+    "question": "Publish or classify?",
+    "left": {
+      "label": "Publish openly",
+      "effects": {
+        "reputation": 8,
+        "rdCapacity": 3,
+        "security": -7
+      },
+      "stance": "open"
+    },
+    "right": {
+      "label": "Classify the result",
+      "effects": {
+        "security": 8,
+        "reputation": -6,
+        "rdCapacity": -2
+      },
+      "stance": "secrecy"
+    },
+    "tags": [
+      "open-science",
+      "security",
+      "dual-use"
+    ],
+    "severity": 3,
+    "discussionPrompt": "Does a scientist owe more to their field or to their state?",
+    "educationalNote": "Classification of mathematics has a long and contested history in cryptography."
+  },
+  {
+    "id": "quantum-m2",
+    "domain": "quantum",
+    "stage": "mid",
+    "title": "Quantum Sensing for Defense",
+    "situation": "Your sensors can detect submarines through the seabed. Defense wants the whole programme; civilian geology loses its instrument.",
+    "question": "Hand the programme to defense?",
+    "left": {
+      "label": "Give it to defense",
+      "effects": {
+        "treasury": 8,
+        "security": 7,
+        "reputation": -5,
+        "rdCapacity": -2
+      },
+      "stance": "protect"
+    },
+    "right": {
+      "label": "Keep it civilian",
+      "effects": {
+        "reputation": 5,
+        "rdCapacity": 4,
+        "treasury": -6,
+        "security": -3
+      },
+      "stance": "open"
+    },
+    "tags": [
+      "dual-use",
+      "military",
+      "sensing"
+    ],
+    "severity": 2,
+    "discussionPrompt": "What is lost to science when a capability is absorbed by defense?",
+    "educationalNote": "Quantum sensing may destabilize submarine-based nuclear deterrence."
+  },
+  {
+    "id": "quantum-l1",
+    "domain": "quantum",
+    "stage": "late",
+    "title": "Their Encryption Is Broken",
+    "situation": "You can now read a rival’s encrypted traffic. Telling them closes the window; staying quiet leaves their hospitals exposed too.",
+    "question": "Disclose the break?",
+    "left": {
+      "label": "Exploit it quietly",
+      "effects": {
+        "security": 8,
+        "rdCapacity": 3,
+        "reputation": -9
+      },
+      "stance": "secrecy"
+    },
+    "right": {
+      "label": "Disclose and help migrate",
+      "effects": {
+        "reputation": 9,
+        "security": -5
+      },
+      "stance": "open"
+    },
+    "tags": [
+      "crypto",
+      "intelligence",
+      "ethics"
+    ],
+    "severity": 3,
+    "discussionPrompt": "Is an unpatched vulnerability an intelligence asset or a public danger?",
+    "educationalNote": "The equities debate — exploit or disclose — is unresolved in every major state."
+  },
+  {
+    "id": "quantum-l2",
+    "domain": "quantum",
+    "stage": "late",
+    "title": "The Migration Bill",
+    "situation": "Every government system needs new cryptography before the technology you just built becomes widely available.",
+    "question": "Fund the emergency migration?",
+    "left": {
+      "label": "Fund it now",
+      "effects": {
+        "security": 9,
+        "treasury": -9
+      },
+      "stance": null
+    },
+    "right": {
+      "label": "Delay the spending",
+      "effects": {
+        "treasury": 5,
+        "security": -8
+      },
+      "stance": null
+    },
+    "tags": [
+      "crypto",
+      "infrastructure",
+      "security"
+    ],
+    "severity": 3,
+    "discussionPrompt": "How do you budget today against a threat that only becomes real later?",
+    "educationalNote": "Harvest-now-decrypt-later attacks make migration urgent before the machines exist."
+  },
+  {
+    "id": "biotech-e1",
+    "domain": "biotech",
+    "stage": "early",
+    "title": "The National Biobank",
+    "situation": "A mandatory genomic biobank would put your programme years ahead. Participation would not be optional.",
+    "question": "Make the biobank mandatory?",
+    "left": {
+      "label": "Make it mandatory",
+      "effects": {
+        "rdCapacity": 8,
+        "publicWelfare": -8,
+        "reputation": -4
+      },
+      "stance": null
+    },
+    "right": {
+      "label": "Keep it opt-in",
+      "effects": {
+        "publicWelfare": 5,
+        "reputation": 4,
+        "rdCapacity": -5
+      },
+      "stance": "open"
+    },
+    "tags": [
+      "genomics",
+      "consent",
+      "privacy"
+    ],
+    "severity": 3,
+    "discussionPrompt": "Who owns your genome — you, your family, or the state that sequenced it?",
+    "educationalNote": "Genomic data is uniquely identifying and implicates relatives who never consented."
+  },
+  {
+    "id": "biotech-e2",
+    "domain": "biotech",
+    "stage": "early",
+    "title": "Pathogen Data",
+    "situation": "Your surveillance network detected a novel pathogen sequence. Sharing it openly speeds vaccines and hands a blueprint to anyone.",
+    "question": "Publish the sequence openly?",
+    "left": {
+      "label": "Publish openly",
+      "effects": {
+        "reputation": 7,
+        "publicWelfare": 3,
+        "security": -7
+      },
+      "stance": "open"
+    },
+    "right": {
+      "label": "Restrict access",
+      "effects": {
+        "security": 7,
+        "reputation": -5,
+        "publicWelfare": -2
+      },
+      "stance": "protect"
+    },
+    "tags": [
+      "biosecurity",
+      "openness",
+      "health"
+    ],
+    "severity": 3,
+    "discussionPrompt": "Does open science save more lives than it endangers in biology?",
+    "educationalNote": "Rapid sequence sharing enabled COVID vaccines and also lowered synthesis barriers."
+  },
+  {
+    "id": "biotech-m1",
+    "domain": "biotech",
+    "stage": "mid",
+    "title": "Trials Abroad",
+    "situation": "Running clinical trials in a poorer country is faster, cheaper, and legal. The eventual therapy will be priced beyond that country’s reach.",
+    "question": "Run the trials offshore?",
+    "left": {
+      "label": "Run them offshore",
+      "effects": {
+        "rdCapacity": 7,
+        "treasury": 4,
+        "reputation": -8
+      },
+      "stance": null
+    },
+    "right": {
+      "label": "Trial domestically",
+      "effects": {
+        "reputation": 5,
+        "treasury": -7,
+        "rdCapacity": -3
+      },
+      "stance": null
+    },
+    "tags": [
+      "ethics",
+      "exploitation",
+      "clinical"
+    ],
+    "severity": 3,
+    "discussionPrompt": "Is it ethical to test on populations that will never afford the result?",
+    "educationalNote": "Benefit-sharing obligations in international trial ethics are widely ignored in practice."
+  },
+  {
+    "id": "biotech-m2",
+    "domain": "biotech",
+    "stage": "mid",
+    "title": "Fast-Track the Therapy",
+    "situation": "Dying patients are demanding access now. Full trials take three more years and would catch rare fatal side effects.",
+    "question": "Grant emergency approval?",
+    "left": {
+      "label": "Fast-track it",
+      "effects": {
+        "rdCapacity": 6,
+        "politicalSupport": 4,
+        "publicWelfare": -7
+      },
+      "stance": null
+    },
+    "right": {
+      "label": "Require full trials",
+      "effects": {
+        "publicWelfare": 6,
+        "reputation": 3,
+        "rdCapacity": -4,
+        "politicalSupport": -3
+      },
+      "stance": null
+    },
+    "tags": [
+      "regulation",
+      "risk",
+      "health"
+    ],
+    "severity": 3,
+    "discussionPrompt": "Should desperate patients be allowed to accept unknown risks?",
+    "educationalNote": "Accelerated approval trades statistical certainty for time, sometimes badly."
+  },
+  {
+    "id": "biotech-l1",
+    "domain": "biotech",
+    "stage": "late",
+    "title": "Price the Cure",
+    "situation": "Your platform produced a one-shot cure. Pricing it high funds the next decade of research; pricing it low reaches everyone who needs it.",
+    "question": "How do you price the cure?",
+    "left": {
+      "label": "Maximize revenue",
+      "effects": {
+        "treasury": 9,
+        "rdCapacity": 3,
+        "publicWelfare": -8,
+        "reputation": -5
+      },
+      "stance": null
+    },
+    "right": {
+      "label": "License it cheaply",
+      "effects": {
+        "reputation": 8,
+        "publicWelfare": 6,
+        "treasury": -6
+      },
+      "stance": "cooperate"
+    },
+    "tags": [
+      "drug-access",
+      "pricing",
+      "ethics"
+    ],
+    "severity": 3,
+    "discussionPrompt": "Does high pricing fund future cures or just ration present ones?",
+    "educationalNote": "The access-versus-innovation tradeoff is the core unsolved problem of pharmaceutical policy."
+  },
+  {
+    "id": "biotech-l2",
+    "domain": "biotech",
+    "stage": "late",
+    "title": "Editing the Germline",
+    "situation": "Your platform can now correct heritable disease before birth. The edits pass to every future generation.",
+    "question": "Permit germline editing?",
+    "left": {
+      "label": "Permit with oversight",
+      "effects": {
+        "rdCapacity": 7,
+        "publicWelfare": -4,
+        "reputation": -5
+      },
+      "stance": null
+    },
+    "right": {
+      "label": "Ban it outright",
+      "effects": {
+        "reputation": 4,
+        "publicWelfare": 4,
+        "rdCapacity": -6
+      },
+      "stance": "protect"
+    },
+    "tags": [
+      "bioethics",
+      "genomics",
+      "governance"
+    ],
+    "severity": 3,
+    "discussionPrompt": "Who consents on behalf of people not yet born?",
+    "educationalNote": "Heritable editing is prohibited in most jurisdictions and technically within reach."
+  },
+  {
+    "id": "robotics-e1",
+    "domain": "robotics",
+    "stage": "early",
+    "title": "The Testbed Factory",
+    "situation": "Converting a working public shipyard into a robotics testbed would accelerate you by years and idle its workforce meanwhile.",
+    "question": "Convert the shipyard?",
+    "left": {
+      "label": "Convert it",
+      "effects": {
+        "rdCapacity": 7,
+        "publicWelfare": -6,
+        "politicalSupport": -3
+      },
+      "stance": null
+    },
+    "right": {
+      "label": "Build a new site",
+      "effects": {
+        "treasury": -8,
+        "publicWelfare": 3,
+        "rdCapacity": -2
+      },
+      "stance": null
+    },
+    "tags": [
+      "labor",
+      "infrastructure",
+      "industry"
+    ],
+    "severity": 2,
+    "discussionPrompt": "Who should absorb the transition cost of building the thing that replaces them?",
+    "educationalNote": "Industrial transitions concentrate cost locally while spreading benefit nationally."
+  },
+  {
+    "id": "robotics-e2",
+    "domain": "robotics",
+    "stage": "early",
+    "title": "Imported Actuators",
+    "situation": "Cheap foreign actuators would let you build ten times as many prototypes. They also embed firmware you cannot inspect.",
+    "question": "Import the components?",
+    "left": {
+      "label": "Import them",
+      "effects": {
+        "rdCapacity": 6,
+        "treasury": 4,
+        "security": -7
+      },
+      "stance": null
+    },
+    "right": {
+      "label": "Build them domestically",
+      "effects": {
+        "security": 7,
+        "treasury": -8,
+        "rdCapacity": -2
+      },
+      "stance": "protect"
+    },
+    "tags": [
+      "supply-chain",
+      "sovereignty",
+      "security"
+    ],
+    "severity": 2,
+    "discussionPrompt": "How much of your hardware can you afford not to understand?",
+    "educationalNote": "Firmware-level supply-chain compromise is extremely difficult to detect after deployment."
+  },
+  {
+    "id": "robotics-m1",
+    "domain": "robotics",
+    "stage": "mid",
+    "title": "Robots for Elders",
+    "situation": "Care robots would relieve a severe carer shortage. Families say the elderly need people, not machines.",
+    "question": "Deploy care robots at scale?",
+    "left": {
+      "label": "Deploy them",
+      "effects": {
+        "treasury": 7,
+        "rdCapacity": 5,
+        "publicWelfare": -5
+      },
+      "stance": null
+    },
+    "right": {
+      "label": "Fund human carers",
+      "effects": {
+        "publicWelfare": 8,
+        "politicalSupport": 3,
+        "treasury": -8,
+        "rdCapacity": -3
+      },
+      "stance": null
+    },
+    "tags": [
+      "care",
+      "labor",
+      "welfare"
+    ],
+    "severity": 2,
+    "discussionPrompt": "Is automated care a solution to a shortage or an acceptance of it?",
+    "educationalNote": "Care robotics tends to substitute for underfunding rather than for labour itself."
+  },
+  {
+    "id": "robotics-m2",
+    "domain": "robotics",
+    "stage": "mid",
+    "title": "Autonomous Weapons",
+    "situation": "Your control stack is good enough for lethal autonomy. Defense wants it; a treaty process wants it banned.",
+    "question": "Develop autonomous weapons?",
+    "left": {
+      "label": "Develop them",
+      "effects": {
+        "security": 8,
+        "treasury": 5,
+        "reputation": -9
+      },
+      "stance": "compete"
+    },
+    "right": {
+      "label": "Renounce the application",
+      "effects": {
+        "reputation": 8,
+        "security": -5,
+        "treasury": -3
+      },
+      "stance": "cooperate"
+    },
+    "tags": [
+      "autonomous-weapons",
+      "ethics",
+      "treaty"
+    ],
+    "severity": 3,
+    "discussionPrompt": "Should a machine ever be permitted to decide to kill?",
+    "educationalNote": "Meaningful human control remains undefined in international law."
+  },
+  {
+    "id": "robotics-l1",
+    "domain": "robotics",
+    "stage": "late",
+    "title": "The Port Strike",
+    "situation": "Full port automation is ready. The dockworkers’ union has shut down the harbour in response.",
+    "question": "Proceed with automation?",
+    "left": {
+      "label": "Automate anyway",
+      "effects": {
+        "treasury": 8,
+        "rdCapacity": 4,
+        "publicWelfare": -9,
+        "politicalSupport": -6
+      },
+      "stance": null
+    },
+    "right": {
+      "label": "Negotiate a transition",
+      "effects": {
+        "publicWelfare": 6,
+        "politicalSupport": 4,
+        "treasury": -6,
+        "rdCapacity": -3
+      },
+      "stance": null
+    },
+    "tags": [
+      "automation",
+      "labor",
+      "politics"
+    ],
+    "severity": 3,
+    "discussionPrompt": "Do workers have any legitimate claim to a job that a machine can now do?",
+    "educationalNote": "Port automation disputes have become the sharpest labour conflicts of the automation era."
+  },
+  {
+    "id": "robotics-l2",
+    "domain": "robotics",
+    "stage": "late",
+    "title": "Certify the Fleet",
+    "situation": "Strict safety certification for autonomous deployment would delay you by two years. Light-touch rules ship now and shift risk to the public.",
+    "question": "Impose strict certification?",
+    "left": {
+      "label": "Certify strictly",
+      "effects": {
+        "publicWelfare": 6,
+        "reputation": 5,
+        "rdCapacity": -5
+      },
+      "stance": null
+    },
+    "right": {
+      "label": "Light-touch rules",
+      "effects": {
+        "rdCapacity": 6,
+        "treasury": 3,
+        "publicWelfare": -6,
+        "reputation": -4
+      },
+      "stance": null
+    },
+    "tags": [
+      "safety",
+      "regulation",
+      "liability"
+    ],
+    "severity": 2,
+    "discussionPrompt": "Who should carry the risk of a system that is probably safe?",
+    "educationalNote": "Safety regulation usually arrives after the first well-publicized fatality."
+  },
+  {
+    "id": "materials-e1",
+    "domain": "materials",
+    "stage": "early",
+    "title": "Open the Mine",
+    "situation": "A domestic deposit would end your import dependency. Extracting it would poison a river system for a generation.",
+    "question": "Open the mine?",
+    "left": {
+      "label": "Open it",
+      "effects": {
+        "security": 7,
+        "rdCapacity": 4,
+        "environment": -9,
+        "publicWelfare": -4
+      },
+      "stance": "protect"
+    },
+    "right": {
+      "label": "Keep importing",
+      "effects": {
+        "environment": 4,
+        "publicWelfare": 3,
+        "security": -6,
+        "treasury": -3
+      },
+      "stance": null
+    },
+    "tags": [
+      "mining",
+      "environment",
+      "sovereignty"
+    ],
+    "severity": 3,
+    "discussionPrompt": "Is domestic environmental damage preferable to foreign dependency?",
+    "educationalNote": "Rare-earth refining is usually more damaging than the mining itself."
+  },
+  {
+    "id": "materials-e2",
+    "domain": "materials",
+    "stage": "early",
+    "title": "Simulation on Foreign Clouds",
+    "situation": "Atomic simulation needs enormous compute. Renting it abroad is cheap and exposes your entire research pipeline.",
+    "question": "Rent foreign compute?",
+    "left": {
+      "label": "Rent it abroad",
+      "effects": {
+        "rdCapacity": 7,
+        "treasury": 3,
+        "security": -6
+      },
+      "stance": null
+    },
+    "right": {
+      "label": "Build a domestic cluster",
+      "effects": {
+        "security": 6,
+        "rdCapacity": 2,
+        "treasury": -9,
+        "energy": -3
+      },
+      "stance": "protect"
+    },
+    "tags": [
+      "compute",
+      "sovereignty",
+      "research"
+    ],
+    "severity": 2,
+    "discussionPrompt": "Where does your research actually live if the machines belong to someone else?",
+    "educationalNote": "Compute dependency exposes research direction, not just research output."
+  },
+  {
+    "id": "materials-m1",
+    "domain": "materials",
+    "stage": "mid",
+    "title": "The Byproduct Problem",
+    "situation": "Scaling up your synthesis route produces a toxic byproduct. Proper treatment erases the cost advantage entirely.",
+    "question": "Pay for full treatment?",
+    "left": {
+      "label": "Dispose cheaply",
+      "effects": {
+        "treasury": 6,
+        "rdCapacity": 3,
+        "environment": -9,
+        "publicWelfare": -4
+      },
+      "stance": null
+    },
+    "right": {
+      "label": "Treat it properly",
+      "effects": {
+        "environment": 6,
+        "publicWelfare": 4,
+        "treasury": -8
+      },
+      "stance": null
+    },
+    "tags": [
+      "environment",
+      "industry",
+      "regulation"
+    ],
+    "severity": 2,
+    "discussionPrompt": "Should a process that cannot afford its own cleanup be scaled at all?",
+    "educationalNote": "Externalized disposal costs are the classic hidden subsidy in materials manufacturing."
+  },
+  {
+    "id": "materials-m2",
+    "domain": "materials",
+    "stage": "mid",
+    "title": "Share the Recipe",
+    "situation": "Allies want your processing route to build parallel capacity. It is the only thing they cannot reproduce themselves.",
+    "question": "License the process to allies?",
+    "left": {
+      "label": "License it",
+      "effects": {
+        "reputation": 7,
+        "rdCapacity": 2,
+        "security": -6
+      },
+      "stance": "cooperate"
+    },
+    "right": {
+      "label": "Keep it proprietary",
+      "effects": {
+        "security": 6,
+        "treasury": 4,
+        "reputation": -5
+      },
+      "stance": "secrecy"
+    },
+    "tags": [
+      "alliance",
+      "openness",
+      "competitiveness"
+    ],
+    "severity": 2,
+    "discussionPrompt": "Is an alliance real if you keep the one thing that matters to yourself?",
+    "educationalNote": "Process know-how transfers far less easily than blueprints suggest."
+  },
+  {
+    "id": "materials-l1",
+    "domain": "materials",
+    "stage": "late",
+    "title": "The Export Ban",
+    "situation": "You now control global supply of a breakthrough material. Restricting exports would give your industry a decisive edge.",
+    "question": "Ban exports of the material?",
+    "left": {
+      "label": "Ban exports",
+      "effects": {
+        "security": 8,
+        "rdCapacity": 3,
+        "reputation": -8,
+        "treasury": -4
+      },
+      "stance": "protect"
+    },
+    "right": {
+      "label": "Keep markets open",
+      "effects": {
+        "treasury": 8,
+        "reputation": 5,
+        "security": -6
+      },
+      "stance": "open"
+    },
+    "tags": [
+      "resource-nationalism",
+      "trade",
+      "leverage"
+    ],
+    "severity": 3,
+    "discussionPrompt": "When you finally hold the chokepoint, do you use it the way others used theirs on you?",
+    "educationalNote": "Resource nationalism reliably triggers substitution research in the countries it targets."
+  },
+  {
+    "id": "materials-l2",
+    "domain": "materials",
+    "stage": "late",
+    "title": "Design for Recycling",
+    "situation": "Mandating recyclable design would cut long-term demand sharply and raise near-term unit costs above imports.",
+    "question": "Mandate recyclable design?",
+    "left": {
+      "label": "Mandate recycling",
+      "effects": {
+        "environment": 8,
+        "security": 3,
+        "treasury": -6,
+        "rdCapacity": -3
+      },
+      "stance": null
+    },
+    "right": {
+      "label": "Use the cheapest source",
+      "effects": {
+        "treasury": 6,
+        "rdCapacity": 2,
+        "environment": -7
+      },
+      "stance": null
+    },
+    "tags": [
+      "circular-economy",
+      "environment",
+      "industry"
+    ],
+    "severity": 2,
+    "discussionPrompt": "Should the cost of end-of-life fall on the producer or on everyone else?",
+    "educationalNote": "Circular design is cheapest to impose before an industry has scaled, and rarely is."
+  },
   {
     "id": "ai-d1",
     "domain": "ai",
@@ -11,7 +1861,7 @@ window.GAME_DATA.cards = [
     "left": {
       "label": "Authorize controlled access",
       "effects": {
-        "techProgress": 9,
+        "rdCapacity": 9,
         "reputation": 7,
         "publicWelfare": -8
       },
@@ -20,7 +1870,7 @@ window.GAME_DATA.cards = [
     "right": {
       "label": "Refuse — protect privacy",
       "effects": {
-        "techProgress": -4,
+        "rdCapacity": -4,
         "publicWelfare": 7,
         "politicalSupport": 3
       },
@@ -32,7 +1882,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "Who owns data generated by public institutions, and can consent ever be meaningful at national scale?",
-    "educationalNote": "Foundation-model performance scales with data, but re-identification risk makes 'anonymized' a weak guarantee."
+    "educationalNote": "Foundation-model performance scales with data, but re-identification risk makes 'anonymized' a weak guarantee.",
+    "stage": "any"
   },
   {
     "id": "ai-d2",
@@ -43,7 +1894,7 @@ window.GAME_DATA.cards = [
     "left": {
       "label": "Prioritize AI compute",
       "effects": {
-        "techProgress": 8,
+        "rdCapacity": 8,
         "energy": -10,
         "publicWelfare": -7
       },
@@ -52,7 +1903,7 @@ window.GAME_DATA.cards = [
     "right": {
       "label": "Cap data-center load",
       "effects": {
-        "techProgress": -6,
+        "rdCapacity": -6,
         "energy": 6,
         "publicWelfare": 5
       },
@@ -64,7 +1915,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 3,
     "discussionPrompt": "Should compute be treated as critical infrastructure with priority access to power?",
-    "educationalNote": "AI progress is increasingly an energy-policy problem, not just an algorithms problem."
+    "educationalNote": "AI progress is increasingly an energy-policy problem, not just an algorithms problem.",
+    "stage": "any"
   },
   {
     "id": "ai-d3",
@@ -77,7 +1929,7 @@ window.GAME_DATA.cards = [
       "effects": {
         "reputation": 10,
         "politicalSupport": 6,
-        "techProgress": 4,
+        "rdCapacity": 4,
         "security": -9
       },
       "stance": "open"
@@ -97,7 +1949,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 3,
     "discussionPrompt": "Does openness democratize AI or hand capability to bad actors?",
-    "educationalNote": "Open weights cannot be recalled; the decision is effectively irreversible."
+    "educationalNote": "Open weights cannot be recalled; the decision is effectively irreversible.",
+    "stage": "any"
   },
   {
     "id": "ai-d4",
@@ -109,7 +1962,7 @@ window.GAME_DATA.cards = [
       "label": "Deploy and downsize",
       "effects": {
         "treasury": 9,
-        "techProgress": 5,
+        "rdCapacity": 5,
         "publicWelfare": -8,
         "politicalSupport": -6
       },
@@ -130,7 +1983,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "Is gradual, costlier transition a moral obligation or an economic luxury?",
-    "educationalNote": "Productivity gains and labor displacement are two faces of the same deployment."
+    "educationalNote": "Productivity gains and labor displacement are two faces of the same deployment.",
+    "stage": "any"
   },
   {
     "id": "ai-d5",
@@ -162,7 +2016,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 3,
     "discussionPrompt": "When does security tooling become a tool of social control?",
-    "educationalNote": "Dual-use AI blurs the line between protection and oppression depending on oversight."
+    "educationalNote": "Dual-use AI blurs the line between protection and oppression depending on oversight.",
+    "stage": "any"
   },
   {
     "id": "space-d1",
@@ -173,7 +2028,7 @@ window.GAME_DATA.cards = [
     "left": {
       "label": "Fast-track it",
       "effects": {
-        "techProgress": 8,
+        "rdCapacity": 8,
         "treasury": 6,
         "security": -5,
         "politicalSupport": -4
@@ -184,7 +2039,7 @@ window.GAME_DATA.cards = [
       "label": "Demand full review",
       "effects": {
         "treasury": -5,
-        "techProgress": -3,
+        "rdCapacity": -3,
         "politicalSupport": 4
       },
       "stance": null
@@ -195,7 +2050,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "How much risk is acceptable to win a cost race in space?",
-    "educationalNote": "Launch economics drive the entire space sector; one failure can erase a reputation."
+    "educationalNote": "Launch economics drive the entire space sector; one failure can erase a reputation.",
+    "stage": "any"
   },
   {
     "id": "space-d2",
@@ -206,7 +2062,7 @@ window.GAME_DATA.cards = [
     "left": {
       "label": "Stake the claim",
       "effects": {
-        "techProgress": 7,
+        "rdCapacity": 7,
         "treasury": 5,
         "politicalSupport": -8,
         "security": 3
@@ -217,7 +2073,7 @@ window.GAME_DATA.cards = [
       "label": "Wait for a treaty",
       "effects": {
         "politicalSupport": 7,
-        "techProgress": -4
+        "rdCapacity": -4
       },
       "stance": "cooperate"
     },
@@ -227,7 +2083,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 3,
     "discussionPrompt": "Should celestial resources be first-come-first-served or a global commons?",
-    "educationalNote": "The Outer Space Treaty bans sovereignty claims but is silent on private resource extraction."
+    "educationalNote": "The Outer Space Treaty bans sovereignty claims but is silent on private resource extraction.",
+    "stage": "any"
   },
   {
     "id": "space-d3",
@@ -239,7 +2096,6 @@ window.GAME_DATA.cards = [
       "label": "Accept the funding",
       "effects": {
         "treasury": 10,
-        "techProgress": 6,
         "security": 6,
         "politicalSupport": -6,
         "publicWelfare": -4
@@ -260,7 +2116,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "Can civilian space infrastructure ever be truly separated from military use?",
-    "educationalNote": "Most space infrastructure is inherently dual-use, complicating arms-control norms."
+    "educationalNote": "Most space infrastructure is inherently dual-use, complicating arms-control norms.",
+    "stage": "any"
   },
   {
     "id": "space-d4",
@@ -272,7 +2129,7 @@ window.GAME_DATA.cards = [
       "label": "Fund the cleanup",
       "effects": {
         "treasury": -9,
-        "sustainability": 6,
+        "environment": 6,
         "politicalSupport": 8
       },
       "stance": null
@@ -281,7 +2138,7 @@ window.GAME_DATA.cards = [
       "label": "Defer the cost",
       "effects": {
         "treasury": 4,
-        "sustainability": -6,
+        "environment": -6,
         "security": -4
       },
       "stance": null
@@ -292,7 +2149,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "Why do shared-commons problems get chronically underfunded?",
-    "educationalNote": "Orbital debris is a classic tragedy of the commons with cascade (Kessler) risk."
+    "educationalNote": "Orbital debris is a classic tragedy of the commons with cascade (Kessler) risk.",
+    "stage": "any"
   },
   {
     "id": "space-d5",
@@ -304,7 +2162,7 @@ window.GAME_DATA.cards = [
       "label": "Take the money",
       "effects": {
         "treasury": 10,
-        "techProgress": 3,
+        "rdCapacity": 3,
         "politicalSupport": -7
       },
       "stance": null
@@ -323,7 +2181,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "Is commercial neutrality in strategic sectors realistic?",
-    "educationalNote": "Launch and satellite access are strategic goods, not ordinary exports."
+    "educationalNote": "Launch and satellite access are strategic goods, not ordinary exports.",
+    "stage": "any"
   },
   {
     "id": "semi-d1",
@@ -334,7 +2193,7 @@ window.GAME_DATA.cards = [
     "left": {
       "label": "Build the megafab",
       "effects": {
-        "techProgress": 11,
+        "rdCapacity": 11,
         "security": 8,
         "treasury": -14,
         "energy": -6
@@ -346,7 +2205,7 @@ window.GAME_DATA.cards = [
       "effects": {
         "treasury": 5,
         "security": -8,
-        "techProgress": -4
+        "rdCapacity": -4
       },
       "stance": null
     },
@@ -356,7 +2215,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 3,
     "discussionPrompt": "Is sovereign chip capacity worth near-bankruptcy?",
-    "educationalNote": "Leading-edge fabs cost tens of billions and concentrate risk geographically."
+    "educationalNote": "Leading-edge fabs cost tens of billions and concentrate risk geographically.",
+    "stage": "any"
   },
   {
     "id": "semi-d2",
@@ -368,7 +2228,7 @@ window.GAME_DATA.cards = [
       "label": "Open the visa",
       "effects": {
         "reputation": 10,
-        "techProgress": 6,
+        "rdCapacity": 6,
         "politicalSupport": -7
       },
       "stance": "open"
@@ -378,7 +2238,7 @@ window.GAME_DATA.cards = [
       "effects": {
         "reputation": -3,
         "politicalSupport": 4,
-        "techProgress": -4
+        "rdCapacity": -4
       },
       "stance": "protect"
     },
@@ -388,7 +2248,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "Does importing talent build capacity or hollow out local opportunity?",
-    "educationalNote": "Advanced fabrication is gated by scarce tacit expertise, not just capital."
+    "educationalNote": "Advanced fabrication is gated by scarce tacit expertise, not just capital.",
+    "stage": "any"
   },
   {
     "id": "semi-d3",
@@ -400,7 +2261,7 @@ window.GAME_DATA.cards = [
       "label": "Fulfill it covertly",
       "effects": {
         "treasury": 12,
-        "techProgress": 3,
+        "rdCapacity": 3,
         "politicalSupport": -10,
         "security": -5
       },
@@ -420,7 +2281,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 3,
     "discussionPrompt": "Where is the line between sovereign trade and breaking shared rules?",
-    "educationalNote": "Export-control regimes depend on members not defecting for short-term gain."
+    "educationalNote": "Export-control regimes depend on members not defecting for short-term gain.",
+    "stage": "any"
   },
   {
     "id": "semi-d4",
@@ -450,7 +2312,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "Does securitizing your workforce protect or poison your talent base?",
-    "educationalNote": "Industrial espionage is real, but blanket suspicion drives away the talent it aims to protect."
+    "educationalNote": "Industrial espionage is real, but blanket suspicion drives away the talent it aims to protect.",
+    "stage": "any"
   },
   {
     "id": "semi-d5",
@@ -461,9 +2324,9 @@ window.GAME_DATA.cards = [
     "left": {
       "label": "Guarantee resources",
       "effects": {
-        "techProgress": 7,
+        "rdCapacity": 7,
         "security": 5,
-        "sustainability": -7,
+        "environment": -7,
         "publicWelfare": -6
       },
       "stance": null
@@ -471,9 +2334,9 @@ window.GAME_DATA.cards = [
     "right": {
       "label": "Share resources fairly",
       "effects": {
-        "techProgress": -4,
+        "rdCapacity": -4,
         "publicWelfare": 5,
-        "sustainability": 3
+        "environment": 3
       },
       "stance": "cooperate"
     },
@@ -483,7 +2346,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "Should strategic industry override local resource rights?",
-    "educationalNote": "Fabs are among the most water- and energy-intensive facilities on earth."
+    "educationalNote": "Fabs are among the most water- and energy-intensive facilities on earth.",
+    "stage": "any"
   },
   {
     "id": "energy-d1",
@@ -495,8 +2359,8 @@ window.GAME_DATA.cards = [
       "label": "Build the reactors",
       "effects": {
         "energy": 12,
-        "sustainability": 6,
-        "techProgress": 4,
+        "environment": 6,
+        "rdCapacity": 4,
         "politicalSupport": -7
       },
       "stance": null
@@ -506,7 +2370,7 @@ window.GAME_DATA.cards = [
       "effects": {
         "energy": -6,
         "politicalSupport": 4,
-        "sustainability": -3
+        "environment": -3
       },
       "stance": null
     },
@@ -516,7 +2380,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 3,
     "discussionPrompt": "How should leaders weigh statistical safety against public dread?",
-    "educationalNote": "Nuclear has low lifecycle emissions but uniquely high public-perception costs."
+    "educationalNote": "Nuclear has low lifecycle emissions but uniquely high public-perception costs.",
+    "stage": "any"
   },
   {
     "id": "energy-d2",
@@ -529,7 +2394,7 @@ window.GAME_DATA.cards = [
       "effects": {
         "energy": 9,
         "treasury": 4,
-        "sustainability": -11
+        "environment": -11
       },
       "stance": null
     },
@@ -537,7 +2402,7 @@ window.GAME_DATA.cards = [
       "label": "Retire on schedule",
       "effects": {
         "energy": -7,
-        "sustainability": 7,
+        "environment": 7,
         "publicWelfare": -3
       },
       "stance": null
@@ -548,7 +2413,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "Who pays for the gap between climate pledges and present demand?",
-    "educationalNote": "Energy transitions stall at the moment cheap fossil capacity must be retired early."
+    "educationalNote": "Energy transitions stall at the moment cheap fossil capacity must be retired early.",
+    "stage": "any"
   },
   {
     "id": "energy-d3",
@@ -560,7 +2426,7 @@ window.GAME_DATA.cards = [
       "label": "Protect industry",
       "effects": {
         "treasury": 6,
-        "techProgress": 4,
+        "rdCapacity": 4,
         "publicWelfare": -9,
         "politicalSupport": -5
       },
@@ -581,7 +2447,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 3,
     "discussionPrompt": "In a shortage, whose needs count as essential?",
-    "educationalNote": "Grid prioritization decisions reveal a society's real, not stated, values."
+    "educationalNote": "Grid prioritization decisions reveal a society's real, not stated, values.",
+    "stage": "any"
   },
   {
     "id": "energy-d4",
@@ -614,7 +2481,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "Is interdependence a source of resilience or vulnerability?",
-    "educationalNote": "Interconnection improves efficiency but turns energy into a geopolitical lever."
+    "educationalNote": "Interconnection improves efficiency but turns energy into a geopolitical lever.",
+    "stage": "any"
   },
   {
     "id": "energy-d5",
@@ -625,7 +2493,7 @@ window.GAME_DATA.cards = [
     "left": {
       "label": "Expand subsidies",
       "effects": {
-        "sustainability": 7,
+        "environment": 7,
         "publicWelfare": 5,
         "energy": -5,
         "treasury": -6
@@ -647,7 +2515,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "Should popularity or grid engineering set the pace of transition?",
-    "educationalNote": "Distributed generation needs grid modernization or it destabilizes the system it greens."
+    "educationalNote": "Distributed generation needs grid modernization or it destabilizes the system it greens.",
+    "stage": "any"
   },
   {
     "id": "climate-d1",
@@ -658,9 +2527,9 @@ window.GAME_DATA.cards = [
     "left": {
       "label": "Impose the tax",
       "effects": {
-        "sustainability": 10,
+        "environment": 10,
         "treasury": 6,
-        "techProgress": -3,
+        "rdCapacity": -3,
         "politicalSupport": -7
       },
       "stance": null
@@ -668,7 +2537,7 @@ window.GAME_DATA.cards = [
     "right": {
       "label": "Keep industry untaxed",
       "effects": {
-        "sustainability": -6,
+        "environment": -6,
         "politicalSupport": 4
       },
       "stance": null
@@ -679,7 +2548,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "Can a carbon price be both effective and politically survivable?",
-    "educationalNote": "Carbon pricing is economically efficient but politically fragile without visible rebates."
+    "educationalNote": "Carbon pricing is economically efficient but politically fragile without visible rebates.",
+    "stage": "any"
   },
   {
     "id": "climate-d2",
@@ -690,8 +2560,8 @@ window.GAME_DATA.cards = [
     "left": {
       "label": "Fund the moonshot",
       "effects": {
-        "techProgress": 8,
-        "sustainability": 5,
+        "rdCapacity": 8,
+        "environment": 5,
         "treasury": -11,
         "politicalSupport": 6
       },
@@ -700,7 +2570,7 @@ window.GAME_DATA.cards = [
     "right": {
       "label": "Invest in proven measures",
       "effects": {
-        "sustainability": 6,
+        "environment": 6,
         "treasury": -3
       },
       "stance": null
@@ -711,7 +2581,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "When is a speculative moonshot worth public money over reliable basics?",
-    "educationalNote": "Carbon removal may be essential later but risks becoming a license to delay cuts now."
+    "educationalNote": "Carbon removal may be essential later but risks becoming a license to delay cuts now.",
+    "stage": "any"
   },
   {
     "id": "climate-d3",
@@ -724,7 +2595,7 @@ window.GAME_DATA.cards = [
       "effects": {
         "treasury": -10,
         "publicWelfare": 4,
-        "sustainability": 5,
+        "environment": 5,
         "politicalSupport": -6
       },
       "stance": null
@@ -734,7 +2605,7 @@ window.GAME_DATA.cards = [
       "effects": {
         "treasury": -5,
         "publicWelfare": -4,
-        "sustainability": -3
+        "environment": -3
       },
       "stance": null
     },
@@ -744,7 +2615,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 3,
     "discussionPrompt": "Who decides when a place is no longer worth defending?",
-    "educationalNote": "Adaptation increasingly means hard choices about abandonment, not just defense."
+    "educationalNote": "Adaptation increasingly means hard choices about abandonment, not just defense.",
+    "stage": "any"
   },
   {
     "id": "climate-d4",
@@ -755,8 +2627,8 @@ window.GAME_DATA.cards = [
     "left": {
       "label": "Mandate green steel",
       "effects": {
-        "sustainability": 9,
-        "techProgress": 5,
+        "environment": 9,
+        "rdCapacity": 5,
         "security": -4,
         "treasury": -6
       },
@@ -766,7 +2638,7 @@ window.GAME_DATA.cards = [
       "label": "Stay cost-competitive",
       "effects": {
         "security": 4,
-        "sustainability": -6
+        "environment": -6
       },
       "stance": null
     },
@@ -776,7 +2648,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "Should one country bear transition costs while rivals undercut it?",
-    "educationalNote": "First-movers on green industry risk carbon leakage without border adjustments."
+    "educationalNote": "First-movers on green industry risk carbon leakage without border adjustments.",
+    "stage": "any"
   },
   {
     "id": "climate-d5",
@@ -807,7 +2680,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "What does historical responsibility for emissions obligate the powerful to do?",
-    "educationalNote": "Loss-and-damage finance is among the most contested issues in climate diplomacy."
+    "educationalNote": "Loss-and-damage finance is among the most contested issues in climate diplomacy.",
+    "stage": "any"
   },
   {
     "id": "quantum-d1",
@@ -818,7 +2692,7 @@ window.GAME_DATA.cards = [
     "left": {
       "label": "Launch the program",
       "effects": {
-        "techProgress": 8,
+        "rdCapacity": 8,
         "security": 7,
         "politicalSupport": -7,
         "reputation": -5
@@ -830,7 +2704,7 @@ window.GAME_DATA.cards = [
       "effects": {
         "security": 4,
         "politicalSupport": 3,
-        "techProgress": -3
+        "rdCapacity": -3
       },
       "stance": null
     },
@@ -840,7 +2714,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 3,
     "discussionPrompt": "Does building a code-breaking capability make everyone less safe?",
-    "educationalNote": "Quantum threatens current public-key cryptography, spurring a covert decrypt-later race."
+    "educationalNote": "Quantum threatens current public-key cryptography, spurring a covert decrypt-later race.",
+    "stage": "any"
   },
   {
     "id": "quantum-d2",
@@ -853,7 +2728,7 @@ window.GAME_DATA.cards = [
       "effects": {
         "security": 9,
         "treasury": -8,
-        "techProgress": 4
+        "rdCapacity": 4
       },
       "stance": null
     },
@@ -871,7 +2746,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "How do institutions act on a threat whose timing is uncertain?",
-    "educationalNote": "Data stolen today can be decrypted once quantum computers mature — a present risk."
+    "educationalNote": "Data stolen today can be decrypted once quantum computers mature — a present risk.",
+    "stage": "any"
   },
   {
     "id": "quantum-d3",
@@ -883,7 +2759,7 @@ window.GAME_DATA.cards = [
       "label": "Poach the team",
       "effects": {
         "reputation": 11,
-        "techProgress": 7,
+        "rdCapacity": 7,
         "politicalSupport": -6,
         "treasury": -7
       },
@@ -904,7 +2780,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "Is talent competition fair game or a form of theft?",
-    "educationalNote": "In deep-tech fields a handful of people can embody a national capability."
+    "educationalNote": "In deep-tech fields a handful of people can embody a national capability.",
+    "stage": "any"
   },
   {
     "id": "quantum-d4",
@@ -918,7 +2795,7 @@ window.GAME_DATA.cards = [
         "security": 8,
         "reputation": -10,
         "politicalSupport": -4,
-        "techProgress": -3
+        "rdCapacity": -3
       },
       "stance": "protect"
     },
@@ -937,7 +2814,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "Does secrecy accelerate or strangle frontier science?",
-    "educationalNote": "Classified science loses the error-correcting power of open peer review."
+    "educationalNote": "Classified science loses the error-correcting power of open peer review.",
+    "stage": "any"
   },
   {
     "id": "quantum-d5",
@@ -949,7 +2827,7 @@ window.GAME_DATA.cards = [
       "label": "Field the sensors",
       "effects": {
         "security": 9,
-        "techProgress": 5,
+        "rdCapacity": 5,
         "politicalSupport": -5
       },
       "stance": null
@@ -958,7 +2836,7 @@ window.GAME_DATA.cards = [
       "label": "Restrict to civilian use",
       "effects": {
         "politicalSupport": 4,
-        "techProgress": 2,
+        "rdCapacity": 2,
         "security": -3
       },
       "stance": "protect"
@@ -969,7 +2847,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "Can a destabilizing capability be developed responsibly?",
-    "educationalNote": "Sensing breakthroughs can quietly upset strategic stability (e.g., undersea deterrence)."
+    "educationalNote": "Sensing breakthroughs can quietly upset strategic stability (e.g., undersea deterrence).",
+    "stage": "any"
   },
   {
     "id": "bio-d1",
@@ -980,7 +2859,7 @@ window.GAME_DATA.cards = [
     "left": {
       "label": "Build the biobank",
       "effects": {
-        "techProgress": 9,
+        "rdCapacity": 9,
         "reputation": 4,
         "publicWelfare": -7
       },
@@ -990,7 +2869,7 @@ window.GAME_DATA.cards = [
       "label": "Opt-in, small scale",
       "effects": {
         "publicWelfare": 5,
-        "techProgress": -3
+        "rdCapacity": -3
       },
       "stance": null
     },
@@ -1000,7 +2879,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "Can genomic consent be meaningful when benefits are collective?",
-    "educationalNote": "Genomic data is uniquely identifying and implicates relatives who never consented."
+    "educationalNote": "Genomic data is uniquely identifying and implicates relatives who never consented.",
+    "stage": "any"
   },
   {
     "id": "bio-d2",
@@ -1012,7 +2892,7 @@ window.GAME_DATA.cards = [
       "label": "Fast-track approval",
       "effects": {
         "publicWelfare": 2,
-        "techProgress": 5,
+        "rdCapacity": 5,
         "politicalSupport": -3
       },
       "stance": null
@@ -1020,7 +2900,9 @@ window.GAME_DATA.cards = [
     "right": {
       "label": "Require full trials",
       "effects": {
-        "publicWelfare": 1
+        "publicWelfare": 5,
+        "rdCapacity": -4,
+        "politicalSupport": 2
       },
       "stance": null
     },
@@ -1030,7 +2912,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 3,
     "discussionPrompt": "Whose risk tolerance should govern access to experimental therapies?",
-    "educationalNote": "Compassionate access and rigorous safety are in genuine, not fake, tension."
+    "educationalNote": "Compassionate access and rigorous safety are in genuine, not fake, tension.",
+    "stage": "any"
   },
   {
     "id": "bio-d3",
@@ -1041,7 +2924,7 @@ window.GAME_DATA.cards = [
     "left": {
       "label": "Permit with oversight",
       "effects": {
-        "techProgress": 6,
+        "rdCapacity": 6,
         "security": -8,
         "politicalSupport": -4
       },
@@ -1051,7 +2934,7 @@ window.GAME_DATA.cards = [
       "label": "Ban the research",
       "effects": {
         "security": 6,
-        "techProgress": -4,
+        "rdCapacity": -4,
         "politicalSupport": 3
       },
       "stance": "protect"
@@ -1062,7 +2945,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 3,
     "discussionPrompt": "Is some knowledge too dangerous to pursue?",
-    "educationalNote": "Dual-use life-science research sits at the center of biosecurity governance debates."
+    "educationalNote": "Dual-use life-science research sits at the center of biosecurity governance debates.",
+    "stage": "any"
   },
   {
     "id": "bio-d4",
@@ -1075,7 +2959,7 @@ window.GAME_DATA.cards = [
       "effects": {
         "publicWelfare": 0,
         "security": 5,
-        "sustainability": 2
+        "environment": 2
       },
       "stance": null
     },
@@ -1093,7 +2977,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "How should policy weigh evidence against public sentiment?",
-    "educationalNote": "GM debates show how risk perception can diverge sharply from scientific consensus."
+    "educationalNote": "GM debates show how risk perception can diverge sharply from scientific consensus.",
+    "stage": "any"
   },
   {
     "id": "bio-d5",
@@ -1124,7 +3009,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "Do innovators owe their breakthroughs to humanity or to investors?",
-    "educationalNote": "Access-vs-incentive tension underlies most global pharmaceutical disputes."
+    "educationalNote": "Access-vs-incentive tension underlies most global pharmaceutical disputes.",
+    "stage": "any"
   },
   {
     "id": "robo-d1",
@@ -1135,7 +3021,7 @@ window.GAME_DATA.cards = [
     "left": {
       "label": "Automate the ports",
       "effects": {
-        "techProgress": 7,
+        "rdCapacity": 7,
         "security": 8,
         "publicWelfare": -7,
         "politicalSupport": -6
@@ -1157,7 +3043,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "Who captures the gains of automation, and who bears the losses?",
-    "educationalNote": "Port automation is a recurring flashpoint between efficiency and labor power."
+    "educationalNote": "Port automation is a recurring flashpoint between efficiency and labor power.",
+    "stage": "any"
   },
   {
     "id": "robo-d2",
@@ -1169,7 +3056,7 @@ window.GAME_DATA.cards = [
       "label": "Approve the export",
       "effects": {
         "treasury": 9,
-        "techProgress": 3,
+        "rdCapacity": 3,
         "politicalSupport": -8,
         "security": -3
       },
@@ -1189,7 +3076,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 3,
     "discussionPrompt": "Should engineers be responsible for downstream uses of what they build?",
-    "educationalNote": "Autonomous-weapon norms lag far behind the technology's diffusion."
+    "educationalNote": "Autonomous-weapon norms lag far behind the technology's diffusion.",
+    "stage": "any"
   },
   {
     "id": "robo-d3",
@@ -1201,7 +3089,7 @@ window.GAME_DATA.cards = [
       "label": "Subsidize care robots",
       "effects": {
         "publicWelfare": 3,
-        "techProgress": 5,
+        "rdCapacity": 5,
         "treasury": -5
       },
       "stance": null
@@ -1221,7 +3109,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "Where should automation stop short of human relationships?",
-    "educationalNote": "Care robotics raises questions of dignity that pure efficiency metrics miss."
+    "educationalNote": "Care robotics raises questions of dignity that pure efficiency metrics miss.",
+    "stage": "any"
   },
   {
     "id": "robo-d4",
@@ -1234,7 +3123,7 @@ window.GAME_DATA.cards = [
       "effects": {
         "publicWelfare": 6,
         "politicalSupport": 4,
-        "techProgress": -5,
+        "rdCapacity": -5,
         "treasury": -3
       },
       "stance": null
@@ -1242,7 +3131,7 @@ window.GAME_DATA.cards = [
     "right": {
       "label": "Light-touch rules",
       "effects": {
-        "techProgress": 6,
+        "rdCapacity": 6,
         "publicWelfare": -5
       },
       "stance": null
@@ -1253,7 +3142,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "Does regulation protect the public or entrench incumbents?",
-    "educationalNote": "Safety regimes shape who can compete as much as how safe products are."
+    "educationalNote": "Safety regimes shape who can compete as much as how safe products are.",
+    "stage": "any"
   },
   {
     "id": "robo-d5",
@@ -1266,7 +3156,7 @@ window.GAME_DATA.cards = [
       "effects": {
         "treasury": 9,
         "security": 7,
-        "techProgress": 5,
+        "rdCapacity": 5,
         "politicalSupport": -8
       },
       "stance": "cooperate"
@@ -1285,7 +3175,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "Can a robotics ecosystem stay civilian once militarized money arrives?",
-    "educationalNote": "Defense funding often becomes the dominant shaper of a tech base's direction."
+    "educationalNote": "Defense funding often becomes the dominant shaper of a tech base's direction.",
+    "stage": "any"
   },
   {
     "id": "mat-d1",
@@ -1297,8 +3188,8 @@ window.GAME_DATA.cards = [
       "label": "Open the mine",
       "effects": {
         "security": 10,
-        "techProgress": 4,
-        "sustainability": -11,
+        "rdCapacity": 4,
+        "environment": -11,
         "publicWelfare": -4
       },
       "stance": "open"
@@ -1306,7 +3197,7 @@ window.GAME_DATA.cards = [
     "right": {
       "label": "Keep importing",
       "effects": {
-        "sustainability": 4,
+        "environment": 4,
         "security": -7
       },
       "stance": null
@@ -1317,7 +3208,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 3,
     "discussionPrompt": "Is resource independence worth domestic environmental sacrifice?",
-    "educationalNote": "Rare-earth processing is geographically concentrated largely due to its pollution."
+    "educationalNote": "Rare-earth processing is geographically concentrated largely due to its pollution.",
+    "stage": "any"
   },
   {
     "id": "mat-d2",
@@ -1347,7 +3239,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "How much should a state pay for insurance against an uncertain shock?",
-    "educationalNote": "Stockpiles trade present capital for future resilience — hard to value until a crisis."
+    "educationalNote": "Stockpiles trade present capital for future resilience — hard to value until a crisis.",
+    "stage": "any"
   },
   {
     "id": "mat-d3",
@@ -1361,14 +3254,14 @@ window.GAME_DATA.cards = [
         "security": 8,
         "treasury": 6,
         "publicWelfare": 4,
-        "sustainability": -9
+        "environment": -9
       },
       "stance": null
     },
     "right": {
       "label": "Demand stricter siting",
       "effects": {
-        "sustainability": 4,
+        "environment": 4,
         "treasury": -5,
         "security": -3
       },
@@ -1380,7 +3273,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "How do you weigh concentrated jobs against diffuse environmental risk?",
-    "educationalNote": "Battery manufacturing is central to electrification but resource- and water-intensive."
+    "educationalNote": "Battery manufacturing is central to electrification but resource- and water-intensive.",
+    "stage": "any"
   },
   {
     "id": "mat-d4",
@@ -1391,8 +3285,8 @@ window.GAME_DATA.cards = [
     "left": {
       "label": "Mandate recycling",
       "effects": {
-        "sustainability": 8,
-        "techProgress": 3,
+        "environment": 8,
+        "rdCapacity": 3,
         "treasury": -6,
         "security": 2
       },
@@ -1402,7 +3296,7 @@ window.GAME_DATA.cards = [
       "label": "Use cheapest source",
       "effects": {
         "treasury": 4,
-        "sustainability": -5
+        "environment": -5
       },
       "stance": null
     },
@@ -1412,7 +3306,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "Can circular-economy mandates survive a cost disadvantage?",
-    "educationalNote": "Recycling critical materials reduces dependence but rarely competes on price yet."
+    "educationalNote": "Recycling critical materials reduces dependence but rarely competes on price yet.",
+    "stage": "any"
   },
   {
     "id": "mat-d5",
@@ -1443,7 +3338,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 3,
     "discussionPrompt": "Does economic coercion ever pay off long-term?",
-    "educationalNote": "Weaponized interdependence often accelerates rivals' drive to de-risk away from you."
+    "educationalNote": "Weaponized interdependence often accelerates rivals' drive to de-risk away from you.",
+    "stage": "any"
   },
   {
     "id": "gen-d1",
@@ -1473,7 +3369,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "Can you retain talent by force, or only by being worth staying for?",
-    "educationalNote": "Coercive retention tends to accelerate the very exodus it tries to stop."
+    "educationalNote": "Coercive retention tends to accelerate the very exodus it tries to stop.",
+    "stage": "any"
   },
   {
     "id": "gen-d2",
@@ -1484,7 +3381,7 @@ window.GAME_DATA.cards = [
     "left": {
       "label": "Fund the rescue",
       "effects": {
-        "techProgress": 7,
+        "rdCapacity": 7,
         "treasury": -8,
         "publicWelfare": -6
       },
@@ -1493,7 +3390,7 @@ window.GAME_DATA.cards = [
     "right": {
       "label": "Let it fail",
       "effects": {
-        "techProgress": -6,
+        "rdCapacity": -6,
         "publicWelfare": 3,
         "treasury": 2
       },
@@ -1505,7 +3402,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "When is strategic industry policy, and when is it elite welfare?",
-    "educationalNote": "Public support for strategic sectors constantly risks being seen as capture."
+    "educationalNote": "Public support for strategic sectors constantly risks being seen as capture.",
+    "stage": "any"
   },
   {
     "id": "gen-d3",
@@ -1527,7 +3425,7 @@ window.GAME_DATA.cards = [
       "effects": {
         "treasury": 3,
         "reputation": -6,
-        "techProgress": -3
+        "rdCapacity": -3
       },
       "stance": null
     },
@@ -1537,7 +3435,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "Is your tech ambition built on sustainable working conditions?",
-    "educationalNote": "Burnout in critical technical workforces is a quiet strategic vulnerability."
+    "educationalNote": "Burnout in critical technical workforces is a quiet strategic vulnerability.",
+    "stage": "any"
   },
   {
     "id": "gen-d4",
@@ -1567,7 +3466,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "Does transparency strengthen institutions even when it stings?",
-    "educationalNote": "Cover-ups compound: the second scandal is usually the concealment."
+    "educationalNote": "Cover-ups compound: the second scandal is usually the concealment.",
+    "stage": "any"
   },
   {
     "id": "gen-d5",
@@ -1579,7 +3479,7 @@ window.GAME_DATA.cards = [
       "label": "Take the investment",
       "effects": {
         "treasury": 11,
-        "techProgress": 5,
+        "rdCapacity": 5,
         "security": -7,
         "politicalSupport": -3
       },
@@ -1599,7 +3499,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "What sovereignty do you trade away for capital?",
-    "educationalNote": "Strategic investment can be a Trojan horse for influence and data access."
+    "educationalNote": "Strategic investment can be a Trojan horse for influence and data access.",
+    "stage": "any"
   },
   {
     "id": "gen-d6",
@@ -1612,14 +3513,14 @@ window.GAME_DATA.cards = [
       "effects": {
         "publicWelfare": 6,
         "politicalSupport": 3,
-        "techProgress": -5
+        "rdCapacity": -5
       },
       "stance": null
     },
     "right": {
       "label": "Decide top-down",
       "effects": {
-        "techProgress": 4,
+        "rdCapacity": 4,
         "publicWelfare": -6,
         "politicalSupport": -3
       },
@@ -1631,7 +3532,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "Should long-horizon tech bets be subject to short-horizon votes?",
-    "educationalNote": "Democratic legitimacy and long-term strategy are often in tension."
+    "educationalNote": "Democratic legitimacy and long-term strategy are often in tension.",
+    "stage": "any"
   },
   {
     "id": "gen-d7",
@@ -1661,7 +3563,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "What does a society's treatment of whistleblowers reveal about it?",
-    "educationalNote": "Whistleblower protection is a leading indicator of genuine safety culture."
+    "educationalNote": "Whistleblower protection is a leading indicator of genuine safety culture.",
+    "stage": "any"
   },
   {
     "id": "gen-d8",
@@ -1672,7 +3575,7 @@ window.GAME_DATA.cards = [
     "left": {
       "label": "Direct research",
       "effects": {
-        "techProgress": 6,
+        "rdCapacity": 6,
         "reputation": -10
       },
       "stance": null
@@ -1681,7 +3584,7 @@ window.GAME_DATA.cards = [
       "label": "Preserve autonomy",
       "effects": {
         "reputation": 10,
-        "techProgress": -3
+        "rdCapacity": -3
       },
       "stance": "protect"
     },
@@ -1691,7 +3594,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "Does directing science accelerate priorities or kill the curiosity that fuels it?",
-    "educationalNote": "Mission-directed research and curiosity-driven science each produce different breakthroughs."
+    "educationalNote": "Mission-directed research and curiosity-driven science each produce different breakthroughs.",
+    "stage": "any"
   },
   {
     "id": "gen-d9",
@@ -1722,7 +3626,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "How should technical institutions defend truth without seeming propagandistic?",
-    "educationalNote": "Public understanding lagging technology is itself a strategic vulnerability."
+    "educationalNote": "Public understanding lagging technology is itself a strategic vulnerability.",
+    "stage": "any"
   },
   {
     "id": "gen-d10",
@@ -1733,7 +3638,7 @@ window.GAME_DATA.cards = [
     "left": {
       "label": "Invest in R&D",
       "effects": {
-        "techProgress": 6,
+        "rdCapacity": 6,
         "reputation": 4,
         "politicalSupport": -5
       },
@@ -1744,7 +3649,7 @@ window.GAME_DATA.cards = [
       "effects": {
         "politicalSupport": 6,
         "publicWelfare": 4,
-        "techProgress": -4
+        "rdCapacity": -4
       },
       "stance": null
     },
@@ -1754,7 +3659,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 1,
     "discussionPrompt": "How do democracies fund things whose payoff outlasts an election cycle?",
-    "educationalNote": "R&D underinvestment is a classic failure of short political time horizons."
+    "educationalNote": "R&D underinvestment is a classic failure of short political time horizons.",
+    "stage": "any"
   },
   {
     "id": "gen-d11",
@@ -1766,7 +3672,7 @@ window.GAME_DATA.cards = [
       "label": "Fund the return",
       "effects": {
         "reputation": 9,
-        "techProgress": 4,
+        "rdCapacity": 4,
         "treasury": -7,
         "politicalSupport": -3
       },
@@ -1787,7 +3693,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 1,
     "discussionPrompt": "How do you grow talent without devaluing loyalty?",
-    "educationalNote": "Reverse brain-drain programs can rapidly rebuild capability if managed fairly."
+    "educationalNote": "Reverse brain-drain programs can rapidly rebuild capability if managed fairly.",
+    "stage": "any"
   },
   {
     "id": "gen-d12",
@@ -1798,7 +3705,7 @@ window.GAME_DATA.cards = [
     "left": {
       "label": "Go all-in",
       "effects": {
-        "techProgress": 10,
+        "rdCapacity": 10,
         "treasury": -6,
         "security": -6
       },
@@ -1808,7 +3715,7 @@ window.GAME_DATA.cards = [
       "label": "Diversify prudently",
       "effects": {
         "treasury": 4,
-        "techProgress": -3,
+        "rdCapacity": -3,
         "security": 3
       },
       "stance": null
@@ -1819,7 +3726,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "When is strategic concentration courageous and when is it reckless?",
-    "educationalNote": "Concentration can win a race or magnify a single point of failure."
+    "educationalNote": "Concentration can win a race or magnify a single point of failure.",
+    "stage": "any"
   },
   {
     "id": "utokyo-s1",
@@ -1831,9 +3739,9 @@ window.GAME_DATA.cards = [
       "label": "Restart reactors",
       "effects": {
         "energy": 12,
-        "techProgress": 3,
+        "rdCapacity": 3,
         "politicalSupport": -7,
-        "sustainability": 3
+        "environment": 3
       },
       "stance": null
     },
@@ -1851,7 +3759,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "How should a resource-poor democracy balance energy security and public fear?",
-    "educationalNote": "Energy-import dependence shapes the strategic options of advanced manufacturing states."
+    "educationalNote": "Energy-import dependence shapes the strategic options of advanced manufacturing states.",
+    "stage": "any"
   },
   {
     "id": "utokyo-s2",
@@ -1883,7 +3792,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "Can tacit knowledge be owned, or does it inevitably diffuse?",
-    "educationalNote": "Manufacturing edge often lives in irreplaceable tacit expertise, not patents."
+    "educationalNote": "Manufacturing edge often lives in irreplaceable tacit expertise, not patents.",
+    "stage": "any"
   },
   {
     "id": "utokyo-s3",
@@ -1895,7 +3805,7 @@ window.GAME_DATA.cards = [
       "label": "Open immigration",
       "effects": {
         "reputation": 10,
-        "techProgress": 4,
+        "rdCapacity": 4,
         "politicalSupport": -8
       },
       "stance": "open"
@@ -1903,7 +3813,7 @@ window.GAME_DATA.cards = [
     "right": {
       "label": "Automate instead",
       "effects": {
-        "techProgress": 5,
+        "rdCapacity": 5,
         "publicWelfare": -3,
         "treasury": -5
       },
@@ -1915,7 +3825,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "Demographics or machines — how should an aging society sustain its tech base?",
-    "educationalNote": "Aging societies face a stark choice between migration and automation."
+    "educationalNote": "Aging societies face a stark choice between migration and automation.",
+    "stage": "any"
   },
   {
     "id": "utokyo-s4",
@@ -1926,7 +3837,7 @@ window.GAME_DATA.cards = [
     "left": {
       "label": "Lead on resilience",
       "effects": {
-        "techProgress": 5,
+        "rdCapacity": 5,
         "publicWelfare": 6,
         "politicalSupport": 5,
         "treasury": -8
@@ -1947,7 +3858,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 1,
     "discussionPrompt": "Can vulnerability be turned into technological leadership?",
-    "educationalNote": "Necessity-driven innovation can become a durable export advantage."
+    "educationalNote": "Necessity-driven innovation can become a durable export advantage.",
+    "stage": "any"
   },
   {
     "id": "utokyo-s5",
@@ -1959,7 +3871,7 @@ window.GAME_DATA.cards = [
       "label": "Adopt the standard",
       "effects": {
         "politicalSupport": 9,
-        "techProgress": -3,
+        "rdCapacity": -3,
         "treasury": -4
       },
       "stance": "cooperate"
@@ -1968,7 +3880,7 @@ window.GAME_DATA.cards = [
       "label": "Compete unconstrained",
       "effects": {
         "treasury": 6,
-        "techProgress": 3,
+        "rdCapacity": 3,
         "politicalSupport": -6
       },
       "stance": "compete"
@@ -1979,7 +3891,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 1,
     "discussionPrompt": "Can a country lead by example when rivals won't follow?",
-    "educationalNote": "Standard-setting is a form of soft power if a country has market weight."
+    "educationalNote": "Standard-setting is a form of soft power if a country has market weight.",
+    "stage": "any"
   },
   {
     "id": "nus-s1",
@@ -1991,7 +3904,7 @@ window.GAME_DATA.cards = [
       "label": "Keep it open",
       "effects": {
         "reputation": 8,
-        "techProgress": 5,
+        "rdCapacity": 5,
         "politicalSupport": -7
       },
       "stance": "open"
@@ -2010,7 +3923,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "How does a small open hub balance growth against local belonging?",
-    "educationalNote": "Openness is a small state's superpower and its political flashpoint."
+    "educationalNote": "Openness is a small state's superpower and its political flashpoint.",
+    "stage": "any"
   },
   {
     "id": "nus-s2",
@@ -2040,7 +3954,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 1,
     "discussionPrompt": "How much return should a small state forgo for resilience?",
-    "educationalNote": "Financial concentration is a quiet form of strategic dependence."
+    "educationalNote": "Financial concentration is a quiet form of strategic dependence.",
+    "stage": "any"
   },
   {
     "id": "nus-s3",
@@ -2072,7 +3987,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "Is neutrality sustainable when great powers demand a choice?",
-    "educationalNote": "Hedging between blocs is a classic small-state strategy with shrinking room."
+    "educationalNote": "Hedging between blocs is a classic small-state strategy with shrinking room.",
+    "stage": "any"
   },
   {
     "id": "nus-s4",
@@ -2084,7 +4000,7 @@ window.GAME_DATA.cards = [
       "label": "Build hard infrastructure",
       "effects": {
         "energy": 7,
-        "sustainability": -3,
+        "environment": -3,
         "treasury": -9
       },
       "stance": null
@@ -2092,8 +4008,8 @@ window.GAME_DATA.cards = [
     "right": {
       "label": "Cap tech growth",
       "effects": {
-        "techProgress": -5,
-        "sustainability": 4,
+        "rdCapacity": -5,
+        "environment": 4,
         "treasury": 3
       },
       "stance": null
@@ -2104,7 +4020,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "Can ingenuity indefinitely outrun physical constraints?",
-    "educationalNote": "Small states substitute engineering and capital for scarce natural endowments."
+    "educationalNote": "Small states substitute engineering and capital for scarce natural endowments.",
+    "stage": "any"
   },
   {
     "id": "nus-s5",
@@ -2115,7 +4032,7 @@ window.GAME_DATA.cards = [
     "left": {
       "label": "Host it",
       "effects": {
-        "techProgress": 8,
+        "rdCapacity": 8,
         "reputation": 5,
         "politicalSupport": -5,
         "publicWelfare": -4
@@ -2126,7 +4043,7 @@ window.GAME_DATA.cards = [
       "label": "Decline politely",
       "effects": {
         "politicalSupport": 4,
-        "techProgress": -3
+        "rdCapacity": -3
       },
       "stance": null
     },
@@ -2136,7 +4053,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "Does hosting frontier work make you a leader or a liability?",
-    "educationalNote": "Research hubs attract both breakthroughs and the controversies that follow them."
+    "educationalNote": "Research hubs attract both breakthroughs and the controversies that follow them.",
+    "stage": "any"
   },
   {
     "id": "hkust-s1",
@@ -2168,7 +4086,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "Does stability bought with controls preserve or undermine a financial hub?",
-    "educationalNote": "Capital controls protect short-term stability at long-term reputational cost."
+    "educationalNote": "Capital controls protect short-term stability at long-term reputational cost.",
+    "stage": "any"
   },
   {
     "id": "hkust-s2",
@@ -2200,7 +4119,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 3,
     "discussionPrompt": "Can a trading hub stay neutral in a technology cold war?",
-    "educationalNote": "Entrepôt economies are uniquely exposed when global trade fractures into blocs."
+    "educationalNote": "Entrepôt economies are uniquely exposed when global trade fractures into blocs.",
+    "stage": "any"
   },
   {
     "id": "hkust-s3",
@@ -2233,7 +4153,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "What is autonomy worth when you cannot defend it alone?",
-    "educationalNote": "Smaller jurisdictions constantly negotiate autonomy against protection."
+    "educationalNote": "Smaller jurisdictions constantly negotiate autonomy against protection.",
+    "stage": "any"
   },
   {
     "id": "hkust-s4",
@@ -2264,7 +4185,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "How do you price the cost of an attack that hasn't happened yet?",
-    "educationalNote": "Concentrated digital infrastructure offers efficiency but a fat single target."
+    "educationalNote": "Concentrated digital infrastructure offers efficiency but a fat single target.",
+    "stage": "any"
   },
   {
     "id": "hkust-s5",
@@ -2294,7 +4216,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "Does loyalty screening protect security or manufacture distrust?",
-    "educationalNote": "Hubs thrive on cosmopolitan talent that securitization can drive away."
+    "educationalNote": "Hubs thrive on cosmopolitan talent that securitization can drive away.",
+    "stage": "any"
   },
   {
     "id": "snu1-s1",
@@ -2305,7 +4228,7 @@ window.GAME_DATA.cards = [
     "left": {
       "label": "Back the startups",
       "effects": {
-        "techProgress": 6,
+        "rdCapacity": 6,
         "reputation": 5,
         "politicalSupport": -6,
         "treasury": -4
@@ -2317,7 +4240,7 @@ window.GAME_DATA.cards = [
       "effects": {
         "security": 6,
         "treasury": 4,
-        "techProgress": -3
+        "rdCapacity": -3
       },
       "stance": "protect"
     },
@@ -2327,7 +4250,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "Do national champions drive or crowd out broad innovation?",
-    "educationalNote": "Concentration in a few firms boosts scale but narrows the innovation base."
+    "educationalNote": "Concentration in a few firms boosts scale but narrows the innovation base.",
+    "stage": "any"
   },
   {
     "id": "snu1-s2",
@@ -2338,7 +4262,7 @@ window.GAME_DATA.cards = [
     "left": {
       "label": "Mandate retrofits",
       "effects": {
-        "sustainability": 9,
+        "environment": 9,
         "publicWelfare": 5,
         "treasury": -7,
         "security": -3
@@ -2350,7 +4274,7 @@ window.GAME_DATA.cards = [
       "effects": {
         "security": 5,
         "treasury": 4,
-        "sustainability": -8
+        "environment": -8
       },
       "stance": null
     },
@@ -2360,7 +4284,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "How long can export growth outrun environmental cost?",
-    "educationalNote": "Export-led heavy industry concentrates both prosperity and pollution locally."
+    "educationalNote": "Export-led heavy industry concentrates both prosperity and pollution locally.",
+    "stage": "any"
   },
   {
     "id": "snu1-s3",
@@ -2371,7 +4296,7 @@ window.GAME_DATA.cards = [
     "left": {
       "label": "Exempt key researchers",
       "effects": {
-        "techProgress": 6,
+        "rdCapacity": 6,
         "reputation": 5,
         "politicalSupport": -6
       },
@@ -2382,7 +4307,7 @@ window.GAME_DATA.cards = [
       "effects": {
         "politicalSupport": 4,
         "reputation": -5,
-        "techProgress": -3
+        "rdCapacity": -3
       },
       "stance": null
     },
@@ -2392,7 +4317,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 1,
     "discussionPrompt": "Should national security duties bend for technological priority?",
-    "educationalNote": "Allocating scarce talent between defense and research is a real policy dilemma."
+    "educationalNote": "Allocating scarce talent between defense and research is a real policy dilemma.",
+    "stage": "any"
   },
   {
     "id": "snu1-s4",
@@ -2422,7 +4348,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "Is a profitable dependence still a dependence?",
-    "educationalNote": "Export concentration is a strategic vulnerability disguised as efficiency."
+    "educationalNote": "Export concentration is a strategic vulnerability disguised as efficiency.",
+    "stage": "any"
   },
   {
     "id": "snu1-s5",
@@ -2434,7 +4361,7 @@ window.GAME_DATA.cards = [
       "label": "Impose the site",
       "effects": {
         "energy": 6,
-        "techProgress": 3,
+        "rdCapacity": 3,
         "publicWelfare": -7,
         "politicalSupport": -6
       },
@@ -2444,7 +4371,7 @@ window.GAME_DATA.cards = [
       "label": "Keep interim storage",
       "effects": {
         "publicWelfare": 3,
-        "sustainability": -5,
+        "environment": -5,
         "security": -3
       },
       "stance": null
@@ -2455,7 +4382,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "Who should bear the local burden of a national benefit?",
-    "educationalNote": "Nuclear waste siting is a textbook not-in-my-backyard governance problem."
+    "educationalNote": "Nuclear waste siting is a textbook not-in-my-backyard governance problem.",
+    "stage": "any"
   },
   {
     "id": "snu2-s1",
@@ -2466,7 +4394,7 @@ window.GAME_DATA.cards = [
     "left": {
       "label": "Build it ourselves",
       "effects": {
-        "techProgress": 6,
+        "rdCapacity": 6,
         "security": 6,
         "treasury": -9,
         "energy": -4
@@ -2477,7 +4405,7 @@ window.GAME_DATA.cards = [
       "label": "Ration scarce imports",
       "effects": {
         "treasury": 3,
-        "techProgress": -5
+        "rdCapacity": -5
       },
       "stance": null
     },
@@ -2487,7 +4415,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "Can autarky ever match an open, networked innovation system?",
-    "educationalNote": "Closed systems gain control but pay a steep efficiency and access penalty."
+    "educationalNote": "Closed systems gain control but pay a steep efficiency and access penalty.",
+    "stage": "any"
   },
   {
     "id": "snu2-s2",
@@ -2521,7 +4450,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "Does control retain people or only their bodies, not their loyalty?",
-    "educationalNote": "Coercive retention preserves headcount while corroding morale and trust."
+    "educationalNote": "Coercive retention preserves headcount while corroding morale and trust.",
+    "stage": "any"
   },
   {
     "id": "snu2-s3",
@@ -2532,7 +4462,7 @@ window.GAME_DATA.cards = [
     "left": {
       "label": "Authorize workarounds",
       "effects": {
-        "techProgress": 8,
+        "rdCapacity": 8,
         "security": 2,
         "politicalSupport": -9
       },
@@ -2542,7 +4472,7 @@ window.GAME_DATA.cards = [
       "label": "Stay within limits",
       "effects": {
         "politicalSupport": 3,
-        "techProgress": -5
+        "rdCapacity": -5
       },
       "stance": "protect"
     },
@@ -2552,7 +4482,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 3,
     "discussionPrompt": "When restrictions feel unjust, does evasion become legitimate?",
-    "educationalNote": "Sanctions create persistent incentives for covert procurement networks."
+    "educationalNote": "Sanctions create persistent incentives for covert procurement networks.",
+    "stage": "any"
   },
   {
     "id": "snu2-s4",
@@ -2584,7 +4515,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "Can a closed system open a window without losing control of the room?",
-    "educationalNote": "Special economic/research zones are a classic controlled-opening experiment."
+    "educationalNote": "Special economic/research zones are a classic controlled-opening experiment.",
+    "stage": "any"
   },
   {
     "id": "snu2-s5",
@@ -2615,7 +4547,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "Is control without trust a stable foundation for a tech society?",
-    "educationalNote": "Surveillance can secure order while hollowing out the trust innovation needs."
+    "educationalNote": "Surveillance can secure order while hollowing out the trust innovation needs.",
+    "stage": "any"
   },
   {
     "id": "gen-fraud1",
@@ -2648,7 +4581,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 3,
     "discussionPrompt": "Does covering up a mistake protect an institution, or just delay a bigger collapse in trust?",
-    "educationalNote": "Reproducibility failures compound: each unaddressed one makes the next harder to trust and easier to hide."
+    "educationalNote": "Reproducibility failures compound: each unaddressed one makes the next harder to trust and easier to hide.",
+    "stage": "any"
   },
   {
     "id": "gen-univ1",
@@ -2660,7 +4594,7 @@ window.GAME_DATA.cards = [
       "label": "Accept corporate terms",
       "effects": {
         "treasury": 9,
-        "techProgress": 4,
+        "rdCapacity": 4,
         "reputation": -5
       },
       "stance": null
@@ -2682,7 +4616,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "When industry funds the lab, who does the research actually belong to?",
-    "educationalNote": "Publication restrictions can quietly slow an entire field’s progress by delaying peer review."
+    "educationalNote": "Publication restrictions can quietly slow an entire field’s progress by delaying peer review.",
+    "stage": "any"
   },
   {
     "id": "semi-subsidy1",
@@ -2693,7 +4628,7 @@ window.GAME_DATA.cards = [
     "left": {
       "label": "Match the highest bid",
       "effects": {
-        "techProgress": 7,
+        "rdCapacity": 7,
         "security": 3,
         "treasury": -12
       },
@@ -2703,7 +4638,7 @@ window.GAME_DATA.cards = [
       "label": "Let the fab go elsewhere",
       "effects": {
         "treasury": 4,
-        "techProgress": -5,
+        "rdCapacity": -5,
         "politicalSupport": -2
       },
       "stance": null
@@ -2715,7 +4650,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "Does subsidy competition build real capability, or just transfer public money to already-profitable firms?",
-    "educationalNote": "Subsidy auctions between governments tend to escalate faster than the underlying capability actually grows."
+    "educationalNote": "Subsidy auctions between governments tend to escalate faster than the underlying capability actually grows.",
+    "stage": "any"
   },
   {
     "id": "ai-standards1",
@@ -2728,7 +4664,7 @@ window.GAME_DATA.cards = [
       "effects": {
         "reputation": -3,
         "security": 4,
-        "techProgress": 3
+        "rdCapacity": 3
       },
       "stance": "protect"
     },
@@ -2736,7 +4672,7 @@ window.GAME_DATA.cards = [
       "label": "Adopt the international standard",
       "effects": {
         "reputation": 5,
-        "techProgress": -2,
+        "rdCapacity": -2,
         "security": -2
       },
       "stance": "cooperate"
@@ -2748,7 +4684,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "Do technical standards get chosen on merit, or on whoever has the most market power?",
-    "educationalNote": "Whoever sets the standard shapes years of downstream compliance costs for everyone else."
+    "educationalNote": "Whoever sets the standard shapes years of downstream compliance costs for everyone else.",
+    "stage": "any"
   },
   {
     "id": "gen-privacy2",
@@ -2781,7 +4718,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 3,
     "discussionPrompt": "Does delaying disclosure of a data breach ever protect the people affected by it?",
-    "educationalNote": "Delayed breach disclosure is now illegal in many jurisdictions precisely because containment rarely works."
+    "educationalNote": "Delayed breach disclosure is now illegal in many jurisdictions precisely because containment rarely works.",
+    "stage": "any"
   },
   {
     "id": "space-dualuse1",
@@ -2815,7 +4753,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 3,
     "discussionPrompt": "Once a civilian system proves militarily useful, can it ever really stay civilian?",
-    "educationalNote": "Dual-use ambiguity is often deliberate — it preserves funding flexibility and diplomatic cover simultaneously."
+    "educationalNote": "Dual-use ambiguity is often deliberate — it preserves funding flexibility and diplomatic cover simultaneously.",
+    "stage": "any"
   },
   {
     "id": "materials-env1",
@@ -2828,14 +4767,14 @@ window.GAME_DATA.cards = [
       "effects": {
         "security": 6,
         "treasury": 2,
-        "sustainability": -7
+        "environment": -7
       },
       "stance": null
     },
     "right": {
       "label": "Accept the environmental review",
       "effects": {
-        "sustainability": 4,
+        "environment": 4,
         "security": -3,
         "treasury": -3
       },
@@ -2848,7 +4787,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "Is trading environmental damage for supply-chain independence ever a fair swap?",
-    "educationalNote": "Rare-earth processing is often more environmentally damaging than the mining itself."
+    "educationalNote": "Rare-earth processing is often more environmentally damaging than the mining itself.",
+    "stage": "any"
   },
   {
     "id": "biotech-security1",
@@ -2859,7 +4799,7 @@ window.GAME_DATA.cards = [
     "left": {
       "label": "Continue under tighter controls",
       "effects": {
-        "techProgress": 6,
+        "rdCapacity": 6,
         "security": -4,
         "reputation": -3
       },
@@ -2870,7 +4810,7 @@ window.GAME_DATA.cards = [
       "effects": {
         "reputation": 4,
         "security": 3,
-        "techProgress": -6
+        "rdCapacity": -6
       },
       "stance": "protect"
     },
@@ -2881,7 +4821,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 3,
     "discussionPrompt": "Does preparing for the next pandemic justify the risk of accidentally causing one?",
-    "educationalNote": "Gain-of-function research sits at the center of an unresolved international biosecurity debate."
+    "educationalNote": "Gain-of-function research sits at the center of an unresolved international biosecurity debate.",
+    "stage": "any"
   },
   {
     "id": "gen-distrust1",
@@ -2914,7 +4855,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 1,
     "discussionPrompt": "Can a PR campaign fix a trust problem that policy substance actually caused?",
-    "educationalNote": "Public trust in technology programs erodes fast and rebuilds slowly — communication rarely substitutes for policy change."
+    "educationalNote": "Public trust in technology programs erodes fast and rebuilds slowly — communication rarely substitutes for policy change.",
+    "stage": "any"
   },
   {
     "id": "quantum-crypto1",
@@ -2927,7 +4869,7 @@ window.GAME_DATA.cards = [
       "effects": {
         "security": 7,
         "treasury": -8,
-        "techProgress": 2
+        "rdCapacity": 2
       },
       "stance": null
     },
@@ -2946,7 +4888,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "How do you budget today for a threat that only becomes real once a future technology matures?",
-    "educationalNote": "\"Harvest now, decrypt later\" attacks make encryption migration urgent well before quantum computers are actually useful."
+    "educationalNote": "\"Harvest now, decrypt later\" attacks make encryption migration urgent well before quantum computers are actually useful.",
+    "stage": "any"
   },
   {
     "id": "robotics-automation1",
@@ -2957,7 +4900,7 @@ window.GAME_DATA.cards = [
     "left": {
       "label": "Approve full automation",
       "effects": {
-        "techProgress": 7,
+        "rdCapacity": 7,
         "treasury": 4,
         "publicWelfare": -7,
         "politicalSupport": -3
@@ -2969,7 +4912,7 @@ window.GAME_DATA.cards = [
       "effects": {
         "publicWelfare": 3,
         "politicalSupport": 2,
-        "techProgress": -3,
+        "rdCapacity": -3,
         "treasury": -3
       },
       "stance": null
@@ -2981,7 +4924,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "Who owes displaced workers something when automation is more efficient but not humane on its own?",
-    "educationalNote": "The efficiency gains from automation are real — so is the concentrated, immediate harm to displaced workers."
+    "educationalNote": "The efficiency gains from automation are real — so is the concentrated, immediate harm to displaced workers.",
+    "stage": "any"
   },
   {
     "id": "energy-cyber1",
@@ -3013,7 +4957,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 3,
     "discussionPrompt": "Is the cheapest infrastructure vendor ever really the cheapest option once risk is priced in?",
-    "educationalNote": "Critical infrastructure vendor selection is a security decision wearing a procurement disguise."
+    "educationalNote": "Critical infrastructure vendor selection is a security decision wearing a procurement disguise.",
+    "stage": "any"
   },
   {
     "id": "climate-adapt1",
@@ -3024,7 +4969,7 @@ window.GAME_DATA.cards = [
     "left": {
       "label": "Create a permanent fund",
       "effects": {
-        "sustainability": 4,
+        "environment": 4,
         "publicWelfare": 4,
         "treasury": -7
       },
@@ -3046,7 +4991,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "Is capping disaster spending fiscal discipline, or just deferring the cost onto the people least able to absorb it?",
-    "educationalNote": "Adaptation costs compound: deferred resilience spending usually costs more later, after the next disaster."
+    "educationalNote": "Adaptation costs compound: deferred resilience spending usually costs more later, after the next disaster.",
+    "stage": "any"
   },
   {
     "id": "gen-stockpile1",
@@ -3077,7 +5023,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "Why is prevention spending so much harder to justify politically than crisis spending?",
-    "educationalNote": "Stockpiles are a classic case of prevention being invisible right up until the moment it is desperately needed."
+    "educationalNote": "Stockpiles are a classic case of prevention being invisible right up until the moment it is desperately needed.",
+    "stage": "any"
   },
   {
     "id": "semi-chokepoint1",
@@ -3089,7 +5036,7 @@ window.GAME_DATA.cards = [
       "label": "Ration domestic supply",
       "effects": {
         "publicWelfare": 2,
-        "techProgress": -5,
+        "rdCapacity": -5,
         "politicalSupport": 2
       },
       "stance": null
@@ -3097,7 +5044,7 @@ window.GAME_DATA.cards = [
     "right": {
       "label": "Buy to the front of the queue",
       "effects": {
-        "techProgress": 5,
+        "rdCapacity": 5,
         "treasury": -9,
         "reputation": -3
       },
@@ -3110,7 +5057,8 @@ window.GAME_DATA.cards = [
     ],
     "severity": 3,
     "discussionPrompt": "Should emergency access to a broken supply chain go to whoever pays most, or whoever needs it most?",
-    "educationalNote": "Single-supplier chokepoints turn ordinary supply disruptions into systemic emergencies."
+    "educationalNote": "Single-supplier chokepoints turn ordinary supply disruptions into systemic emergencies.",
+    "stage": "any"
   },
   {
     "id": "space-debris1",
@@ -3123,7 +5071,7 @@ window.GAME_DATA.cards = [
       "effects": {
         "reputation": 4,
         "treasury": -5,
-        "sustainability": 2
+        "environment": 2
       },
       "stance": "cooperate"
     },
@@ -3143,6 +5091,7 @@ window.GAME_DATA.cards = [
     ],
     "severity": 2,
     "discussionPrompt": "Who should pay to clean up a shared commons that everyone contributed to polluting?",
-    "educationalNote": "Orbital debris is a textbook tragedy of the commons: no single actor caused it, and no single actor can fix it."
+    "educationalNote": "Orbital debris is a textbook tragedy of the commons: no single actor caused it, and no single actor can fix it.",
+    "stage": "any"
   }
 ];

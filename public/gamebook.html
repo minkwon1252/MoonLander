@@ -62,6 +62,7 @@
     <a href="#teams">Teams</a>
     <a href="#goal">Choosing a technology direction</a>
     <a href="#stats">State variables &amp; thresholds</a>
+    <a href="#trust">Global Trust</a>
     <a href="#balance">Balance, blocking &amp; regression</a>
     <a href="#roadmap">Roadmaps</a>
     <a href="#cards">Policy cards</a>
@@ -108,7 +109,7 @@
     <tr><td><b>UTokyo</b></td><td>Japan</td><td>Advanced manufacturing democracy — deep talent and supply chains, energy-import dependent.</td></tr>
     <tr><td><b>NUS</b></td><td>Singapore</td><td>Highly open research hub — strong finance and reputation, small and energy-constrained.</td></tr>
     <tr><td><b>HKUST</b></td><td>Hong Kong</td><td>Export-sensitive gateway economy — capital-rich, politically exposed.</td></tr>
-    <tr><td><b>SNU</b></td><td>Korea</td><td>Manufacturing-rooted technology state — strong tech progress and energy security, export-dependent.</td></tr>
+    <tr><td><b>SNU</b></td><td>Korea</td><td>Manufacturing-rooted technology state — strong R&amp;D capacity and energy security, export-dependent.</td></tr>
   </table>
 
   <h2 id="goal">Choosing a technology direction</h2>
@@ -118,52 +119,104 @@
   situations affect it — so it should feel like choosing a real national strategy, not a cosmetic skin.</p>
 
   <h2 id="stats">State variables &amp; danger thresholds</h2>
-  <p>Every team tracks eight stats, each 0–100. Almost every card trades one off against another.</p>
+  <p>Every team tracks eight stats, each 0–100, all starting near 50 with small national modifiers.
+  Almost every card trades one off against another.</p>
   <table>
     <tr><th>Stat</th><th>What it represents</th><th>Danger threshold</th></tr>
-    <tr><td>💰 Treasury</td><td>Public funds available to spend</td><td>Below 15 → fiscal pressure</td></tr>
-    <tr><td>⚡ Energy</td><td>Power / compute capacity available</td><td>Below 15 → tech progress limited</td></tr>
-    <tr><td>🏛️ Political Support</td><td>Domestic political capital</td><td>Below 20 → instability risk</td></tr>
-    <tr><td>❤️ Public Welfare</td><td>Citizens' material wellbeing &amp; trust</td><td>Below 20 → social unrest</td></tr>
-    <tr><td>📈 Technology Progress</td><td>Advancement toward the chosen goal</td><td>—</td></tr>
-    <tr><td>🌐 International Reputation</td><td>Standing with other nations</td><td>Below 20 → cooperation becomes ineffective</td></tr>
-    <tr><td>🛡️ Security / Sovereignty</td><td>Resilience to espionage, coercion, dependency</td><td>Below 20 → espionage / cyber risk</td></tr>
-    <tr><td>🌱 Sustainability</td><td>Environmental health of the growth path</td><td>Below 20 → environmental backlash</td></tr>
+    <tr><td>💰 Treasury</td><td>Public money available to spend. Everything ambitious costs it.</td><td>below 20 → fiscal crisis</td></tr>
+    <tr><td>⚡ Energy / Compute</td><td>Power and computing capacity. Modern research runs on both.</td><td>below 20 → power / compute shortage</td></tr>
+    <tr><td>🏛️ Political Support</td><td>Political capital to push decisions through and survive them.</td><td>below 25 → political instability</td></tr>
+    <tr><td>❤️ Public Welfare</td><td>Citizens' material wellbeing and their trust in the programme.</td><td>below 25 → social unrest</td></tr>
+    <tr><td>🔬 R&amp;D Capacity</td><td>Your national <i>ability to do research</i> — labs, people, institutions. This is what drives roadmap progress; it is <b>not</b> the roadmap itself.</td><td>below 20 → research capacity collapse</td></tr>
+    <tr><td>🌐 International Reputation</td><td>How other nations regard you.</td><td>below 25 → diplomatically isolated (cooperation stops working)</td></tr>
+    <tr><td>🛡️ Security / Sovereignty</td><td>Resilience to espionage, coercion and dependency on others.</td><td>below 25 → sovereignty at risk</td></tr>
+    <tr><td>🌱 Environment</td><td>Environmental health of your growth path. Cheap now, expensive later.</td><td>below 25 → environmental backlash</td></tr>
   </table>
+
+  <h3>R&amp;D Capacity is not Roadmap Progress</h3>
+  <p>These are deliberately two different things, and confusing them is the most common mistake:</p>
+  <ul>
+    <li><b>R&amp;D Capacity</b> (a stat, 0–100) — how much research your country is <i>capable</i> of doing.</li>
+    <li><b>Roadmap Progress</b> (a separate 0–100% track) — how far your chosen national project has
+      <i>actually</i> got. It drives the five-stage visual roadmap and it <b>starts at 0% for every team</b>,
+      regardless of starting stats.</li>
+  </ul>
+  <p>Each round your R&amp;D Capacity is converted into roadmap progress — but only if the rest of the country
+  is holding together. See below.</p>
+
+  <h2 id="trust">Global Trust — and why it exists</h2>
+  <p>Global Trust (shown in the top bar, starting at 60) represents the world's overall willingness to
+  cooperate. It is a shared value: there is one number for the whole room, not one per team. It is
+  <b>not decoration</b> — it multiplies real numbers every round:</p>
+  <table>
+    <tr><th>When Global Trust is…</th><th>What actually changes</th></tr>
+    <tr><td><b>High</b> (toward 100)</td><td>Cooperation bonuses, joint research and shared standards pay out up
+      to <b>1.6×</b>. Global shocks are cushioned to about <b>0.8×</b> damage, because the world coordinates its
+      response.</td></tr>
+    <tr><td><b>Low</b> (toward 0)</td><td>Cooperation rewards shrink to about <b>0.4×</b> — barely worth doing.
+      Global shocks hit at <b>1.6×</b>, and losing a resource conflict costs far more, because nobody helps
+      you recover.</td></tr>
+  </table>
+  <p>It <b>rises</b> when two or more teams choose cooperative options in the same round, and when teams
+  cooperate during a resource conflict. It <b>falls</b> when several teams compete at once or scramble
+  aggressively for a scarce resource. Early rounds therefore set how punishing the later rounds are for
+  everybody — including the teams that caused the decline.</p>
   <p><b>General pattern:</b> openness tends to raise reputation and tech progress but lowers security; protection
   raises security but costs reputation; industrial policy raises tech progress but costs treasury; environmental
-  protection costs short-term growth but protects welfare and sustainability. There is no move that only helps.</p>
+  protection costs short-term growth but protects welfare and the environment. There is no move that only helps.</p>
 
   <h2 id="balance">Balance, blocking &amp; regression</h2>
-  <p>Technology Progress does <b>not</b> just climb forever. At the end of every round, the game checks how many
-  of the other seven stats are below their danger threshold for each team, and gates that team's progress
-  accordingly:</p>
+  <p>This is the heart of the game's difficulty. Each round your roadmap advances by roughly
+  <b>R&amp;D Capacity ÷ 5</b> — but only if your country can support it. At the end of every round the game
+  counts how many of your eight stats sit below their danger threshold:</p>
   <table>
-    <tr><th>Danger stats</th><th>Status</th><th>Effect on Technology Progress</th></tr>
-    <tr><td>0</td><td>🟢 Stable</td><td>Grows normally.</td></tr>
-    <tr><td>1</td><td>🟡 Strained</td><td>Any progress gained this round is halved.</td></tr>
-    <tr><td>2</td><td>🟠 Blocked</td><td>All progress gained this round is cancelled — the roadmap freezes.</td></tr>
-    <tr><td>3+</td><td>🔴 Regressing</td><td>Technology Progress actively falls, worse the more stats have collapsed.</td></tr>
+    <tr><th>Stats in danger</th><th>Status</th><th>Effect on Roadmap Progress</th></tr>
+    <tr><td>0</td><td>🟢 Stable</td><td>Full advance.</td></tr>
+    <tr><td>1</td><td>🟡 Strained</td><td>Advance is <b>halved</b>.</td></tr>
+    <tr><td>2</td><td>🟠 Blocked</td><td>Advance is <b>zero</b> — the roadmap freezes entirely.</td></tr>
+    <tr><td>3 or more</td><td>🔴 Regressing</td><td>The roadmap <b>goes backwards</b>. Work already done is lost.</td></tr>
   </table>
-  <p>On top of that, a team with an <b>extremely wide spread</b> between its best and worst stat pays an
-  additional penalty even if Technology Progress itself is high — racing ahead while the rest of the system falls
-  apart is never free. A team must recover its weak stats back above threshold before the roadmap can move
-  forward again. Each team's live status (Stable / Strained / Blocked / Regressing) is shown as a small badge on
-  its panel, and a round's summary explains exactly which stats blocked or reversed progress.</p>
+  <p>A team with an <b>extremely wide spread</b> between its best and worst stat loses further progress on top
+  of that, even if nothing has crossed a threshold yet — lopsided development is penalised on its own.</p>
+  <p><b>Development upkeep.</b> Building is not free: every point of roadmap progress burns treasury and energy.
+  The faster you build, the harder your money and your grid are squeezed — and that squeeze is usually what
+  eventually trips the thresholds above. Fast growth is possible, but only for a team that keeps funding,
+  power, politics, welfare, security and the environment all healthy at once.</p>
+  <p>A team must recover its weak stats back above threshold before the roadmap can move forward again. Each
+  team's live status is shown as a badge on its panel, and the round summary names exactly which stats blocked
+  or reversed progress.</p>
 
   <h2 id="roadmap">Technology roadmaps</h2>
-  <p>Each direction has a five-stage visual roadmap that fills in as a team's (balance-gated) Technology Progress
-  stat rises (every 20 points completes a stage). The board renders it live — a growing neural network for AI, a
-  rocket assembling piece by piece for Space, a filling DNA strand for Biotech, a chip blueprint wiring up for
-  Semiconductors, and so on — so progress (and regression) is something the room can literally watch happen.</p>
+  <p>Each direction has a five-stage visual roadmap that fills as Roadmap Progress rises (every 20% completes a
+  stage). The board renders it live — a growing neural network for AI, a rocket assembling piece by piece for
+  Space, a filling DNA strand for Biotech, a chip blueprint wiring up for Semiconductors, and so on — so
+  progress (and regression) is something the room can literally watch happen.</p>
+  <p>Every team's roadmap <b>starts at 0%</b>. Nobody gets a head start on their chosen technology, however
+  strong their national stats are.</p>
 
   <h2 id="cards">Policy cards</h2>
-  <p>Each round, every team receives one policy card matched to their chosen direction (most rounds) or a
-  general cross-cutting card (occasionally) — 98 cards in total across all directions. A card presents a
-  situation, a question, and two options — left and right, Reigns-style. Each option quietly affects 2–4 stats,
-  but the card only <b>previews the 1–2 most influential effects</b> so the board stays readable (e.g. "Treasury
-  −8, Tech +5" on the left, "Welfare +6" on the right) — the full effect applies once the choice is confirmed.
+  <p>Each round, every team receives one policy card — 152 in total across all directions. A card presents a
+  situation, a question, and two options — left and right, Reigns-style. Each option affects 2–4 stats, but the
+  card only <b>previews the 1–2 most influential effects</b> so the board stays readable (e.g. "Treasury −8,
+  R&amp;D +5" on the left, "Welfare +6" on the right) — the full effect applies once the choice is confirmed.
   There is no "correct" side: both cost something.</p>
+
+  <h3>Cards depend on your technology <i>and</i> your stage</h3>
+  <p>Your cards are chosen from your domain <b>and the stage your roadmap has reached</b>, so the questions
+  evolve as your national project matures:</p>
+  <table>
+    <tr><th>Stage band</th><th>Roadmap</th><th>A semiconductor programme is asked about…</th></tr>
+    <tr><td>Early</td><td>0–39%</td><td>lithography access, cleanroom water, materials supply, talent</td></tr>
+    <tr><td>Mid</td><td>40–59%</td><td>yield secrecy, fab subsidies versus schools</td></tr>
+    <tr><td>Late</td><td>60–100%</td><td>export controls, monopoly pricing, global standards</td></tr>
+  </table>
+  <p>Every one of the nine technology directions has its own early, mid and late dilemmas. Occasionally
+  (about one card in four) a team draws instead from the pool of general cross-cutting cards that any country
+  could face — brain drain, research fraud, university–industry conflict, public distrust of technology.</p>
+  <p>Many cards deliberately ask <b>social</b> rather than purely resource questions: privacy versus model
+  performance, military funding versus research freedom, automation versus jobs, biosecurity versus open
+  science, export control versus cooperation, climate protection versus industrial speed, who owns a space
+  resource, and whether public welfare should ever lose to the national technology race.</p>
   <p>The team's representative argues their case in front of the room; the facilitator can jot a one-line
   rationale, then clicks the chosen side. Effects apply immediately and animate on the board, and each affected
   stat bar shows a small "(+3)" / "(−5)" beside it — that indicator stays visible until the next decision changes
@@ -211,7 +264,7 @@
       resource, it is resolved live with <b>Rock-Paper-Scissors on stage</b>. The facilitator enters the winner;
       the winner gets the full bonus, the losers take a penalty.</td></tr>
     <tr><td>🤝 Cooperate</td><td>Smaller, safer gains — shared access instead of an exclusive claim.</td></tr>
-    <tr><td>🌱 Conserve</td><td>Protects welfare and sustainability at the cost of a smaller technology gain.</td></tr>
+    <tr><td>🌱 Conserve</td><td>Protects welfare and the environment at the cost of a smaller R&amp;D gain.</td></tr>
     <tr><td>🔀 Diversify</td><td>Moderate gain by investing around the bottleneck instead of fighting over it.</td></tr>
   </table>
   <p>If only one team competes, they get the aggressive payoff automatically — no RPS needed. This keeps the
@@ -235,10 +288,11 @@
   </ol>
 
   <h2 id="winning">How to "win"</h2>
-  <p>The final ranking is a <b>balanced score</b> — the average of all eight stats, not just Technology Progress.
-  A team that races ahead on tech while gutting welfare, security, or the environment will not top the board.
-  The debrief also highlights the most cooperative, most aggressive, and most resilient teams, and surfaces the
-  single biggest tradeoff and the most ethically difficult decision of the session — these are usually more
+  <p>The final score is <b>half Roadmap Progress and half national balance</b> (the average of all eight stats).
+  Both halves matter: a team that races ahead on a collapsing country scores badly, and so does a perfectly
+  stable country that never actually built anything. You have to do both at once — which is the whole point.</p>
+  <p>The debrief also highlights the most cooperative, most aggressive, and most resilient teams, and surfaces
+  the single biggest tradeoff and the most ethically difficult decision of the session — these are usually more
   interesting to discuss than the numeric ranking itself.</p>
 
   <h2 id="facilitator">Running it as facilitator</h2>
@@ -269,7 +323,7 @@
     <p>Your flagship lab wants to release a frontier model's weights openly to win developers and goodwill.
     Security agencies fear misuse. <i>Release the model weights openly?</i></p>
     <div class="ce-opts">
-      <div class="ce-opt"><b>◀ Release openly</b><br><span class="stat-tag">Reputation +10</span><span class="stat-tag">Tech +4</span><span class="stat-tag">Security −9</span></div>
+      <div class="ce-opt"><b>◀ Release openly</b><br><span class="stat-tag">Reputation +10</span><span class="stat-tag">R&amp;D +4</span><span class="stat-tag">Security −9</span></div>
       <div class="ce-opt"><b>Keep closed / API-only ▶</b><br><span class="stat-tag">Security +6</span><span class="stat-tag">Reputation −6</span></div>
     </div>
   </div>
@@ -279,8 +333,8 @@
     <p>AI data centers now consume a tenth of national electricity. Utilities warn of brownouts; households face
     rising bills. <i>Prioritize compute expansion or household electricity stability?</i></p>
     <div class="ce-opts">
-      <div class="ce-opt"><b>◀ Prioritize AI compute</b><br><span class="stat-tag">Tech +8</span><span class="stat-tag">Energy −10</span><span class="stat-tag">Welfare −7</span></div>
-      <div class="ce-opt"><b>Cap data-center load ▶</b><br><span class="stat-tag">Tech −6</span><span class="stat-tag">Energy +6</span><span class="stat-tag">Welfare +5</span></div>
+      <div class="ce-opt"><b>◀ Prioritize AI compute</b><br><span class="stat-tag">R&amp;D +8</span><span class="stat-tag">Energy −10</span><span class="stat-tag">Welfare −7</span></div>
+      <div class="ce-opt"><b>Cap data-center load ▶</b><br><span class="stat-tag">R&amp;D −6</span><span class="stat-tag">Energy +6</span><span class="stat-tag">Welfare +5</span></div>
     </div>
   </div>
 

@@ -4,14 +4,22 @@
 
   const DOMAIN_ICON = { ai: '🤖', space: '🚀', semiconductors: '🔬', energy: '⚡', climate: '🌍', quantum: '⚛️', biotech: '🧬', robotics: '🦾', materials: '🧱' };
   const STAT_META = [
-    { key: 'treasury', icon: '💰', label: 'Treasury' },
-    { key: 'energy', icon: '⚡', label: 'Energy' },
-    { key: 'politicalSupport', icon: '🏛️', label: 'Pol.Supp' },
-    { key: 'publicWelfare', icon: '❤️', label: 'Welfare' },
-    { key: 'techProgress', icon: '📈', label: 'Tech' },
-    { key: 'reputation', icon: '🌐', label: 'Reput.' },
-    { key: 'security', icon: '🛡️', label: 'Security' },
-    { key: 'sustainability', icon: '🌱', label: 'Sustain.' },
+    { key: 'treasury', icon: '💰', label: 'Treasury', full: 'Treasury',
+      desc: 'Public money available to spend. Everything ambitious costs it.' },
+    { key: 'energy', icon: '⚡', label: 'Energy', full: 'Energy / Compute',
+      desc: 'Power and computing capacity. Modern research runs on both.' },
+    { key: 'politicalSupport', icon: '🏛️', label: 'Politics', full: 'Political Support',
+      desc: 'Political capital to push decisions through and survive them.' },
+    { key: 'publicWelfare', icon: '❤️', label: 'Welfare', full: 'Public Welfare',
+      desc: 'Citizens’ material wellbeing and their trust in the programme.' },
+    { key: 'rdCapacity', icon: '🔬', label: 'R&D', full: 'R&D Capacity',
+      desc: 'Your national ability to do research — labs, people, institutions. This is what DRIVES roadmap progress each round; it is not the roadmap itself.' },
+    { key: 'reputation', icon: '🌐', label: 'Reput.', full: 'International Reputation',
+      desc: 'How other nations regard you. Below the danger line, cooperation stops working.' },
+    { key: 'security', icon: '🛡️', label: 'Security', full: 'Security / Sovereignty',
+      desc: 'Resilience to espionage, coercion and dependency on others.' },
+    { key: 'environment', icon: '🌱', label: 'Environ.', full: 'Environment',
+      desc: 'Environmental health of your growth path. Cheap now, expensive later.' },
   ];
   const STANCE_LABEL = { cooperate: '🤝 Cooperate', open: '🌐 Openness', protect: '🛡️ Protection', secrecy: '🤫 Secrecy', compete: '⚔️ Competition' };
   const CRISIS_STANCE_ICON = { compete: '⚔️', cooperate: '🤝', conserve: '🌱', diversify: '🔀' };
@@ -51,6 +59,10 @@
     crisisAnnouncementDismissed: null, // resource id that has been dismissed
 
     init() {
+      try {
+        const saved = parseFloat(localStorage.getItem('techrace_ui_scale'));
+        if (saved) { this.uiScale = saved; document.documentElement.style.setProperty('--ui-scale', saved); }
+      } catch (e) { /* ignore */ }
       this.fpSelectedTeam = Engine.state.teamOrder[0];
       Engine.onChange(s => this.render(s));
       this.render(Engine.state);
@@ -131,12 +143,15 @@
       const balMeta = BALANCE_META[balance];
       const balanceHtml = `<span class="balance-badge" style="--bal-color:${balMeta.color}" title="Roadmap balance status">${balMeta.label}</span>`;
 
-      const roadmapSvg = domain ? Roadmap.render(domain.id, team.stats.techProgress / 100, team.color) : '';
+      const roadmapSvg = domain ? Roadmap.render(domain.id, team.roadmapProgress / 100, team.color) : '';
+      const rd = team.lastRoadmapDelta;
+      const rdHtml = rd ? `<span class="roadmap-delta ${rd > 0 ? 'pos' : 'neg'}">${fmtSigned(rd)}</span>` : '';
       const roadmapHtml = domain ? `
         <div class="tp-roadmap">
-          <div class="tp-roadmap-label">${DOMAIN_ICON[domain.id] || ''} ${esc(domain.name)} Roadmap</div>
+          <div class="tp-roadmap-label">${DOMAIN_ICON[domain.id] || ''} ${esc(domain.name)}
+            <span class="roadmap-pct">${team.roadmapProgress}%</span>${rdHtml}</div>
           ${roadmapSvg}
-          <div class="tp-roadmap-stage">${stage + 1}. ${esc(domain.stages[stage])}</div>
+          <div class="tp-roadmap-stage">Stage ${stage + 1}/5 · ${esc(domain.stages[stage])}</div>
         </div>` : '';
 
       const cardZone = this.renderCardZone(state, teamId);
@@ -306,16 +321,44 @@
         </div>
 
         <div class="guide-section">
-          <h4>Eight stats (0–100 each)</h4>
-          <p>${STAT_META.map(m => `${m.icon} <b>${m.label}</b>`).join(' · ')}. Almost every decision trades one
-          of these off against another — there is no move that only helps.</p>
+          <h4>The eight national stats (0–100 each)</h4>
+          <ul class="guide-stats">
+            ${STAT_META.map(m => `<li><b>${m.icon} ${esc(m.full)}</b> — ${esc(m.desc)}
+              <span class="guide-th">danger below ${Engine.THRESHOLDS[m.key].value}</span></li>`).join('')}
+          </ul>
+          <p>Almost every decision trades one of these against another — there is no move that only helps.</p>
+        </div>
+
+        <div class="guide-section">
+          <h4>R&amp;D Capacity vs Roadmap Progress — not the same thing</h4>
+          <p><b>R&amp;D Capacity</b> is one of your eight stats: how much research your country is <i>capable</i>
+          of doing. <b>Roadmap Progress</b> is a separate 0–100% track showing how far your chosen national
+          project has actually got. Every round, your R&amp;D Capacity is converted into roadmap progress —
+          <i>but only if the rest of your country is holding together.</i> Every team's roadmap starts at
+          <b>0%</b>, no matter how strong its starting stats are.</p>
+        </div>
+
+        <div class="guide-section">
+          <h4>Global Trust — why it exists</h4>
+          <p>Global Trust (top bar) is the world's overall willingness to cooperate. It is <b>not decoration</b>
+          — it multiplies real numbers:</p>
+          <ul class="guide-stats">
+            <li><b>High trust</b> — cooperation bonuses, joint research and shared standards pay out much more,
+              and global crises are cushioned because the world coordinates its response.</li>
+            <li><b>Low trust</b> — cooperation rewards shrink toward nothing, global shocks hit noticeably
+              harder, and losing a resource conflict costs far more because nobody helps you recover.</li>
+          </ul>
+          <p>It rises when teams cooperate and falls when several teams compete or fight over resources. Your
+          table's collective behaviour in early rounds sets how punishing the later ones are.</p>
         </div>
 
         <div class="guide-section">
           <h4>Choosing a technology goal</h4>
           <p>Before play begins, each team's representative picks one technology direction to pursue for the
           whole game — AI, Space, Semiconductors, Energy, Climate, Quantum, Biotech, Robotics, or Advanced
-          Materials. This shapes which policy cards you receive and what your roadmap looks like.</p>
+          Materials. This shapes which policy cards you receive and what your roadmap looks like. Cards also
+          change as you advance: an early-stage semiconductor programme is asked about talent, lithography
+          access and cleanroom water; a late-stage one faces export controls, monopoly pricing and yield secrecy.</p>
         </div>
 
         <div class="guide-section">
@@ -345,19 +388,28 @@
         </div>
 
         <div class="guide-section">
-          <h4>Roadmap progress — and what stops or reverses it</h4>
-          <p>Your Technology Progress stat drives a 5-stage visual roadmap. But progress is <b>not automatic</b>:
-          if any other stat drops below its danger threshold, growth slows; if two stats are in danger at once,
-          progress is <b>blocked</b> for the round; if three or more collapse together, progress actively
-          <b>regresses</b>. A system that races ahead while everything else falls apart even pays an extra
-          penalty. You must recover your weak stats before the roadmap can move again.</p>
+          <h4>What stops or reverses your roadmap</h4>
+          <p>Each round your roadmap advances by roughly <b>R&amp;D Capacity ÷ 5</b> — but only if your country
+          can support it. At the end of every round the game counts how many of your eight stats are below their
+          danger line:</p>
+          <ul class="guide-stats">
+            <li><b>0 in danger</b> — full speed ahead.</li>
+            <li><b>1 in danger</b> — advance is <b>halved</b>.</li>
+            <li><b>2 in danger</b> — advance is <b>zero</b>. The roadmap is frozen until you fix them.</li>
+            <li><b>3 or more</b> — the roadmap <b>goes backwards</b>. Work you already did is lost.</li>
+          </ul>
+          <p>A very lopsided country (huge gap between best and worst stat) loses further progress on top of
+          that. You cannot sprint your way out of a collapsing system — you must repair the weak stats first.</p>
+          <p><b>Development is not free.</b> Every point of roadmap progress burns treasury and energy as
+          upkeep, so the faster you build, the harder your money and your grid are squeezed. That squeeze is
+          usually what eventually trips the danger thresholds above.</p>
         </div>
 
         <div class="guide-section">
           <h4>Final objective</h4>
-          <p>After 5–6 rounds, the game ends in a debrief with a <b>balanced score</b> across all eight stats —
-          not just Technology Progress. The team that raced ahead while gutting welfare, security or the
-          environment will not win. Fast growth is possible — but only alongside real balance.</p>
+          <p>After 5–6 rounds the game ends in a debrief. Your score is <b>half roadmap progress, half national
+          balance</b>. Racing ahead on a collapsing country scores badly — and so does a perfectly stable country
+          that never built anything. You have to do both.</p>
         </div>
 
         <div class="setup-actions">
@@ -491,9 +543,9 @@
       el.innerHTML = `<div class="overlay-box"><div class="debrief-box">
         <div class="debrief-title">🏁 Final Debrief</div>
         <table class="rank-table">
-          <thead><tr><th>#</th><th>Team</th><th>Balanced Score</th>${STAT_META.map(m => `<th>${m.icon}</th>`).join('')}</tr></thead>
+          <thead><tr><th>#</th><th>Team</th><th>Score</th><th>Roadmap</th><th>Balance</th>${STAT_META.map(m => `<th title="${esc(m.full)}">${m.icon}</th>`).join('')}</tr></thead>
           <tbody>
-            ${d.ranking.map((r, i) => `<tr><td class="rk">${i + 1}</td><td>${esc(r.teamName)}</td><td class="rk">${r.score}</td>${STAT_META.map(m => `<td>${r.stats[m.key]}</td>`).join('')}</tr>`).join('')}
+            ${d.ranking.map((r, i) => `<tr><td class="rk">${i + 1}</td><td>${esc(r.teamName)}</td><td class="rk">${r.score}</td><td>${r.roadmapProgress}% <span style="color:#8a91ad">(stage ${r.roadmapStage}/5)</span></td><td>${r.balance}</td>${STAT_META.map(m => `<td>${r.stats[m.key]}</td>`).join('')}</tr>`).join('')}
           </tbody>
         </table>
         <div class="debrief-badges">
@@ -581,6 +633,13 @@
             <label class="cb-hint">Rounds: </label>
             <input type="number" min="3" max="10" value="${state.maxRounds}" style="width:50px;background:#1c2033;color:#fff;border:1px solid #343a58;border-radius:6px;" onchange="UI.setMaxRounds(this.value)" />
           </div>
+          <div class="fp-row">
+            <label class="cb-hint">Text size (for your projector):</label>
+            <button class="fp-btn" onclick="UI.adjustScale(-0.05)">A−</button>
+            <button class="fp-btn" onclick="UI.adjustScale(0.05)">A+</button>
+            <button class="fp-btn" onclick="UI.setScale(1)">Reset</button>
+            <span class="cb-hint" id="scaleReadout">${Math.round(this.uiScale * 100)}%</span>
+          </div>
         </div>
 
         <div class="fp-section">
@@ -602,6 +661,17 @@
     },
 
     fpSelectTeam(id) { this.fpSelectedTeam = id; this.render(Engine.state); },
+
+    // Live text scaling — every size in the sheet is rem-based, so this one variable
+    // resizes the whole board to suit the room.
+    uiScale: 1,
+    setScale(v) {
+      this.uiScale = Math.max(0.7, Math.min(1.8, Math.round(v * 100) / 100));
+      document.documentElement.style.setProperty('--ui-scale', this.uiScale);
+      try { localStorage.setItem('techrace_ui_scale', String(this.uiScale)); } catch (e) { /* ignore */ }
+      this.render(Engine.state);
+    },
+    adjustScale(delta) { this.setScale(this.uiScale + delta); },
     setMaxRounds(v) {
       const n = Math.max(3, Math.min(10, parseInt(v, 10) || 6));
       Engine.state.maxRounds = n;

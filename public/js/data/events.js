@@ -1,5 +1,4 @@
-// 27 common international/global events (shock, boost, mixed, condition-change).
-// Hand-tuned for Tech Race single-screen edition.
+// 27 international/global events (shock, boost, mixed, condition-change).
 window.GAME_DATA = window.GAME_DATA || {};
 window.GAME_DATA.events = [
   {
@@ -14,7 +13,7 @@ window.GAME_DATA.events = [
     "educationalNote": "Financial shocks hit highly leveraged, trade-dependent innovation systems hardest.",
     "base": {
       "treasury": -8,
-      "techProgress": -2
+      "rdCapacity": -2
     },
     "domainEffects": {},
     "modifiers": [
@@ -49,15 +48,15 @@ window.GAME_DATA.events = [
     "discussionPrompt": "Does a breakthrough lift all boats or widen the gap to the leader?",
     "educationalNote": "General-purpose breakthroughs reshape every adjacent domain, not just their own.",
     "base": {
-      "techProgress": 2
+      "rdCapacity": 2
     },
     "domainEffects": {
       "ai": {
-        "techProgress": 8,
+        "rdCapacity": 8,
         "energy": -4
       },
       "robotics": {
-        "techProgress": 4
+        "rdCapacity": 4
       }
     },
     "modifiers": [
@@ -66,7 +65,7 @@ window.GAME_DATA.events = [
         "stat": "energy",
         "value": 25,
         "effects": {
-          "techProgress": -4
+          "rdCapacity": -4
         }
       }
     ],
@@ -169,7 +168,7 @@ window.GAME_DATA.events = [
         "stat": "energy",
         "value": 30,
         "effects": {
-          "techProgress": -5,
+          "rdCapacity": -5,
           "publicWelfare": -4
         }
       },
@@ -197,18 +196,18 @@ window.GAME_DATA.events = [
     "base": {
       "publicWelfare": -5,
       "treasury": -4,
-      "sustainability": -2
+      "environment": -2
     },
     "domainEffects": {
       "climate": {
         "politicalSupport": 6,
-        "techProgress": 4
+        "rdCapacity": 4
       }
     },
     "modifiers": [
       {
         "when": "statBelow",
-        "stat": "sustainability",
+        "stat": "environment",
         "value": 35,
         "effects": {
           "publicWelfare": -5,
@@ -217,7 +216,7 @@ window.GAME_DATA.events = [
       },
       {
         "when": "statAbove",
-        "stat": "sustainability",
+        "stat": "environment",
         "value": 65,
         "effects": {
           "politicalSupport": 4
@@ -239,7 +238,7 @@ window.GAME_DATA.events = [
     "educationalNote": "Extreme supply concentration turns one failure into a systemic crisis.",
     "base": {
       "security": -6,
-      "techProgress": -3
+      "rdCapacity": -3
     },
     "domainEffects": {
       "semiconductors": {
@@ -257,7 +256,7 @@ window.GAME_DATA.events = [
         "stat": "security",
         "value": 35,
         "effects": {
-          "techProgress": -4,
+          "rdCapacity": -4,
           "treasury": -3
         }
       }
@@ -277,11 +276,11 @@ window.GAME_DATA.events = [
     "educationalNote": "Energy abundance would loosen the binding constraint on AI, space and industry.",
     "base": {
       "energy": 4,
-      "sustainability": 2
+      "environment": 2
     },
     "domainEffects": {
       "energy": {
-        "techProgress": 8,
+        "rdCapacity": 8,
         "politicalSupport": 6,
         "treasury": 5
       },
@@ -289,7 +288,7 @@ window.GAME_DATA.events = [
         "energy": 4
       },
       "climate": {
-        "sustainability": 5
+        "environment": 5
       }
     },
     "modifiers": [],
@@ -345,12 +344,12 @@ window.GAME_DATA.events = [
     "discussionPrompt": "Who pays to clean an orbit everyone polluted?",
     "educationalNote": "The Kessler cascade is the canonical commons failure of the space age.",
     "base": {
-      "techProgress": -2,
+      "rdCapacity": -2,
       "security": -2
     },
     "domainEffects": {
       "space": {
-        "techProgress": -6,
+        "rdCapacity": -6,
         "treasury": -4,
         "politicalSupport": 4
       }
@@ -358,7 +357,7 @@ window.GAME_DATA.events = [
     "modifiers": [
       {
         "when": "statAbove",
-        "stat": "sustainability",
+        "stat": "environment",
         "value": 60,
         "effects": {
           "politicalSupport": 3
@@ -388,7 +387,7 @@ window.GAME_DATA.events = [
         "value": 55,
         "effects": {
           "politicalSupport": 5,
-          "techProgress": 3
+          "rdCapacity": 3
         }
       },
       {
@@ -420,7 +419,7 @@ window.GAME_DATA.events = [
     "modifiers": [
       {
         "when": "statAbove",
-        "stat": "techProgress",
+        "stat": "rdCapacity",
         "value": 70,
         "effects": {
           "publicWelfare": -5,
@@ -457,7 +456,7 @@ window.GAME_DATA.events = [
         "value": 55,
         "effects": {
           "reputation": 6,
-          "techProgress": 3
+          "rdCapacity": 3
         }
       },
       {
@@ -497,7 +496,7 @@ window.GAME_DATA.events = [
     "domainEffects": {
       "biotech": {
         "politicalSupport": 6,
-        "techProgress": 5,
+        "rdCapacity": 5,
         "treasury": 4
       }
     },
@@ -559,7 +558,7 @@ window.GAME_DATA.events = [
         "stat": "security",
         "value": 30,
         "effects": {
-          "techProgress": -4
+          "rdCapacity": -4
         }
       }
     ],
@@ -581,7 +580,7 @@ window.GAME_DATA.events = [
     },
     "domainEffects": {
       "quantum": {
-        "techProgress": 8,
+        "rdCapacity": 8,
         "politicalSupport": 5,
         "security": 4
       }
@@ -625,7 +624,7 @@ window.GAME_DATA.events = [
     },
     "domainEffects": {
       "ai": {
-        "techProgress": -4,
+        "rdCapacity": -4,
         "energy": -3
       },
       "quantum": {
@@ -638,7 +637,7 @@ window.GAME_DATA.events = [
         "stat": "energy",
         "value": 30,
         "effects": {
-          "techProgress": -4
+          "rdCapacity": -4
         }
       },
       {
@@ -646,7 +645,7 @@ window.GAME_DATA.events = [
         "stat": "energy",
         "value": 65,
         "effects": {
-          "techProgress": 2
+          "rdCapacity": 2
         }
       }
     ]
@@ -669,12 +668,12 @@ window.GAME_DATA.events = [
     },
     "domainEffects": {
       "semiconductors": {
-        "techProgress": -6,
+        "rdCapacity": -6,
         "security": 3,
         "treasury": -4
       },
       "quantum": {
-        "techProgress": -2
+        "rdCapacity": -2
       }
     },
     "modifiers": [
@@ -683,7 +682,7 @@ window.GAME_DATA.events = [
         "stat": "security",
         "value": 35,
         "effects": {
-          "techProgress": -3
+          "rdCapacity": -3
         }
       }
     ]
@@ -741,15 +740,15 @@ window.GAME_DATA.events = [
     "base": {},
     "domainEffects": {
       "semiconductors": {
-        "techProgress": 5,
+        "rdCapacity": 5,
         "treasury": -5
       },
       "energy": {
-        "techProgress": 4,
+        "rdCapacity": 4,
         "treasury": -4
       },
       "materials": {
-        "techProgress": 4,
+        "rdCapacity": 4,
         "treasury": -4
       }
     },
@@ -781,7 +780,7 @@ window.GAME_DATA.events = [
     "modifiers": [
       {
         "when": "statAbove",
-        "stat": "techProgress",
+        "stat": "rdCapacity",
         "value": 60,
         "effects": {
           "reputation": 5,
@@ -790,14 +789,15 @@ window.GAME_DATA.events = [
       },
       {
         "when": "statBelow",
-        "stat": "techProgress",
+        "stat": "rdCapacity",
         "value": 40,
         "effects": {
           "reputation": -3,
-          "techProgress": -2
+          "rdCapacity": -2
         }
       }
-    ]
+    ],
+    "domainEffects": {}
   },
   {
     "id": "privacy_backlash",
@@ -868,7 +868,8 @@ window.GAME_DATA.events = [
           "reputation": -2
         }
       }
-    ]
+    ],
+    "domainEffects": {}
   },
   {
     "id": "environmental_regulation",
@@ -891,11 +892,11 @@ window.GAME_DATA.events = [
       },
       "energy": {
         "reputation": 3,
-        "sustainability": 3
+        "environment": 3
       },
       "semiconductors": {
         "treasury": -4,
-        "sustainability": -2
+        "environment": -2
       },
       "space": {
         "treasury": -3
@@ -904,7 +905,7 @@ window.GAME_DATA.events = [
     "modifiers": [
       {
         "when": "statBelow",
-        "stat": "sustainability",
+        "stat": "environment",
         "value": 30,
         "effects": {
           "treasury": -3,
@@ -973,7 +974,7 @@ window.GAME_DATA.events = [
         "value": 30,
         "effects": {
           "politicalSupport": -3,
-          "techProgress": -2
+          "rdCapacity": -2
         }
       },
       {
@@ -984,7 +985,8 @@ window.GAME_DATA.events = [
           "reputation": 2
         }
       }
-    ]
+    ],
+    "domainEffects": {}
   },
   {
     "id": "research_consortium",
@@ -1001,7 +1003,7 @@ window.GAME_DATA.events = [
     "educationalNote": "Multilateral science consortia are rare precisely because they require durable trust, not just a good founding moment.",
     "base": {
       "reputation": 3,
-      "techProgress": 2
+      "rdCapacity": 2
     },
     "modifiers": [
       {
@@ -1009,10 +1011,11 @@ window.GAME_DATA.events = [
         "stat": "reputation",
         "value": 55,
         "effects": {
-          "techProgress": 3,
+          "rdCapacity": 3,
           "reputation": 2
         }
       }
-    ]
+    ],
+    "domainEffects": {}
   }
 ];

@@ -1,12 +1,11 @@
 // Nine technology directions with 5-stage roadmaps.
-// Auto-generated content, hand-tuned for Tech Race single-screen edition.
 window.GAME_DATA = window.GAME_DATA || {};
 window.GAME_DATA.domains = [
   {
     "id": "ai",
     "name": "Artificial Intelligence",
     "blurb": "Compute, data, foundation models, safety, labor displacement, surveillance, and regulation.",
-    "leadStat": "techProgress",
+    "leadStat": "rdCapacity",
     "stressStat": "energy",
     "stages": [
       "Data pipeline",
@@ -20,7 +19,7 @@ window.GAME_DATA.domains = [
     "id": "space",
     "name": "Space Technology",
     "blurb": "Launch cost, lunar law, satellite infrastructure, military dual-use, debris, and resource extraction.",
-    "leadStat": "techProgress",
+    "leadStat": "rdCapacity",
     "stressStat": "treasury",
     "stages": [
       "Launch system",
@@ -34,7 +33,7 @@ window.GAME_DATA.domains = [
     "id": "semiconductors",
     "name": "Semiconductors",
     "blurb": "Export controls, fab cost, talent shortage, supply-chain chokepoints, and industrial espionage.",
-    "leadStat": "techProgress",
+    "leadStat": "rdCapacity",
     "stressStat": "security",
     "stages": [
       "Materials supply",
@@ -49,7 +48,7 @@ window.GAME_DATA.domains = [
     "name": "Energy Systems",
     "blurb": "Grid stability, electricity demand, climate policy, nuclear debate, supply chains, public acceptance.",
     "leadStat": "energy",
-    "stressStat": "sustainability",
+    "stressStat": "environment",
     "stages": [
       "Generation capacity",
       "Storage",
@@ -62,7 +61,7 @@ window.GAME_DATA.domains = [
     "id": "climate",
     "name": "Climate Technology",
     "blurb": "Carbon removal, adaptation, green industry, just transition, and global burden-sharing.",
-    "leadStat": "sustainability",
+    "leadStat": "environment",
     "stressStat": "treasury",
     "stages": [
       "Monitoring",
@@ -76,7 +75,7 @@ window.GAME_DATA.domains = [
     "id": "quantum",
     "name": "Quantum Technology",
     "blurb": "Cryptography, sensing, talent scarcity, dual-use risk, and standards races.",
-    "leadStat": "techProgress",
+    "leadStat": "rdCapacity",
     "stressStat": "reputation",
     "stages": [
       "Qubit platform",
@@ -90,7 +89,7 @@ window.GAME_DATA.domains = [
     "id": "biotech",
     "name": "Biotechnology",
     "blurb": "Genomic data, biosecurity, drug access, agricultural tech, and bioethics.",
-    "leadStat": "techProgress",
+    "leadStat": "rdCapacity",
     "stressStat": "publicTrust",
     "stages": [
       "Bio data infrastructure",
@@ -104,7 +103,7 @@ window.GAME_DATA.domains = [
     "id": "robotics",
     "name": "Robotics & Automation",
     "blurb": "Industrial automation, labor markets, autonomous weapons, care robots, and safety standards.",
-    "leadStat": "techProgress",
+    "leadStat": "rdCapacity",
     "stressStat": "publicWelfare",
     "stages": [
       "Hardware platform",
@@ -119,7 +118,7 @@ window.GAME_DATA.domains = [
     "name": "Advanced Materials",
     "blurb": "Rare earths, battery chemistry, manufacturing scale-up, and supply-chain security.",
     "leadStat": "security",
-    "stressStat": "sustainability",
+    "stressStat": "environment",
     "stages": [
       "Atomic simulation",
       "Synthesis route",

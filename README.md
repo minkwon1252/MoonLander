@@ -4,9 +4,9 @@ A **single-screen, local** technology-policy & diplomacy simulation for live con
 Selene Program. Four teams of engineering students each lead a national/regional innovation system, making
 policy decisions in front of a shared projected screen — no logins, no networking, no cloud.
 
-> The winner is **not** whoever has the highest tech number. Technology Progress is balance-gated: if a team lets
-> other stats collapse, its roadmap slows, blocks, or actively regresses — see [Balance & difficulty](#balance--difficulty-technology-progress-is-not-automatic)
-> below. The final ranking is a balanced score across all eight national stats. See the in-app
+> The winner is **not** whoever builds fastest. Roadmap progress is balance-gated: if a team lets its other
+> stats collapse, the roadmap slows, freezes, or actively regresses — see [Balance & difficulty](#balance--difficulty-roadmap-progress-is-not-automatic)
+> below. The final score is half roadmap progress and half national balance. See the in-app
 > [**Game Book**](public/gamebook.html) for full rules, the 2-hour schedule, and debrief questions.
 
 **Flow:** Guide screen → Team goal selection → Main game (5–6 rounds) → Final debrief.
@@ -30,25 +30,63 @@ representatives stand in front of their section, argue their case, and the facil
 - **Plain HTML / CSS / vanilla JavaScript.** No build step, no framework, no CDN, no bundler.
 - **All game data lives in the browser tab** (in-memory JS state). Nothing is sent over a network.
 - **Optional `localStorage` checkpoint** and **JSON/CSV export** for the decision log.
-- Content (teams, domains, 98 policy cards, 27 international/global events, 12 resource conflicts) is data-driven
+- Content (teams, domains, 152 policy cards, 27 international/global events, 12 resource conflicts) is data-driven
   in `public/js/data/*.js` — plain JS files, easy to read and edit without any tooling.
 - Fully static — works from `file://`, a local server, or **GitHub Pages** (see below).
+- Two review spreadsheets (`policy_decisions_catalog.csv`, `international_events_catalog.csv`) are generated
+  from that same data — see [Reviewing the content](#reviewing-the-content-csv-catalogs).
 
-## Balance & difficulty: Technology Progress is not automatic
+## The eight national stats
 
-Every round, each team's Technology Progress is checked against the other seven stats:
-
-| Stats in danger | Status | Effect |
+| Stat | Meaning | Danger below |
 |---|---|---|
-| 0 | 🟢 Stable | Grows normally |
-| 1 | 🟡 Strained | This round's gain is halved |
-| 2 | 🟠 Blocked | This round's gain is cancelled entirely |
-| 3+ | 🔴 Regressing | Technology Progress actively falls |
+| 💰 Treasury | Public money available to spend | 20 |
+| ⚡ Energy / Compute | Power and computing capacity | 20 |
+| 🏛️ Political Support | Political capital to push decisions through | 25 |
+| ❤️ Public Welfare | Citizens' wellbeing and trust in the programme | 25 |
+| 🔬 R&D Capacity | National *ability to do research* — labs, people, institutions | 20 |
+| 🌐 International Reputation | How other nations regard you | 25 |
+| 🛡️ Security / Sovereignty | Resilience to espionage, coercion, dependency | 25 |
+| 🌱 Environment | Environmental health of the growth path | 25 |
 
-An extremely wide spread between a team's best and worst stat costs a further penalty even when Technology
-Progress is high. A team's live status shows as a small badge on its panel, and every round summary explains
-which stats blocked or reversed anyone's progress. This is what makes "grow fast but stay balanced" the actual
-objective instead of just flavor text.
+**R&D Capacity is not Roadmap Progress.** R&D Capacity is a *stat* (how much research you can do).
+**Roadmap Progress** is a separate 0–100% track (how far your chosen national project has actually got), and it
+**starts at 0% for every team** regardless of their starting stats. Each round, R&D Capacity is converted into
+roadmap progress — if the rest of the country can support it.
+
+## Balance & difficulty: roadmap progress is not automatic
+
+Each round the roadmap advances by roughly **R&D Capacity ÷ 5**, then the game counts how many of the eight
+stats sit below their danger threshold:
+
+| Stats in danger | Status | Effect on roadmap |
+|---|---|---|
+| 0 | 🟢 Stable | Full advance |
+| 1 | 🟡 Strained | Advance **halved** |
+| 2 | 🟠 Blocked | Advance is **zero** — the roadmap freezes |
+| 3+ | 🔴 Regressing | The roadmap **goes backwards**; completed work is lost |
+
+Two further pressures make fast growth genuinely hard:
+
+- **Development upkeep** — every point of roadmap progress burns treasury and energy, so the faster you build,
+  the harder your money and grid are squeezed. This is usually what eventually trips a threshold.
+- **Imbalance penalty** — a very wide spread between your best and worst stat costs extra progress even if
+  nothing has crossed a threshold yet.
+
+A team must recover its weak stats before development continues. Live status shows as a badge on each panel,
+and every round summary names exactly which stats blocked or reversed progress.
+
+## Global Trust
+
+One shared value for the whole room (starts at 60), representing the world's overall willingness to cooperate.
+It is a real multiplier, not decoration:
+
+- **High trust** → cooperation bonuses pay up to **1.6×**; global shocks are cushioned to **~0.8×** damage.
+- **Low trust** → cooperation shrinks to **~0.4×**; shocks hit at **1.6×** and losing a resource conflict costs
+  far more, because nobody helps you recover.
+
+It rises when teams cooperate (in card choices and in resource conflicts) and falls when several teams compete
+at once. Early-round behaviour therefore sets how punishing the later rounds are — for everyone.
 
 ## One random event per round
 
@@ -105,6 +143,9 @@ open it on the laptop connected to the projector.
 
 1. Connect your laptop to the room's projector/big screen (mirror or extend — mirror is simplest).
 2. Open `public/index.html` full-screen on that display (`F11` in most browsers).
+2b. All text is sized for reading from the back of a lecture hall. If it is still too small (or too large) for
+   your room, open the facilitator panel (`F`) → **Game Settings** → **A− / A+**. That scales the entire
+   interface live and remembers your choice in this browser.
 3. That's it — there is no separate "screen" mode to open elsewhere. The one page is simultaneously the game
    board, the facilitator console, and the projected display.
 
@@ -132,7 +173,7 @@ Everything lives in `public/js/data/`, as plain arrays of JS objects (no build s
 |---|---|
 | `teams.js` | The 4 teams: identity, flavor text, starting stat modifiers. |
 | `domains.js` | The 9 technology directions and their 5-stage roadmap labels. |
-| `cards.js` | 98 policy cards (56 domain-specific + 42 general). Each has `title`, `situation`, `question`, `left`/`right` options (`label`, `effects`, optional `stance`), `tags`, `severity`, `discussionPrompt`, `educationalNote`. |
+| `cards.js` | 152 policy cards. Each has `domain`, `stage`, `title`, `situation`, `question`, `left`/`right` options (`label`, `effects`, optional `stance`), `tags`, `severity`, `discussionPrompt`, `educationalNote`. |
 | `events.js` | 27 international/global events, each tagged `type`: `shock`, `boost`, `mixed`, or `condition_change` (`base` effects for all teams, optional `domainEffects` and stat-threshold `modifiers`). |
 | `resources.js` | 12 resource conflicts (`type: 'resource_conflict'`) with `compete`/`cooperate`/`conserve`/`diversify` choices. |
 
@@ -140,11 +181,36 @@ Everything lives in `public/js/data/`, as plain arrays of JS objects (no build s
 random, unused entry from both files together each round, so resource conflicts are just one possible event type
 rather than a separately triggered system.
 
+**Card `stage` field** — cards are matched to both the team's technology *and* how far its roadmap has got:
+
+| `stage` | Dealt when roadmap is | Count |
+|---|---|---|
+| `'early'` | 0–39% | 18 (2 per domain) |
+| `'mid'` | 40–59% | 18 (2 per domain) |
+| `'late'` | 60–100% | 18 (2 per domain) |
+| `'any'` | any time (fallback + all `general` cards) | 98 |
+
 To add a card, copy an existing object in `cards.js` and give it a unique `id`. Stat keys you can use in
-`effects`: `treasury`, `energy`, `politicalSupport`, `publicWelfare`, `techProgress`, `reputation`, `security`,
-`sustainability`. The optional `stance` field (`cooperate` / `open` / `protect` / `secrecy` / `compete`) drives
-the simplified international-interaction system described in the Game Book. Aim for 2–4 affected stats per
-option — the UI automatically previews only the 1–2 most influential ones on the card itself.
+`effects`: `treasury`, `energy`, `politicalSupport`, `publicWelfare`, `rdCapacity`, `reputation`, `security`,
+`environment`. The optional `stance` field (`cooperate` / `open` / `protect` / `secrecy` / `compete`) drives
+the simplified international-interaction system described in the Game Book. Use **2–4 affected stats per
+option** — the UI automatically previews only the 1–2 most influential ones on the card itself.
+
+## Reviewing the content (CSV catalogs)
+
+Two spreadsheets at the repo root let you review every decision and event without reading any code:
+
+| File | Contents |
+|---|---|
+| `policy_decisions_catalog.csv` | All 152 policy cards — domain, stage, title, question, both choices, all eight stat effects (as `L+8 / R-4`), educational note. |
+| `international_events_catalog.csv` | All 39 events — title, type, description, affected issue, whether Rock-Paper-Scissors is required, all eight stat effects, global-trust effect, domestic relevance, educational note. |
+
+Both are **generated from the game's own data**, so they can never drift out of sync. After editing anything in
+`public/js/data/`, regenerate them with:
+
+```bash
+node tools/build-catalogs.js
+```
 
 ## How to edit teams
 
@@ -176,6 +242,9 @@ public/
     export.js              # JSON/CSV export, localStorage save/load
     main.js                  # bootstrap + keyboard shortcuts
 server.js              # optional zero-dependency static file server (npm start)
+tools/build-catalogs.js  # regenerates the two review CSVs from public/js/data/
+policy_decisions_catalog.csv      # all 152 policy decisions, for review
+international_events_catalog.csv  # all 39 global events & resource conflicts, for review
 .github/workflows/
   deploy-pages.yml     # auto-deploys public/ to GitHub Pages on every push to main
 ```
